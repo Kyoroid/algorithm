@@ -15,22 +15,35 @@ class TestPrime(unittest.TestCase):
 
     def test_prime_factorization(self):
         data = {
-            'input': 252,
-            'output': [2, 2, 3, 3, 7]
+            'input': [252, ],
+            'output': [[2, 2, 3, 3, 7], ]
         }
-        self.assertEqual(prime_factorization(data['input']), data['output'])
+        dout = list(prime_factorization(data['input']))
+        self.assertEqual(dout, data['output'])
         data = {
-            'input': 524287,
-            'output': [524287, ]
+            'input': [252, 524287],
+            'output': [[2, 2, 3, 3, 7], [524287,]]
         }
-        self.assertEqual(prime_factorization(data['input']), data['output'])
+        dout = list(prime_factorization(data['input']))
+        self.assertEqual(dout, data['output'])
+        data = {
+            'input': [1, ],
+            'output': [[], ]
+        }
+        dout = list(prime_factorization(data['input']))
+        self.assertEqual(dout, data['output'])
 
     def test_lcm(self):
         data = {
             'input': [7, 12, 13, 14],
-            'output': {2: 2, 3: 1, 5: 0, 7: 1, 11: 0, 13: 1}
+            'output': 1092
         }
         self.assertEqual(lcm(data['input']), data['output'])
+        data = {
+            'input': [[7, 12, 13, 14], 103],
+            'output': 62
+        }
+        self.assertEqual(lcm(*data['input']), data['output'])
 
 
 if __name__ == '__main__':
