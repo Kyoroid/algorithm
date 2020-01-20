@@ -1,4 +1,7 @@
 def levenshtein(str1, str2):
+    """
+    Levenshtein距離を求める
+    """
     m = len(str1)
     n = len(str2)
     dp = [[0 for j in range(n+1)] for i in range(m+1)]
@@ -12,6 +15,4 @@ def levenshtein(str1, str2):
             dp[i+1][j+1] = min(dp[i+1][j]+1, dp[i][j+1]+1, dp[i][j]+cost)
     return dp[-1][-1]
 
-if __name__ == '__main__':
-    print(levenshtein('green', 'enlightened'))
     

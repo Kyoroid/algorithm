@@ -3,6 +3,7 @@ from prime import *
 import itertools
 import operator
 
+
 class TestPrime(unittest.TestCase):
 
     def test_prime_sieve(self):
@@ -30,6 +31,7 @@ class TestPrime(unittest.TestCase):
             'output': {2: 2, 3: 1, 5: 0, 7: 1, 11: 0, 13: 1}
         }
         self.assertEqual(lcm(data['input']), data['output'])
+
 
 if __name__ == '__main__':
     unittest.main()

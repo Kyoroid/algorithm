@@ -36,6 +36,7 @@ def prime_factorization(n):
     prime_factors.append(factor[n])
     return list(sorted(prime_factors))
 
+
 def lcm(x):
     """
     配列xのLCMを素数の積で表す
