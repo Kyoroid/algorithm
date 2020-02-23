@@ -1,5 +1,5 @@
 import unittest
-from prime import *
+from number_theory.prime import *
 import itertools
 import operator
 
