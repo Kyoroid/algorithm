@@ -1,7 +1,5 @@
 import unittest
 from number_theory.prime import *
-import itertools
-import operator
 
 
 class TestPrime(unittest.TestCase):

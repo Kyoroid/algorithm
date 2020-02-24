@@ -17,6 +17,7 @@ def modpow(x, y, z):
 def modinv(n, p):
     """
     逆元のmod pを求める
+    前処理なし、クエリO(log(p))
     """
     if n >= p:
         raise ValueError('p must be larger than n')
