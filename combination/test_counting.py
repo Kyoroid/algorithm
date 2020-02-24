@@ -1,7 +1,5 @@
 import unittest
 from combination.counting import *
-import itertools
-import operator
 
 
 class TestCounting(unittest.TestCase):
