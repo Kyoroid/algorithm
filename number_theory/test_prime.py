@@ -33,18 +33,6 @@ class TestPrime(unittest.TestCase):
         dout = list(prime_factorization(data['input']))
         self.assertEqual(dout, data['output'])
 
-    def test_lcm(self):
-        data = {
-            'input': [7, 12, 13, 14],
-            'output': 1092
-        }
-        self.assertEqual(lcm(data['input']), data['output'])
-        data = {
-            'input': [[7, 12, 13, 14], 103],
-            'output': 62
-        }
-        self.assertEqual(lcm(*data['input']), data['output'])
-
 
 if __name__ == '__main__':
     unittest.main()
