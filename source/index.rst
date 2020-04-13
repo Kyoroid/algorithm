@@ -5,7 +5,8 @@
    :maxdepth: 2
    :caption: Contents:
 
-   number/index
+   number/binom
+   number/prime
 
 
 
