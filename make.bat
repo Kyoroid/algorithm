@@ -9,9 +9,11 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=build
+set PUBLISHDIR=docs
 
 if "%1" == "" goto help
 if "%1" == "htmlview" goto htmlview
+if "%1" == "publish" goto publish
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
@@ -35,6 +37,11 @@ goto end
 
 :htmlview
 python -c "import os, webbrowser; webbrowser.open(os.path.realpath('build/html/index.html'))"
+goto end
+
+:publish
+%SPHINXBUILD% -M html %SOURCEDIR% %PUBLISHDIR% %SPHINXOPTS% %O%
+Remove-Item -Path docs/doctrees -Recurse
 
 :end
 popd
