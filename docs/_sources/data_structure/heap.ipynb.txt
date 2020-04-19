@@ -1,0 +1,169 @@
+{
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "metadata": {
+  "language_info": {
+   "name": "python",
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "file_extension": ".py",
+  "mimetype": "text/x-python",
+  "name": "python",
+  "npconvert_exporter": "python",
+  "pygments_lexer": "ipython3",
+  "version": 3,
+  "kernelspec": {
+   "name": "python38164bitpy38envvenvdb5a67ba2d164185bbc60d730ae2e1eb",
+   "display_name": "Python 3.8.1 64-bit ('py38env': venv)"
+  }
+ },
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# ヒープ"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 二分ヒープ\n",
+    "\n",
+    "蟻本p.69  \n",
+    "[Wikipedia](https://ja.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E3%83%92%E3%83%BC%E3%83%97)\n",
+    "\n",
+    "二分木のうち、以下の制約を満たすものを「二分ヒープ」と呼ぶ。\n",
+    "\n",
+    "- 親は子より小さいか等しい\n",
+    "- 子ノードの追加は左から右に向かって行われる\n",
+    "\n",
+    "二分ヒープでは次の操作を実現できる。  \n",
+    "また、優先度付きキューとしても利用できる。(ただし、優先度変更の操作はない)\n",
+    "\n",
+    "- 挿入: $\\mathcal{O}(\\log(N))$\n",
+    "- 最小値の参照: $\\mathcal{O}(1)$\n",
+    "- 最小値の削除: $\\mathcal{O}(\\log(N))$\n",
+    "\n",
+    "Pythonでは[heapq](https://docs.python.org/ja/3/library/heapq.html)を使えばよい。"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import heapq\n",
+    "\n",
+    "h = []\n",
+    "heapq.heappush(h, (5, 'write code'))\n",
+    "heapq.heappush(h, (7, 'release product'))\n",
+    "heapq.heappush(h, (1, 'write spec'))\n",
+    "heapq.heappush(h, (3, 'create tests'))\n",
+    "for i in range(4):\n",
+    "    print(heapq.heappop(h))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 実装\n",
+    "\n",
+    "可変長配列で実装可能。  \n",
+    "添え字を1-indexedとすれば、ノード$i$の親子ノードは\n",
+    "\n",
+    "- 親: $i/2$\n",
+    "- 子: $2i, 2i+1$\n",
+    "\n",
+    "と表すことができる。0-indexedでは次のように置き換えればよい。\n",
+    "\n",
+    "- 親: $(i-1)/2$\n",
+    "- 子: $2i+1, 2i+2$\n",
+    "\n",
+    "0-indexedでの実装例を示す。"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def heappush(h, x):\n",
+    "    h.append(x)\n",
+    "    i = len(h) - 1\n",
+    "    p = (i-1) >> 1\n",
+    "    while i > 0 and h[p] > h[i]:\n",
+    "        temp = h[i]\n",
+    "        h[i] = h[p]\n",
+    "        h[p] = temp\n",
+    "        i = p\n",
+    "        p = (p-1) >> 1\n",
+    "\n",
+    "def heapseek(h):\n",
+    "    return h[0]\n",
+    "\n",
+    "def heappop(h):\n",
+    "    x = h[0]\n",
+    "    y = h.pop()\n",
+    "    if len(h) == 0:\n",
+    "        return x\n",
+    "    h[0] = y\n",
+    "    i = 0b0\n",
+    "    while i < len(h):\n",
+    "        l = (i<<1) + 1\n",
+    "        r = (i<<1) + 2\n",
+    "        c = -1\n",
+    "        if r < len(h) and h[l] > h[r]:\n",
+    "            c = r\n",
+    "        elif l < len(h):\n",
+    "            c = l\n",
+    "        if c < 0 or h[i] < h[c]:\n",
+    "            break\n",
+    "        temp = h[i]\n",
+    "        h[i] = h[c]\n",
+    "        h[c] = temp\n",
+    "        i = c\n",
+    "    return x"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "h = []\n",
+    "heappush(h, 3)\n",
+    "heappush(h, 5)\n",
+    "heappush(h, 2)\n",
+    "heappush(h, 7)\n",
+    "heappush(h, 6)\n",
+    "print(heapseek(h))\n",
+    "for i in range(3):\n",
+    "    print(heappop(h))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ]
+}
