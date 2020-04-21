@@ -5,8 +5,9 @@
    :maxdepth: 2
    :caption: Contents:
 
-   number/binom
    number/prime
+   number/mod
+   number/binom
    data_structure/heap
    data_structure/visualization
 
