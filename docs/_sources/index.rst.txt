@@ -7,6 +7,8 @@
 
    number/binom
    number/prime
+   data_structure/heap
+   data_structure/visualization
 
 
 
