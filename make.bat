@@ -41,7 +41,6 @@ goto end
 
 :publish
 %SPHINXBUILD% -b html %SOURCEDIR% %PUBLISHDIR% %SPHINXOPTS% %O%
-Remove-Item -Path docs/doctrees -Recurse
 
 :end
 popd

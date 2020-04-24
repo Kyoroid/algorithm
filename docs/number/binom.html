@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="素数" href="prime.html" />
-    <link rel="prev" title="競技プログラミングノート" href="../index.html" /> 
+    <link rel="next" title="ヒープ" href="../data_structure/heap.html" />
+    <link rel="prev" title="合同" href="mod.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,6 +86,8 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mod.html">合同</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">二項係数・組み合わせ</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#二項係数・組み合わせとは?">二項係数・組み合わせとは?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#性質">性質</a></li>
@@ -95,10 +97,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#方法2">方法2</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#参考文献">参考文献</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/heap.html">ヒープ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/visualization.html">可視化</a></li>
 </ul>
@@ -409,6 +409,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="二項係数・組み合わせ">
 <h1>二項係数・組み合わせ<a class="headerlink" href="#二項係数・組み合わせ" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p><a class="reference external" href="https://drken1215.hatenablog.com/entry/2018/06/08/210000">https://drken1215.hatenablog.com/entry/2018/06/08/210000</a></p>
 <div class="section" id="二項係数・組み合わせとは?">
 <h2>二項係数・組み合わせとは?<a class="headerlink" href="#二項係数・組み合わせとは?" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><a class="reference external" href="https://ja.wikipedia.org/wiki/%E4%BA%8C%E9%A0%85%E4%BF%82%E6%95%B0">Wikipedia</a></p>
@@ -534,8 +535,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 <span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
 
 <span class="c1"># N=5個の数字からK=2個の数字を取り出すときの、全ての組み合わせ (10通り) を列挙する</span>
-<span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">K</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -544,16 +544,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0, 1)
-(0, 2)
-(0, 3)
-(0, 4)
-(1, 2)
-(1, 3)
-(1, 4)
-(2, 3)
-(2, 4)
-(3, 4)
+[(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
 </pre></div></div>
 </div>
 </div>
@@ -623,7 +614,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Wall time: 362 ms
+Wall time: 339 ms
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -720,7 +711,7 @@ Wall time: 362 ms
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Wall time: 440 ms
+Wall time: 471 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -753,10 +744,6 @@ Wall time: 0 ns
 </div>
 </div>
 </div>
-<div class="section" id="参考文献">
-<h2>参考文献<a class="headerlink" href="#参考文献" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><a class="reference external" href="https://drken1215.hatenablog.com/entry/2018/06/08/210000">https://drken1215.hatenablog.com/entry/2018/06/08/210000</a></p>
-</div>
 </div>
 
 
@@ -767,10 +754,10 @@ Wall time: 0 ns
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="prime.html" class="btn btn-neutral float-right" title="素数" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../data_structure/heap.html" class="btn btn-neutral float-right" title="ヒープ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral float-left" title="競技プログラミングノート" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mod.html" class="btn btn-neutral float-left" title="合同" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

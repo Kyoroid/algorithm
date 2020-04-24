@@ -1,36 +1,11 @@
 {
- "nbformat": 4,
- "nbformat_minor": 2,
- "metadata": {
-  "language_info": {
-   "name": "python",
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "version": "3.8.1-final"
-  },
-  "orig_nbformat": 2,
-  "file_extension": ".py",
-  "mimetype": "text/x-python",
-  "name": "python",
-  "npconvert_exporter": "python",
-  "pygments_lexer": "ipython3",
-  "version": 3,
-  "kernelspec": {
-   "name": "python38164bitpy38envvenvdb5a67ba2d164185bbc60d730ae2e1eb",
-   "display_name": "Python 3.8.1 64-bit ('py38env': venv)"
-  }
- },
  "cells": [
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
     "# 可視化"
-   ],
-   "execution_count": null,
-   "outputs": []
+   ]
   },
   {
    "cell_type": "markdown",
@@ -40,9 +15,7 @@
     "\n",
     "- Pycairo [Linux](https://pycairo.readthedocs.io/en/latest/)・[(非公式)Windows](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo)\n",
     "- igraph [python-igraph](https://igraph.org/python/)"
-   ],
-   "execution_count": null,
-   "outputs": []
+   ]
   },
   {
    "cell_type": "markdown",
@@ -53,9 +26,7 @@
     "Reingold Tilfordアルゴリズムを用いる。計算時間は$\\mathcal{O}(N)$。\n",
     "\n",
     "二分ヒープの可視化例を示す。"
-   ],
-   "execution_count": null,
-   "outputs": []
+   ]
   },
   {
    "cell_type": "code",
@@ -138,13 +109,29 @@
    "source": [
     "heapplot(h, bbox=(300, 150), margin=(75, 25, 75, 25))"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   }
- ]
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python",
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "file_extension": ".py",
+  "mimetype": "text/x-python",
+  "name": "python",
+  "npconvert_exporter": "python",
+  "pygments_lexer": "ipython3",
+  "version": 3,
+  "kernelspec": {
+   "name": "python38164bitpy38envvenvdb5a67ba2d164185bbc60d730ae2e1eb",
+   "display_name": "Python 3.8.1 64-bit ('py38env': venv)"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
 }
