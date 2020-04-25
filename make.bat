@@ -40,7 +40,7 @@ python -c "import os, webbrowser; webbrowser.open(os.path.realpath('build/html/i
 goto end
 
 :publish
-%SPHINXBUILD% -b html %SOURCEDIR% %PUBLISHDIR% %SPHINXOPTS% %O%
+%SPHINXBUILD% -b html -a -E %SOURCEDIR% %PUBLISHDIR% %SPHINXOPTS% %O%
 
 :end
 popd
