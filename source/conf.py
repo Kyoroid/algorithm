@@ -29,7 +29,8 @@ author = 'Kyoroid'
 # ones.
 extensions = [
     'nbsphinx',
-    'sphinx.ext.githubpages'
+    'sphinx.ext.githubpages',
+    'sphinx_copybutton'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
