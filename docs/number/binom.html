@@ -89,12 +89,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">ユークリッドの互除法</a></li>
-<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mod.html">合同</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">二項係数・組み合わせ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#二項係数・組み合わせとは?">二項係数・組み合わせとは?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#二項係数">二項係数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#性質">性質</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#組み合わせの全列挙・数え上げ">組み合わせの全列挙・数え上げ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#二項係数の計算">二項係数の計算</a><ul>
@@ -415,11 +414,10 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="二項係数・組み合わせ">
 <h1>二項係数・組み合わせ<a class="headerlink" href="#二項係数・組み合わせ" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p><a class="reference external" href="https://drken1215.hatenablog.com/entry/2018/06/08/210000">https://drken1215.hatenablog.com/entry/2018/06/08/210000</a></p>
-<div class="section" id="二項係数・組み合わせとは?">
-<h2>二項係数・組み合わせとは?<a class="headerlink" href="#二項係数・組み合わせとは?" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><a class="reference external" href="https://ja.wikipedia.org/wiki/%E4%BA%8C%E9%A0%85%E4%BF%82%E6%95%B0">Wikipedia</a></p>
+<div class="section" id="二項係数">
+<h2>二項係数<a class="headerlink" href="#二項係数" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="line-block">
-<div class="line">二項係数 (binomial coefficient) は、<span class="math notranslate nohighlight">\((1+x)^n\)</span> を展開した時に現れる係数のこと。</div>
+<div class="line"><a class="reference external" href="https://ja.wikipedia.org/wiki/%E4%BA%8C%E9%A0%85%E4%BF%82%E6%95%B0">二項係数</a> (binomial coefficient) は、<span class="math notranslate nohighlight">\((1+x)^n\)</span> を展開した時に現れる係数のこと。</div>
 <div class="line"><span class="math notranslate nohighlight">\(_n\mathrm{C}_k\)</span> または <span class="math notranslate nohighlight">\(\binom{n}{k}\)</span> と表記する。</div>
 </div>
 <blockquote>
@@ -608,19 +606,9 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-
-<span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+<span></span><span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Wall time: 2.68 s
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -700,43 +688,23 @@ Wall time: 2.68 s
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-
-<span class="n">f</span><span class="p">,</span> <span class="n">invf</span> <span class="o">=</span> <span class="n">binom_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+<span></span><span class="n">f</span><span class="p">,</span> <span class="n">invf</span> <span class="o">=</span> <span class="n">binom_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Wall time: 1.99 s
-</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-
-<span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span><span class="p">)</span>
+<span></span><span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Wall time: 0 ns
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:

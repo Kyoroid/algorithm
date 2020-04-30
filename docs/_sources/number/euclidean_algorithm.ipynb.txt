@@ -4,13 +4,15 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# ユークリッドの互除法\n",
+    "# 最大公約数\n",
     "\n",
     "[Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%BC%E3%82%AF%E3%83%AA%E3%83%83%E3%83%89%E3%81%AE%E4%BA%92%E9%99%A4%E6%B3%95)\n",
     "\n",
-    "## 概要\n",
+    "## ユークリッドの互除法\n",
     "\n",
-    "ユークリッドの互除法は、2つの整数の最大公約数を求めるアルゴリズムの一つ。\n",
+    "### 概要\n",
+    "\n",
+    "2つの整数の最大公約数を求めるアルゴリズムの一つ。\n",
     "\n",
     "2つの自然数 $a, b (a \\geq b)$ と、$a$ を$b$ で割った時の剰余 $r$ について\n",
     "$\\gcd(a, b) = \\gcd(b, r)$ となる。  \n",
@@ -37,7 +39,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## 証明"
+    "### 証明"
    ]
   },
   {
@@ -55,7 +57,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## 実装\n",
+    "### 実装\n",
     "\n",
     "Python実装では、巨大な整数に対応した[Lehmer's algorithm](https://en.wikipedia.org/wiki/Lehmer%27s_GCD_algorithm)が使われている。\n",
     "\n",
@@ -90,19 +92,22 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "print(gcd(12, 18))"
+    "a = 12\n",
+    "b = 18\n",
+    "d = gcd(a, b)\n",
+    "print(\"gcd({a}, {b}) = {d}\".format(a=a, b=b, d=d))"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# 拡張ユークリッドの互除法\n",
+    "## 拡張ユークリッドの互除法\n",
     "\n",
     "蟻本p.108  \n",
     "https://qiita.com/drken/items/b97ff231e43bce50199a\n",
     "\n",
-    "## 概要\n",
+    "### 概要\n",
     "\n",
     "整数 $a, b$ の最大公約数 $\\gcd(a, b)$ に対して、\n",
     "\n",
@@ -118,9 +123,10 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## 実装\n",
+    "### 実装\n",
     "\n",
-    "$m$ は最大公約数を、 $x, y$ は $ax + by = m$ の解の1つを表す。"
+    "$m$ は最大公約数を、 $x, y$ は $ax + by = m$ の解の1つを表す。  \n",
+    "計算量はユークリッドの互除法と同じく $\\mathcal{O}(\\log_2{N})$。"
    ]
   },
   {
@@ -155,7 +161,7 @@
     "a = 111\n",
     "b = 30\n",
     "m, x, y = extgcd(111, 30)\n",
-    "print('{}x+{}y={}, x={}, y={}'.format(a, b, m, x, y))"
+    "print(\"{}x+{}y={}, x={}, y={}\".format(a, b, m, x, y))"
    ]
   }
  ],

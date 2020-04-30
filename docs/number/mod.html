@@ -89,19 +89,22 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">ユークリッドの互除法</a></li>
-<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">合同</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#整数を法とする合同">整数を法とする合同</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#定義">定義</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#表記">表記</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#加算・乗算・減算・べき乗">加算・乗算・減算・べき乗</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#逆数と除算">逆数と除算</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#逆元">逆元</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#逆元計算">逆元計算</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#逆元計算の実装">逆元計算の実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#除算">除算</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#素数を法とする合同">素数を法とする合同</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#除算">除算</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">逆元</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">逆元計算の実装</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ModIntの実装">ModIntの実装</a></li>
 </ul>
 </li>
@@ -454,41 +457,214 @@ ax &amp;\equiv&amp; bx &amp;&amp; \\
 a^x &amp;\equiv&amp; b^x &amp;&amp; (x&gt;0) \\
 \end{eqnarray}\end{split}\]</div>
 </div>
-<div class="section" id="逆数と除算">
-<h3>逆数と除算<a class="headerlink" href="#逆数と除算" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>合同式では<span class="math notranslate nohighlight">\(\gcd(a, m) = 1\)</span> (整数<span class="math notranslate nohighlight">\(a\)</span>と法<span class="math notranslate nohighlight">\(m\)</span>が互いに素) のときに限り、逆数 <span class="math notranslate nohighlight">\(a^{-1}\)</span>が次のように定義される。</p>
+<div class="section" id="逆元">
+<h3>逆元<a class="headerlink" href="#逆元" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>合同式では <span class="math notranslate nohighlight">\(\gcd(a, m) = 1\)</span> (整数<span class="math notranslate nohighlight">\(a\)</span>と法<span class="math notranslate nohighlight">\(m\)</span>が互いに素) のときに限り、逆元 (<a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%A9%E9%80%86%E6%95%B0">モジュラ逆数</a>) <span class="math notranslate nohighlight">\(a^{-1}\)</span>が次のように定義される。</p>
 <div class="math notranslate nohighlight">
 \[a a^{-1} \equiv 1\]</div>
-<p>除算は<span class="math notranslate nohighlight">\(\gcd(x, m) = 1\)</span>となる<span class="math notranslate nohighlight">\(x\)</span>に対して定義される。</p>
+</div>
+<div class="section" id="逆元計算">
+<h3>逆元計算<a class="headerlink" href="#逆元計算" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">逆元の値は<a class="reference internal" href="euclidean_algorithm_proof.html"><span class="doc">拡張ユークリッドの互除法</span></a>により求めることができる。</div>
+<div class="line">逆元の定義より</div>
+</div>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{eqnarray}
-a \div x &amp;\equiv&amp; b \div x \\
-a x^{-1} &amp;\equiv&amp; b x^{-1} \\
-\end{eqnarray}\end{split}\]</div>
+\[a a^{-1} - 1 \equiv 0 \pmod{m}\]</div>
+<p>であるから、これを合同式ではなく等式として表すと</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}
+a a^{-1} - 1 = mk &amp; (k \in \mathbb{N})
+\end{array}\]</div>
+<p>となる。これを変形し</p>
+<div class="math notranslate nohighlight">
+\[a a^{-1} + m(-k) = 1\]</div>
+<p>とする。ここで制約</p>
+<div class="math notranslate nohighlight">
+\[\gcd(a, m) = 1\]</div>
+<div class="line-block">
+<div class="line">をおくと、等式は拡張ユークリッドの互除法の式 <span class="math notranslate nohighlight">\(ax + my = \gcd(a, m)\)</span> と一致する。</div>
+<div class="line">つまり、 <span class="math notranslate nohighlight">\(\gcd(a, m) = 1\)</span> となる<span class="math notranslate nohighlight">\(a, m\)</span> に対して <span class="math notranslate nohighlight">\(a a^{-1} + m(-k) = 1\)</span> の解が存在し、その解は</div>
+</div>
+<div class="math notranslate nohighlight">
+\[(x, y) = (a^{-1}, -k)\]</div>
+<p>となる。同時に逆元 <span class="math notranslate nohighlight">\(a^{-1}\)</span> が <span class="math notranslate nohighlight">\(x\)</span> の値として求まる。</p>
+</div>
+<div class="section" id="逆元計算の実装">
+<h3>逆元計算の実装<a class="headerlink" href="#逆元計算の実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">a</span> <span class="o">//</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not mutually prime.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\gcd(a, m) = 1\)</span> が成り立つときは、逆元 <span class="math notranslate nohighlight">\(a^{-1}\)</span> を返す。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">2019</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gcd(</span><span class="si">{a}</span><span class="s2">, </span><span class="si">{m}</span><span class="s2">) = </span><span class="si">{d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)))</span>
+
+<span class="n">a_inv</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">^-1 </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2"> (mod </span><span class="si">{m}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">a_inv</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2"> * </span><span class="si">{a}</span><span class="s2">^-1 </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2"> (mod </span><span class="si">{m}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">a</span> <span class="o">*</span> <span class="n">a_inv</span> <span class="o">%</span> <span class="n">m</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+gcd(10, 2019) = 1
+10^-1 ≡ 202 (mod 2019)
+10 * 10^-1 ≡ 1 (mod 2019)
+</pre></div></div>
+</div>
+<p><span class="math notranslate nohighlight">\(\gcd(a, m) = 1\)</span> が成り立たない場合は例外を送出する。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">2020</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gcd(</span><span class="si">{a}</span><span class="s2">, </span><span class="si">{m}</span><span class="s2">) </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)))</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+gcd(10, 2020) ≡ 10
+10 and 2020 are not mutually prime.
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="除算">
+<h3>除算<a class="headerlink" href="#除算" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">除算 <span class="math notranslate nohighlight">\(a \div b\)</span> は、逆元との積として定義される。</div>
+<div class="line">逆元の定義より、 <span class="math notranslate nohighlight">\(\gcd(b, m) = 1\)</span> となる整数 <span class="math notranslate nohighlight">\(b\)</span> に対してのみ除算が可能である。</div>
+</div>
+<div class="math notranslate nohighlight">
+\[a \div b \equiv a \times b^{-1}\]</div>
 </div>
 </div>
 <div class="section" id="素数を法とする合同">
 <h2>素数を法とする合同<a class="headerlink" href="#素数を法とする合同" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<div class="section" id="除算">
-<h3>除算<a class="headerlink" href="#除算" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>素数<span class="math notranslate nohighlight">\(p\)</span>をおく。<a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A7%E3%83%AB%E3%83%9E%E3%83%BC%E3%81%AE%E5%B0%8F%E5%AE%9A%E7%90%86">フェルマーの小定理</a></p>
+<div class="section" id="id11">
+<h3>逆元<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>法 <span class="math notranslate nohighlight">\(p\)</span> が素数で <span class="math notranslate nohighlight">\(\gcd(a, p)=1\)</span> を満たす場合は、拡張ユークリッドの互除法を使わずに、累乗により逆元を求めることもできる。</p>
+<p>整数 <span class="math notranslate nohighlight">\(a\)</span> と互いに素である素数 <span class="math notranslate nohighlight">\(p\)</span> をおく。<a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A7%E3%83%AB%E3%83%9E%E3%83%BC%E3%81%AE%E5%B0%8F%E5%AE%9A%E7%90%86">フェルマーの小定理</a></p>
 <div class="math notranslate nohighlight">
 \[a^{p-1} \equiv 1 \pmod{p}\]</div>
-<p>より、逆数に関する次の合同式が成り立つ。つまり、法<span class="math notranslate nohighlight">\(p\)</span>に関して常に除算できる。</p>
+<p>より、逆元に関する次の合同式が成り立つ。</p>
 <div class="math notranslate nohighlight">
-\[\begin{eqnarray}
-a^{-1} \equiv a^{p-2} \pmod{p}
-\end{eqnarray}\]</div>
+\[\begin{split}\begin{eqnarray}
+a a^{-1} &amp;\equiv&amp; a a^{p-2} \equiv 1 \pmod{p} \\
+a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
+\end{eqnarray}\end{split}\]</div>
+</div>
+<div class="section" id="id12">
+<h3>逆元計算の実装<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Pythonにおいては、 <code class="docutils literal notranslate"><span class="pre">pow</span></code>の第三引数を用いて累乗のmodを計算できる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">131</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span>
+<span class="n">a_pinv</span> <span class="o">=</span> <span class="n">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">^-1 </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2"> (mod </span><span class="si">{m}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">a_pinv</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+131^-1 ≡ 190839696 (mod 1000000007)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a_inv</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">^-1 </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2"> (mod </span><span class="si">{m}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">a_inv</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+131^-1 ≡ 190839696 (mod 1000000007)
+</pre></div></div>
+</div>
 </div>
 <div class="section" id="ModIntの実装">
 <h3>ModIntの実装<a class="headerlink" href="#ModIntの実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p><a class="reference external" href="https://tell-k.github.io/pyconjp2016/#49">operator overload</a></p>
 <div class="line-block">
-<div class="line">素数の法<span class="math notranslate nohighlight">\(p\)</span>における整数を<code class="docutils literal notranslate"><span class="pre">ModInt</span></code>として定義する。</div>
+<div class="line">素数の法 <span class="math notranslate nohighlight">\(p\)</span> における整数を<code class="docutils literal notranslate"><span class="pre">ModInt</span></code>として定義する。</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code>はイミュータブルオブジェクトなので、<code class="docutils literal notranslate"><span class="pre">__init__</span></code>では初期化できないことに注意。</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>

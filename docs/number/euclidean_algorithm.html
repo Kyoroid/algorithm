@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ユークリッドの互除法 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>最大公約数 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -89,18 +89,21 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ユークリッドの互除法</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#概要">概要</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#証明">証明</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="euclidean_algorithm_proof.html">ユークリッドの互除法の証明</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">最大公約数</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ユークリッドの互除法">ユークリッドの互除法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#概要">概要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#証明">証明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="euclidean_algorithm_proof.html">ユークリッドの互除法の証明</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#実装">実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#実装">実装</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id6">概要</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">概要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">実装</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a></li>
@@ -153,7 +156,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>ユークリッドの互除法</li>
+      <li>最大公約数</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -414,12 +417,14 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="ユークリッドの互除法">
-<h1>ユークリッドの互除法<a class="headerlink" href="#ユークリッドの互除法" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="最大公約数">
+<h1>最大公約数<a class="headerlink" href="#最大公約数" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p><a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%BC%E3%82%AF%E3%83%AA%E3%83%83%E3%83%89%E3%81%AE%E4%BA%92%E9%99%A4%E6%B3%95">Wikipedia</a></p>
+<div class="section" id="ユークリッドの互除法">
+<h2>ユークリッドの互除法<a class="headerlink" href="#ユークリッドの互除法" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="section" id="概要">
-<h2>概要<a class="headerlink" href="#概要" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>ユークリッドの互除法は、2つの整数の最大公約数を求めるアルゴリズムの一つ。</p>
+<h3>概要<a class="headerlink" href="#概要" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>2つの整数の最大公約数を求めるアルゴリズムの一つ。</p>
 <div class="line-block">
 <div class="line">2つの自然数 <span class="math notranslate nohighlight">\(a, b (a \geq b)\)</span> と、<span class="math notranslate nohighlight">\(a\)</span> を<span class="math notranslate nohighlight">\(b\)</span> で割った時の剰余 <span class="math notranslate nohighlight">\(r\)</span> について <span class="math notranslate nohighlight">\(\gcd(a, b) = \gcd(b, r)\)</span> となる。</div>
 <div class="line"><span class="math notranslate nohighlight">\(a \geq b\)</span> となるよう <span class="math notranslate nohighlight">\(a, b\)</span> を入れ替えつつ上式を再帰的に適用すると、剰余 <span class="math notranslate nohighlight">\(r'\)</span> が<span class="math notranslate nohighlight">\(0\)</span>になったときの除数 <span class="math notranslate nohighlight">\(b'\)</span> が最大公約数となる。</div>
@@ -434,7 +439,7 @@ div.rendered_html tbody tr:hover {
 \end{eqnarray}\end{split}\]</div>
 </div>
 <div class="section" id="証明">
-<h2>証明<a class="headerlink" href="#証明" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h3>証明<a class="headerlink" href="#証明" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm_proof.html">ユークリッドの互除法の証明</a></li>
@@ -442,7 +447,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="実装">
-<h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h3>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>Python実装では、巨大な整数に対応した<a class="reference external" href="https://en.wikipedia.org/wiki/Lehmer%27s_GCD_algorithm">Lehmer’s algorithm</a>が使われている。</p>
 <div class="line-block">
 <div class="line"><a class="reference external" href="https://docs.python.org/ja/3/library/math.html#math.gcd">math.gcd</a> (&gt;=Python3.5)</div>
@@ -475,7 +480,10 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">gcd</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gcd(</span><span class="si">{a}</span><span class="s2">, </span><span class="si">{b}</span><span class="s2">) = </span><span class="si">{d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -484,19 +492,19 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-6
+gcd(12, 18) = 6
 </pre></div></div>
 </div>
 </div>
 </div>
 <div class="section" id="拡張ユークリッドの互除法">
-<h1>拡張ユークリッドの互除法<a class="headerlink" href="#拡張ユークリッドの互除法" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h2>拡張ユークリッドの互除法<a class="headerlink" href="#拡張ユークリッドの互除法" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="line-block">
 <div class="line">蟻本p.108</div>
 <div class="line"><a class="reference external" href="https://qiita.com/drken/items/b97ff231e43bce50199a">https://qiita.com/drken/items/b97ff231e43bce50199a</a></div>
 </div>
-<div class="section" id="id6">
-<h2>概要<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id7">
+<h3>概要<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>整数 <span class="math notranslate nohighlight">\(a, b\)</span> の最大公約数 <span class="math notranslate nohighlight">\(\gcd(a, b)\)</span> に対して、</p>
 <div class="math notranslate nohighlight">
 \[ax + by = \gcd(a, b)\]</div>
@@ -505,9 +513,12 @@ div.rendered_html tbody tr:hover {
 <div class="line">ユークリッドの互除法を利用して、等式を満たす <span class="math notranslate nohighlight">\((x, y)\)</span> を1つ求めることができる。</div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>実装<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><span class="math notranslate nohighlight">\(m\)</span> は最大公約数を、 <span class="math notranslate nohighlight">\(x, y\)</span> は <span class="math notranslate nohighlight">\(ax + by = m\)</span> の解の1つを表す。</p>
+<div class="section" id="id8">
+<h3>実装<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(m\)</span> は最大公約数を、 <span class="math notranslate nohighlight">\(x, y\)</span> は <span class="math notranslate nohighlight">\(ax + by = m\)</span> の解の1つを表す。</div>
+<div class="line">計算量はユークリッドの互除法と同じく <span class="math notranslate nohighlight">\(\mathcal{O}(\log_2{N})\)</span>。</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -539,7 +550,7 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">111</span>
 <span class="n">b</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x+</span><span class="si">{}</span><span class="s1">y=</span><span class="si">{}</span><span class="s1">, x=</span><span class="si">{}</span><span class="s1">, y=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">x+</span><span class="si">{}</span><span class="s2">y=</span><span class="si">{}</span><span class="s2">, x=</span><span class="si">{}</span><span class="s2">, y=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -550,6 +561,7 @@ div.rendered_html tbody tr:hover {
 <div class="highlight"><pre>
 111x+30y=3, x=3, y=-11
 </pre></div></div>
+</div>
 </div>
 </div>
 </div>
