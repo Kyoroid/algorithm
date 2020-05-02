@@ -105,14 +105,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#素数を法とする合同">素数を法とする合同</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id11">逆元</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id12">逆元計算の実装</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ModIntの実装">ModIntの実装</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ModInt">ModInt</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="binom.html">二項係数・組み合わせ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/heap.html">ヒープ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data_structure/visualization.html">可視化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_structure/segment_tree.html">セグメント木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualization/visualization.html">可視化</a></li>
 </ul>
 
             
@@ -502,7 +503,7 @@ a a^{-1} - 1 = mk &amp; (k \in \mathbb{N})
 
 
 <span class="k">def</span> <span class="nf">extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="k">while</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -656,11 +657,12 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 </pre></div></div>
 </div>
 </div>
-<div class="section" id="ModIntの実装">
-<h3>ModIntの実装<a class="headerlink" href="#ModIntの実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+<div class="section" id="ModInt">
+<h2>ModInt<a class="headerlink" href="#ModInt" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><a class="reference external" href="https://tell-k.github.io/pyconjp2016/#49">operator overload</a></p>
 <div class="line-block">
-<div class="line">素数の法 <span class="math notranslate nohighlight">\(p\)</span> における整数を<code class="docutils literal notranslate"><span class="pre">ModInt</span></code>として定義する。</div>
+<div class="line">法 <span class="math notranslate nohighlight">\(m\)</span> における整数を<code class="docutils literal notranslate"><span class="pre">ModInt</span></code>として定義する。</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code>はイミュータブルオブジェクトなので、<code class="docutils literal notranslate"><span class="pre">__init__</span></code>では初期化できないことに注意。</div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -694,19 +696,62 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ModInt</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span><span class="p">)))</span>
+        <span class="n">inv</span> <span class="o">=</span> <span class="n">ModInt</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ModInt</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span> <span class="o">%</span> <span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__floordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__truediv__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ModInt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__pow__</span><span class="p">(</span><span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ModInt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="fm">__rfloordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__rtruediv__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_extgcd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ModInt</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">ModInt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">a</span> <span class="o">//</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span><span class="p">)</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not mutually prime.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ModInt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">inva</span> <span class="o">=</span> <span class="n">ModInt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;inv(</span><span class="si">{}</span><span class="s2">) </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">inva</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> * </span><span class="si">{}</span><span class="s2"> </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">inva</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">inva</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+inv(10) ≡ 700000005
+10 * 700000005 ≡ 1
+</pre></div></div>
 </div>
 </div>
 </div>

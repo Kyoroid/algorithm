@@ -89,8 +89,8 @@
     "cellColours[3][2] = 'lightblue'\n",
     "cellColours[4][2] = 'steelblue'\n",
     "ax.table(dp,\n",
-    "    rowLabels=[\"k={}\".format(i) for i in range(N+1)],\n",
-    "    colLabels=[\"n={}\".format(i) for i in range(N+1)],\n",
+    "    rowLabels=[\"n={}\".format(i) for i in range(N+1)],\n",
+    "    colLabels=[\"k={}\".format(i) for i in range(N+1)],\n",
     "    loc='center',\n",
     "    bbox=[0.1, 0, 1, 1],\n",
     "    cellColours=cellColours)\n",
@@ -102,22 +102,39 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## 組み合わせの全列挙・数え上げ\n",
-    "\n",
-    "$_n\\mathrm{C}_k$ で表される組み合わせを列挙するには `itertools.combinations(iterable, r)` を用いる。  \n",
-    "`iterable` には長さ$n$のリストを渡す。"
+    "上の数表には、階段状に数字が並ぶ。この並び方は[パスカルの三角形](https://ja.wikipedia.org/wiki/%E3%83%91%E3%82%B9%E3%82%AB%E3%83%AB%E3%81%AE%E4%B8%89%E8%A7%92%E5%BD%A2)と呼ばれる。"
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": null,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [],
    "source": [
-    "N = 5\n",
-    "K = 2\n",
-    "seq = list(range(N))\n",
-    "print(seq)"
+    "## 二項係数の和\n",
+    "\n",
+    "二項係数に関して $k=1$ または $k=2$ としたときの和は、和の公式や[三角数](https://ja.wikipedia.org/wiki/%E4%B8%89%E8%A7%92%E6%95%B0)と呼ばれる。  \n",
+    "$\\gcd(n, m)=1$となる法 $m$ に関して計算量 $\\mathcal{O}(\\log{m})$ で和が求まる。\n",
+    "\n",
+    "$$\n",
+    "\\begin{eqnarray}\n",
+    "1 + 2 + 3 + 4 + \\ldots + \\binom{n}{1} &=& \\frac{n(n+1)}{2} \\\\\n",
+    "1 + 3 + 6 + 10 + \\ldots + \\binom{n}{2} &=& \\frac{n(n+1)(n+2)}{6} \\\\\n",
+    "\\end{eqnarray}\n",
+    "$$\n",
+    "\n",
+    "任意の $k$ に対しては、[二項係数を計算](#二項係数の計算)してその和をとればよい。この場合は計算量が少し落ち、 $\\mathcal{O}(n\\log{m})$ となる。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 組み合わせの列挙\n",
+    "\n",
+    "組み合わせを列挙するには `itertools.combinations(iterable, r)` を用いる。  \n",
+    "`iterable` には長さ $n$ のリストを渡す。\n",
+    "\n",
+    "5個の中から2個選ぶ組み合わせの列挙は次の通り。$N=5, K=2$ に対応する。  \n",
+    "実際、組み合わせの数は $_5\\mathrm{C}_2 = 10$ 通りである。"
    ]
   },
   {
@@ -128,8 +145,11 @@
    "source": [
     "from itertools import combinations\n",
     "\n",
-    "# N=5個の数字からK=2個の数字を取り出すときの、全ての組み合わせ (10通り) を列挙する\n",
-    "print([p for p in combinations(seq, K)])"
+    "N = 5\n",
+    "K = 2\n",
+    "a = [p for p in combinations(range(N), K)]\n",
+    "print(a)\n",
+    "print(len(a))"
    ]
   },
   {
@@ -137,8 +157,9 @@
    "metadata": {},
    "source": [
     "## 二項係数の計算\n",
-    "\n",
-    "ここでは $_n\\mathrm{C}_k \\pmod{p}$ の計算方法を扱う。"
+    " \n",
+    "一般に二項係数は巨大な数となるため、断りがない限り $\\gcd(n, p)=1$ となる素数の法 $p$ に関する合同を扱う。  \n",
+    "(素数でなくとも、$\\gcd(n, m)=1$ となる整数の法 $m$ に関して成り立つ)"
    ]
   },
   {
@@ -147,70 +168,14 @@
    "source": [
     "### 方法1\n",
     "\n",
-    "$\\min(k, n-k) \\leq 10^6$ 程度まで対応可能。\n",
-    "\n",
-    "$$\n",
-    "\\begin{eqnarray}\n",
-    "    \\binom{n}{k} &=& \\frac{n!}{k!(n-k)!} = \\frac{n(n-1) \\ldots (n-k+1)}{k(k-1) \\ldots 1} \\\\\n",
-    "    &=& \\left( \\prod_{i=1}^{k} n-k+i \\right) \\left( \\prod_{i=1}^{k} i \\right)^{-1}\n",
-    "\\end{eqnarray}\n",
-    "$$\n",
-    "\n",
-    "分母と分子を別々に計算し、それらの商をとる。  \n",
-    "分母、分子はいずれも$k$回のループで求まるので、全体の計算量はクエリ毎に$\\mathcal{O}(k)$。"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def binom(n, k, MOD=10**9+7):\n",
-    "    k = min(k, n-k)\n",
-    "    a = 1\n",
-    "    for i in range(n-k+1, n+1):\n",
-    "        a = a * i % MOD\n",
-    "    b = 1\n",
-    "    for i in range(1, k+1):\n",
-    "        b = b * i % MOD\n",
-    "    return a * pow(b, MOD-2, MOD) % MOD"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "binom(10, 4)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "binom(10**12, 10**6)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### 方法2\n",
-    "\n",
-    "$n$が小さければ、方法1に比べてさらに高速化できる。  \n",
     "$n \\leq 10^6$ 程度まで対応可能。\n",
     "\n",
-    "$$\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = n!(k!)^{-1}((n-k)!)^{-1}$$\n",
+    "$$\n",
+    "\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = n!(k!)^{-1}((n-k)!)^{-1}\n",
+    "$$\n",
     "\n",
-    "$n$以下の全ての$k'$に対して$k'!, (k'!)^{-1}$ の2種類の値を事前計算しておくことで、クエリ毎に$\\mathcal{O}(1)$で計算可能となる。\n",
-    "\n",
-    "$k'!$については逐次計算し、その値を記憶しておく。\n",
-    "\n",
-    "$(k'!)^{-1}$の計算については、逆元を使って求めると計算量は$\\mathcal{O}(\\log(p))$となる。  "
+    "$n$ 以下の全ての $k$ に対して $k!, (k!)^{-1}$ の2種類の値を事前計算しておくことで、クエリ毎に $\\mathcal{O}(1)$ で計算可能となる。  \n",
+    "階乗 $k!$ はforループで求めればよい。逆元計算は[合同](mod.ipynb)を参照。"
    ]
   },
   {
@@ -281,7 +246,24 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "f, invf = binom_preprocess(10**6)"
+    "f, invf = binom_preprocess(10**6)\n",
+    "print(binom(10**6, 4, f, invf))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 方法2\n",
+    "\n",
+    "$\\min(k, n-k) \\leq 10^6$ 程度まで対応可能。 $n$ が大きくても対応できることが特徴。\n",
+    "\n",
+    "$$\n",
+    "\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = \\frac{n(n-1) \\ldots (n-k+1)}{k(k-1) \\ldots 1}\n",
+    "$$\n",
+    "\n",
+    "分母と分子を別々に計算し、それらの商をとる。  \n",
+    "分母、分子はいずれも $k$ 回のループで求まるので、全体の計算量はクエリ毎に$\\mathcal{O}(k)$。"
    ]
   },
   {
@@ -290,7 +272,24 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "binom(10**6, 4, f, invf)"
+    "def binom(n, k, MOD=10**9+7):\n",
+    "    k = min(k, n-k)\n",
+    "    a = 1\n",
+    "    for i in range(n-k+1, n+1):\n",
+    "        a = a * i % MOD\n",
+    "    b = 1\n",
+    "    for i in range(1, k+1):\n",
+    "        b = b * i % MOD\n",
+    "    return a * pow(b, MOD-2, MOD) % MOD"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(binom(10**12, 10**6))"
    ]
   }
  ],
