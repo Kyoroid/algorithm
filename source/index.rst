@@ -10,7 +10,8 @@
    number/mod
    number/binom
    data_structure/heap
-   data_structure/visualization
+   data_structure/segment_tree
+   visualization/visualization
 
 
 Indices and tables
