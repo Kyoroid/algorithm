@@ -97,6 +97,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mod.html">合同</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binom.html">二項係数・組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_structure/cumulative_sum.html">累積和</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/heap.html">ヒープ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/segment_tree.html">セグメント木</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/visualization.html">可視化</a></li>
@@ -411,22 +412,26 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="素数の列挙">
 <h2>素数の列挙<a class="headerlink" href="#素数の列挙" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%A9%E3%83%88%E3%82%B9%E3%83%86%E3%83%8D%E3%82%B9%E3%81%AE%E7%AF%A9">エラトステネスの篩</a> により素数を列挙する。</p>
-<p>計算量は<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{\log{N}})\)</span>。</p>
+<p>計算量は<span class="math notranslate nohighlight">\(\mathcal{O}(n\log{\log{n}})\)</span>。</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">sieve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="k">def</span> <span class="nf">sieve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    n以下の素数を昇順に列挙する</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">factor</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">factor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-                <span class="n">factor</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">factor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">is_prime</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+                <span class="n">is_prime</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_prime</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -452,35 +457,42 @@ div.rendered_html tbody tr:hover {
 <h2>素因数分解<a class="headerlink" href="#素因数分解" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="line-block">
 <div class="line"><a class="reference external" href="https://ja.wikipedia.org/wiki/%E8%A9%A6%E3%81%97%E5%89%B2%E3%82%8A%E6%B3%95">試し割り法</a> により素因数分解を求める。</div>
-<div class="line">事前にエラトステネスの篩で最小の素因数を列挙しておくことで、試し割り法において割り切れない試行を排除できる。</div>
+<div class="line">試し割りには素数テーブルが必要だが、<span class="math notranslate nohighlight">\(\sqrt{n}\)</span> 以下の素数があれば十分。</div>
+<div class="line">そのため、素数列挙よりも大きな数を扱うことができる。</div>
 </div>
-<p>計算量は事前計算 (最小の素因数の列挙) に<span class="math notranslate nohighlight">\(\mathcal{O}(N\log{\log{N}})\)</span>、クエリ毎に<span class="math notranslate nohighlight">\(\mathcal{O}(\log{N})\)</span>。</p>
+<div class="line-block">
+<div class="line">計算量はクエリ毎に <span class="math notranslate nohighlight">\(\mathcal{O}(\pi(2^{d/2}))\)</span> 。ここで <span class="math notranslate nohighlight">\(d\)</span> は <span class="math notranslate nohighlight">\(n\)</span> の2進表現における桁数、<span class="math notranslate nohighlight">\(\pi(x)\)</span> は<a class="reference external" href="https://ja.wikipedia.org/wiki/%E7%B4%A0%E6%95%B0%E8%A8%88%E6%95%B0%E9%96%A2%E6%95%B0">素数計数関数</a>である。</div>
+<div class="line">nが32ビット符号なし整数のとき、試し割りの回数は最大で <span class="math notranslate nohighlight">\(\pi(2^{32/2}) = 6542\)</span> 程度である。</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">prime_factorization_preprocess</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+
+<span class="k">def</span> <span class="nf">prime_factorization_preprocess</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sieve</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">prime_factorization</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">primes</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    エラトステネスの篩を用いて、最小の素因数を列挙する</span>
+<span class="sd">    nの素因数分解を求める</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">prime_factors</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">prime_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-                <span class="n">prime_factors</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">prime_factors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prime_factors</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">*</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">prime_factors</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">n</span> <span class="o">//=</span> <span class="n">p</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">prime_factors</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">prime_factors</span>
-
-
-<span class="k">def</span> <span class="nf">prime_factorization</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">prime_factors</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    試し割り法により、数値の素因数分解を求める</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">factors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">while</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prime_factors</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
-        <span class="n">x</span> <span class="o">//=</span> <span class="n">prime_factors</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">factors</span>
 </pre></div>
 </div>
 </div>
@@ -489,11 +501,14 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">mul</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
-<span class="n">prime_factors</span> <span class="o">=</span> <span class="n">prime_factorization_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">factors</span> <span class="o">=</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">24680</span><span class="p">,</span> <span class="n">prime_factors</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span>
+<span class="n">primes</span> <span class="o">=</span> <span class="n">prime_factorization_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">factors</span> <span class="o">=</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">24680</span><span class="p">,</span> <span class="n">primes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">factors</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 </pre></div>
 </div>
 </div>
@@ -502,7 +517,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{617: 1, 5: 1, 2: 3}
+defaultdict(&lt;class &#39;int&#39;&gt;, {2: 3, 5: 1, 617: 1})
+24680
 </pre></div></div>
 </div>
 </div>

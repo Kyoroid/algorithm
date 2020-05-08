@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>可視化 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>累積和 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -42,7 +42,8 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="prev" title="セグメント木" href="../data_structure/segment_tree.html" /> 
+    <link rel="next" title="ヒープ" href="heap.html" />
+    <link rel="prev" title="二項係数・組み合わせ" href="../number/binom.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -92,14 +93,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../number/prime.html">素数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../number/mod.html">合同</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../number/binom.html">二項係数・組み合わせ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data_structure/cumulative_sum.html">累積和</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data_structure/heap.html">ヒープ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data_structure/segment_tree.html">セグメント木</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">可視化</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#セットアップ">セットアップ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#木構造">木構造</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">累積和</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#部分和">部分和</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="heap.html">ヒープ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segment_tree.html">セグメント木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualization/visualization.html">可視化</a></li>
 </ul>
 
             
@@ -145,13 +146,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>可視化</li>
+      <li>累積和</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/visualization/visualization.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/data_structure/cumulative_sum.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -406,125 +407,153 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="可視化">
-<h1>可視化<a class="headerlink" href="#可視化" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="section" id="セットアップ">
-<h2>セットアップ<a class="headerlink" href="#セットアップ" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<ul class="simple">
-<li><p>Pycairo <a class="reference external" href="https://pycairo.readthedocs.io/en/latest/">Linux</a>・<a class="reference external" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo">(非公式)Windows</a></p></li>
-<li><p>igraph <a class="reference external" href="https://igraph.org/python/">python-igraph</a></p></li>
-</ul>
+<div class="section" id="累積和">
+<h1>累積和<a class="headerlink" href="#累積和" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">数列の部分和、およびその和を扱うデータ構造を指す。</div>
+<div class="line">累積和を利用すると、区間に対するクエリを <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で処理できることがある。</div>
 </div>
-<div class="section" id="木構造">
-<h2>木構造<a class="headerlink" href="#木構造" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Reingold Tilfordアルゴリズムを用いる。計算時間は<span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>。</p>
-<p>二分ヒープの可視化例を示す。</p>
-<div class="nbinput nblast docutils container">
+<div class="line-block">
+<div class="line">以下、扱う配列は0-indexedとする。</div>
+<div class="line">配列 <span class="math notranslate nohighlight">\(A = a_0, a_1, \ldots, a_{n-1}\)</span> の累積和は、区間 <span class="math notranslate nohighlight">\([0, n)\)</span> の 部分和</div>
+</div>
+<div class="math notranslate nohighlight">
+\[s_i = \sum_{i=0}^{n-1} a_i\]</div>
+<p>を並べた配列 <span class="math notranslate nohighlight">\(S = s_0, s_1, \ldots, s_{n-1}\)</span> として表現される。</p>
+<div class="section" id="実装">
+<h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Pythonでは、リストやNumpy配列の累積和を求める関数が実装されている。</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">igraph</span>
-<span class="kn">from</span> <span class="nn">igraph.drawing.utils</span> <span class="kn">import</span> <span class="n">BoundingBox</span>
-<span class="kn">import</span> <span class="nn">cairo</span>
-<span class="kn">import</span> <span class="nn">IPython.display</span>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
 
-
-<span class="k">def</span> <span class="nf">heapplot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">margin</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Show heap as a binary tree.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">igraph</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">add_vertices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)):</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
-            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
-            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">vs</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-    <span class="n">layout</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">layout_reingold_tilford</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="n">bb</span> <span class="o">=</span> <span class="n">BoundingBox</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
-    <span class="n">bio</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
-    <span class="k">with</span> <span class="n">cairo</span><span class="o">.</span><span class="n">ImageSurface</span><span class="p">(</span>
-        <span class="n">cairo</span><span class="o">.</span><span class="n">FORMAT_ARGB32</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">))</span> <span class="k">as</span> <span class="n">surface</span><span class="p">:</span>
-        <span class="n">igraph</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">surface</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">bb</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="n">margin</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">bio</span><span class="o">.</span><span class="n">getbuffer</span><span class="p">())</span>
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[3, 8, 7, 13, 8, 12]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">heappush</span><span class="p">,</span> <span class="n">heappop</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;write code&#39;</span><span class="p">))</span>
-<span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;release product&#39;</span><span class="p">))</span>
-<span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;write spec&#39;</span><span class="p">))</span>
-<span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;create tests&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">heapplot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">margin</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">))</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/visualization_visualization_5_0.png" src="../_images/visualization_visualization_5_0.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">heappop</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(1, &#39;write spec&#39;)
+[ 3  8  7 13  8 12]
 </pre></div></div>
 </div>
+<p>和に限らず、条件</p>
+<ul class="simple">
+<li><p>結合法則が成り立つ <span class="math notranslate nohighlight">\((a \cdot b) \cdot c = a \cdot (b \cdot c)\)</span></p></li>
+<li><p>単位元 <span class="math notranslate nohighlight">\(e\)</span> をもつ <span class="math notranslate nohighlight">\(a \cdot e = e \cdot a = a\)</span></p></li>
+</ul>
+<p>を満たす二項演算であれば累積を定義できる。</p>
+<p>累積ORの実装例を示す。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b011</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]</span>
+<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">or_</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:03b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;010&#39;, &#39;011&#39;, &#39;011&#39;, &#39;011&#39;, &#39;111&#39;]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="部分和">
+<h2>部分和<a class="headerlink" href="#部分和" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">部分列 <span class="math notranslate nohighlight">\([0, k)\)</span> の和は、累積和の <span class="math notranslate nohighlight">\(k\)</span> 番目の要素そのものである。</div>
+<div class="line">部分列 <span class="math notranslate nohighlight">\([k, n)\)</span> の和は、数列の逆順に対して累積和をとることで求められる。</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[12, 9, 4, 5, -1, 4]
+</pre></div></div>
+</div>
+<p>一部の演算については、任意の連続区間に対する累積を扱うことができる。</p>
+<p><span class="math notranslate nohighlight">\([l, r)\)</span> で表される区間 <span class="math notranslate nohighlight">\((l &lt; r)\)</span> の部分和は、累積和 <span class="math notranslate nohighlight">\(S\)</span> を用いて次のように表される。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\sum_{i=l}^{r-1} a_i =
+\left\{
+    \begin{array}{ll}
+        s_r &amp; (l = 0) \\
+        s_{r-1} - s_{l-1} &amp; (otherwise) \\
+    \end{array}
+\right .\end{split}\]</div>
+<p>部分和以外でも、<span class="math notranslate nohighlight">\(s_r, s_l\)</span> に対する逆演算 <span class="math notranslate nohighlight">\(s_r \circ s_l\)</span> が定義されていれば部分累積を <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で求めることができる。乗算やXORが該当する。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">heapplot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span> <span class="n">margin</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">))</span>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="n">l</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/visualization_visualization_7_0.png" src="../_images/visualization_visualization_7_0.png" />
-</div>
+<div class="highlight"><pre>
+5
+</pre></div></div>
 </div>
 </div>
 </div>
@@ -537,8 +566,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="heap.html" class="btn btn-neutral float-right" title="ヒープ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="../data_structure/segment_tree.html" class="btn btn-neutral float-left" title="セグメント木" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="../number/binom.html" class="btn btn-neutral float-left" title="二項係数・組み合わせ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

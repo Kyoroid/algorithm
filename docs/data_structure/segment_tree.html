@@ -93,10 +93,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../number/prime.html">素数</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../number/mod.html">合同</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../number/binom.html">二項係数・組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cumulative_sum.html">累積和</a></li>
 <li class="toctree-l1"><a class="reference internal" href="heap.html">ヒープ</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">セグメント木</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">セグメント木</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Range-Minimum-Query-(RMQ)">Range Minimum Query (RMQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Range-Add-Query-(RAQ)">Range Add Query (RAQ)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#アルゴリズム">アルゴリズム</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/visualization.html">可視化</a></li>
@@ -408,31 +412,36 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="セグメント木">
 <h1>セグメント木<a class="headerlink" href="#セグメント木" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="section" id="id2">
-<h2>セグメント木<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>蟻本p.153</p>
 <p><a class="reference external" href="https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree">https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree</a></p>
+<p><a class="reference external" href="https://algo-logic.info/segment-tree/">https://algo-logic.info/segment-tree/</a></p>
+<p><a class="reference external" href="https://kujira16.hateblo.jp/entry/2016/12/15/000000">https://kujira16.hateblo.jp/entry/2016/12/15/000000</a></p>
 <div class="line-block">
 <div class="line">セグメント木 (Segment Tree) は要素列を表現するデータ構造の1つ。</div>
 <div class="line">要素列 <span class="math notranslate nohighlight">\(A = a_1 a_2 a_3 \ldots a_n\)</span> に対して、区間 <span class="math notranslate nohighlight">\(A_{[l, r)}\)</span> に対する操作を高速に行うことができる。</div>
 </div>
+<div class="line-block">
+<div class="line">初めに要素列が用意されていれば、クエリはオンラインであってもよい。</div>
+<div class="line">逆にオフラインの場合はクエリをソートすることで、別のデータ構造を用いたさらなる高速化ができる場合がある。</div>
 </div>
 <div class="section" id="Range-Minimum-Query-(RMQ)">
 <h2>Range Minimum Query (RMQ)<a class="headerlink" href="#Range-Minimum-Query-(RMQ)" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>要素列をセグメント木に格納すると、区間に対する問い合わせを高速化できる。</p>
+<ul class="simple">
+<li><p>要素1つの更新: <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>区間 <span class="math notranslate nohighlight">\([l, r)\)</span> の最小値を求める問い合わせ <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+</ul>
 <div class="line-block">
-<div class="line">セグメント木の用途の1つ。</div>
-<div class="line">要素の更新に <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> 費やす代わりに、区間 <span class="math notranslate nohighlight">\([l, r)\)</span> の最小値を求める問い合わせを <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> で行うことができる。</div>
-</div>
-<div class="line-block">
-<div class="line">セグメント木の実装を示す。操作用のメソッドは0-indexedだが、データを格納する配列は1-indexedとしていることに注意。</div>
+<div class="line">RMQの実装を示す。操作用のメソッドは0-indexedだが、データを格納する配列は1-indexedとしていることに注意。</div>
 <div class="line">問い合わせ操作には分割統治法を用いている。</div>
 </div>
+<p>Range Minimum Query (RMQ) - <a class="reference external" href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A">AOJ DSL_2_A</a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">SegmentTree</span><span class="p">():</span>
+<span></span><span class="k">class</span> <span class="nc">RMQ</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;初期化&quot;&quot;&quot;</span>
@@ -444,6 +453,13 @@ div.rendered_html tbody tr:hover {
         <span class="n">st</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">treesize</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">st</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="n">init_value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;値の更新&quot;&quot;&quot;</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
@@ -454,15 +470,8 @@ div.rendered_html tbody tr:hover {
             <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
             <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">):</span>
-        <span class="n">st</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="n">init_value</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-            <span class="n">st</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">st</span>
-
     <span class="k">def</span> <span class="nf">_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する操作</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する累積操作</span>
 <span class="sd">        k: 着目しているノード (1-indexed)</span>
 <span class="sd">        l: 探索区間 st[l, r) の左端 (0-indexed)</span>
 <span class="sd">        r: 探索区間 st[l, r) の右端 (0-indexed)</span>
@@ -477,7 +486,7 @@ div.rendered_html tbody tr:hover {
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">lv</span><span class="p">,</span> <span class="n">rv</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する操作&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する累積操作&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be less than equal b.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
@@ -491,12 +500,9 @@ div.rendered_html tbody tr:hover {
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
 
-<span class="n">st</span> <span class="o">=</span> <span class="n">SegmentTree</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">b</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">a</span><span class="p">:</span><span class="n">b</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)))</span>
+<span class="n">rmq</span> <span class="o">=</span> <span class="n">RMQ</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rmq</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">rmq</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))])</span>
 </pre></div>
 </div>
 </div>
@@ -505,8 +511,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[-10, 1, 4, 11]
 -10
+[3, -5, 2, -10, 1, 4, 11]
 </pre></div></div>
 </div>
 <div class="line-block">
@@ -520,66 +526,178 @@ div.rendered_html tbody tr:hover {
 <p>操作 <code class="docutils literal notranslate"><span class="pre">op</span></code> には二項演算子を、初期値 <code class="docutils literal notranslate"><span class="pre">init_value</span></code> には単位元を指定する。</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 9%" />
-<col style="width: 25%" />
-<col style="width: 9%" />
+<col style="width: 21%" />
 <col style="width: 57%" />
+<col style="width: 21%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>クエリ</p></th>
 <th class="head"><p>操作</p></th>
 <th class="head"><p>初期値</p></th>
-<th class="head"><p>補足</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>和</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operator.add</span></code></p></td>
 <td><p>0</p></td>
-<td><p>累積和を使えば <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>積</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operator.mul</span></code></p></td>
 <td><p>1</p></td>
-<td><p>累積積を使えば <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>最小値</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></td>
 <td><p>+INF</p></td>
-<td></td>
 </tr>
 <tr class="row-odd"><td><p>最大値</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
 <td><p>-INF</p></td>
-<td></td>
 </tr>
 <tr class="row-even"><td><p>AND</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operator.and</span></code></p></td>
 <td><p>1</p></td>
-<td></td>
 </tr>
 <tr class="row-odd"><td><p>OR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operator.and</span></code></p></td>
 <td><p>0</p></td>
-<td></td>
 </tr>
 <tr class="row-even"><td><p>XOR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operator.xor</span></code></p></td>
 <td><p>0</p></td>
-<td></td>
 </tr>
 <tr class="row-odd"><td><p>GCD</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">math.gcd</span></code></p></td>
 <td><p>0</p></td>
-<td><p><span class="math notranslate nohighlight">\(\gcd(x, 0) = x\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>LCM</p></td>
 <td><p>―</p></td>
 <td><p>1</p></td>
-<td><p><span class="math notranslate nohighlight">\(\operatorname{lcm}(x, 1) = x\)</span></p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="Range-Add-Query-(RAQ)">
+<h2>Range Add Query (RAQ)<a class="headerlink" href="#Range-Add-Query-(RAQ)" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>区間に対する更新操作を高速化することもできる。</p>
+<ul class="simple">
+<li><p>区間に対する加算 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>値の取得 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+</ul>
+<div class="section" id="アルゴリズム">
+<h3>アルゴリズム<a class="headerlink" href="#アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>RMQと異なり、区間ノード (内部ノード) には区間全体に加算すべき値を持たせる。</p>
+<p>加算処理は次の通り。 根から葉に向かって処理する。</p>
+<ol class="arabic simple">
+<li><p>ノード <span class="math notranslate nohighlight">\(k\)</span> を根とする。</p></li>
+<li><p>以下の処理を再帰的に行う(*) 。</p>
+<ol class="arabic simple">
+<li><p>ノード <span class="math notranslate nohighlight">\(k\)</span> が葉ならば、葉ノードに直接加算して終了。</p></li>
+<li><p>ノード <span class="math notranslate nohighlight">\(k\)</span> が区間ノードのとき</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(k\)</span> が表す区間 <span class="math notranslate nohighlight">\([l, r)\)</span> が <span class="math notranslate nohighlight">\([a, b)\)</span> に完全に含まれていれば、区間ノードに直接加算して終了。</p></li>
+<li><p>部分的に含まれていれば、区間を二分する。子ノード <span class="math notranslate nohighlight">\(2k, 2k+1\)</span> をノードとして(*)に戻る。</p></li>
+<li><p>まったく含まれていなければ、区間を破棄する。</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>値の取得処理は次の通り。葉から根に向かって処理する。</p>
+<ol class="arabic simple">
+<li><p>ノード <span class="math notranslate nohighlight">\(k\)</span> を葉とする。</p></li>
+<li><p>初期値 <span class="math notranslate nohighlight">\(v=0\)</span> とおく。</p></li>
+<li><p>以下の処理を再帰的に行う(*) 。</p>
+<ol class="arabic simple">
+<li><p>ノードの値を <span class="math notranslate nohighlight">\(v\)</span> に加算する。</p></li>
+<li><p>ノードが根であれば <span class="math notranslate nohighlight">\(v\)</span> を出力して終了。</p></li>
+<li><p>親ノード <span class="math notranslate nohighlight">\(k/2\)</span> をノードとして(*)に戻る。</p></li>
+</ol>
+</li>
+</ol>
+<p>Range Add Query (RAQ) - <a class="reference external" href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_E">AOJ DSL_2_E</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">RAQ</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初期化&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">((</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>
+        <span class="n">treesize</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">treesize</span><span class="p">)]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する加算</span>
+<span class="sd">        k: 着目しているノード (1-indexed)</span>
+<span class="sd">        l: 探索区間 st[l, r) の左端 (0-indexed)</span>
+<span class="sd">        r: 探索区間 st[l, r) の右端 (0-indexed)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">l</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する加算&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be less than equal b.&quot;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;値の取得&quot;&quot;&quot;</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">key</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+
+<span class="n">raq</span> <span class="o">=</span> <span class="n">RAQ</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">raq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))])</span>
+<span class="n">raq</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">raq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[8, -5, 2, -10, 1, 4, 11]
+[8, -5, 7, -5, 6, 4, 11]
+</pre></div></div>
+</div>
+</div>
 </div>
 </div>
 
