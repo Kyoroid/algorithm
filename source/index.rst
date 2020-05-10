@@ -10,6 +10,7 @@
    number/mod
    number/binom
    string/palindrome
+   string/rolling_hash
    data_structure/cumulative_sum
    data_structure/heap
    data_structure/segment_tree
