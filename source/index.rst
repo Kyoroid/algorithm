@@ -5,15 +5,10 @@
    :maxdepth: 2
    :caption: Contents:
 
-   number/euclidean_algorithm
-   number/prime
-   number/mod
-   number/binom
+   math/index
    string/index
-   data_structure/cumulative_sum
-   data_structure/heap
-   data_structure/segment_tree
-   visualization/visualization
+   data_structure/index
+   visualization/index
 
 
 Indices and tables

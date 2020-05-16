@@ -1,10 +1,10 @@
-文字列
+データ構造
 =====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   palindrome
-   rolling_hash
-   cpython_string
+   cumulative_sum
+   heap
+   segment_tree

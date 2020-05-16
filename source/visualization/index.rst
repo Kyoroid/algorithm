@@ -1,10 +1,8 @@
-文字列
+可視化
 =====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   palindrome
-   rolling_hash
-   cpython_string
+   visualization
