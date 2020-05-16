@@ -4,74 +4,134 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# 文字列検索"
+    "# ローリングハッシュ (Rabin-Karp)"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## ローリングハッシュ (Rabin-Karp)\n",
-    "\n",
     "蟻本p.332  \n",
     "[Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%A9%E3%83%93%E3%83%B3-%E3%82%AB%E3%83%BC%E3%83%97%E6%96%87%E5%AD%97%E5%88%97%E6%A4%9C%E7%B4%A2%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0)\n",
     "\n",
-    "あるルールに従って生成された文字列のハッシュ値を比較することで、文字列検索を高速に行う手法。  "
+    "あるルールに従って生成された文字列のハッシュ値を比較することで、文字列検索を高速に行う手法。 "
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### アルゴリズム\n",
+    "## 概要\n",
     "\n",
-    "文字列に対応する数列 $C=c_0, c_1, \\ldots , c_{n-1}$ を考える。ただし、$n = |S|$ とする。  \n",
+    "長さ $n$ の文字列 $S_n$ に対応する数列 $C=c_1, c_2, \\ldots , c_{n}$ を考える。\n",
     "この数列 $C$ を入力とするハッシュ関数を次のように定義する。\n",
     "\n",
     "$$\n",
-    "H(C) = (c_0 \\times b^{n-1} + c_1 \\times b^{n-2} + \\ldots + c_{n-1} \\times b^0) \\mod{m}\n",
+    "\\begin{eqnarray}\n",
+    "H(C) &\\equiv& \\sum_{i=1}^n b^{n-i}c_i　\\pmod{m} \\\\\n",
+    "&\\equiv& b^{n-1} c_1 + b^{n-2} c_2 + \\ldots + b^0 c_n \\pmod{m} \\\\\n",
+    "\\end{eqnarray}\n",
     "$$\n",
     "\n",
     "ただし、基数 $b$ と法 $m$ は互いに素な整数 $(b<m)$ とする。  \n",
     "このハッシュ関数は、文字列の $b$ 進数 $\\pmod{m}$ を求める関数ともいえる。\n",
     "\n",
-    "文字列検索では文章 $T$ の各位置を起点とする長さ $n$ の部分文字列 $T_i$ に対して、ハッシュ $H(C_S) = H(C_{T_i})$ を比較する。  \n",
-    "愚直に計算すると計算量 $\\mathcal{O}(|S||T|)$ となってしまうが、ローリングハッシュでは文字列の差分を利用して計算時間を抑える。\n",
-    "\n",
-    "$S$ と $T_i = c_i, c_{i+1}, \\ldots, c_{i+n}$ のハッシュ比較を考える。  \n",
-    "$T$ のある位置 $i=k$ で得られたハッシュ値を $T_k$ とすると、そのハッシュは\n",
-    "\n",
-    "$$\n",
-    "H(C_k) = (c_k \\times b^{n-1} + c_{k+1} \\times b^{n-2} + \\ldots + c_{k+(n-1)} \\times b^0) \\mod{m}\n",
-    "$$\n",
-    "\n",
-    "となる。ここで、1文字隣の文字列 $i=k+1$ のハッシュは\n",
-    "\n",
-    "$$\n",
-    "H(C_{k+1}) = (c_{k+1} \\times b^n + c_{k+2} \\times b^{n-1} + \\ldots + c_{(k+1)+(n-1)} \\times b^1) \\mod{m}\n",
-    "$$\n",
-    "\n",
-    "となる。すろと、2式からハッシュ関数の漸化式を作ることができ\n",
-    "\n",
-    "$$\n",
-    "H(C_{k+1}) \\equiv b \\times H(C_k) - c_k \\times b^n + c_{k+n}\n",
-    "$$\n",
-    "\n",
-    "となる。この式の計算量は $\\mathcal{O}(1)$ なので、ハッシュが衝突しなければ文字列検索全体を $\\mathcal{O}(|S|+|T|)$ で行うことができる。"
+    "2つの文字列が一致するとみなす条件は、元の文字列の長さが同じで、かつハッシュが一致することである。"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### 実装"
+    "## 性質\n",
+    "\n",
+    "文字列 $S$ の接頭辞 $S_{1, r}$ に対応する数列 $C_{1, r} = c_1, c_2, \\ldots , c_{r}$ に関して、次の漸化式が成り立つ。\n",
+    "\n",
+    "$$\n",
+    "\\begin{eqnarray}\n",
+    "H(C_{1, r+1}) &\\equiv& b^{r} c_1 + b^{r-1} c_2 + \\ldots + b^0 c_{r+1} \\\\\n",
+    "&\\equiv& b H(C_{1, r}) + c_{r+1}\n",
+    "\\end{eqnarray}\n",
+    "$$\n",
+    "\n",
+    "これにより、任意の部分文字列が接頭辞のハッシュで表現できる。\n",
+    "\n",
+    "$$\n",
+    "\\begin{eqnarray}\n",
+    "H(C_{l, r}) &\\equiv& \\sum_{i=l}^{r} b^{r-i}c_i \\\\\n",
+    "&\\equiv& \\sum_{i=1}^{r} b^{r-i}c_i - \\sum_{i=1}^{l-1} b^{(l-1)-i}c_i \\\\\n",
+    "&\\equiv& H(C_{1, r}) - H(C_{1, l-1}) \\\\\n",
+    "\\end{eqnarray}\n",
+    "$$"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "$m, b$ の選び方は以下の資料を参考に、$m$ が大きな素数、$b$ が $2 \\leq b < m$ となるようにした。\n",
+    "## 実装\n",
+    "\n",
+    "次の3つの機能を実装する。簡易化のため、区間は半開区間として定義する。\n",
+    "\n",
+    "- `get(l, r)`: 部分文字列 $S_{[l, r)}$ のハッシュ $S_{[l, r)}$ を求める。計算量は $\\mathcal{O}(1)$。\n",
+    "- `concat(h1, h2, l2)`: 文字列 $S_1, S_2$ の連結に対応するハッシュ $H(S_1 + S_2)$ を求める。計算量は $\\mathcal{O}(1)$。\n",
+    "- `lcp(l1, r1, l2, r2)`: $S_{[l1, r1)}$ と $S_{[l2, r2)}$ の最大共通接頭辞 (LCP) の長さを求める。計算量は $m=\\min (|S_{[l1, r1)}|, |S_{[l2, r2)}|)$ として $\\mathcal{O}(\\log m)$。\n",
+    "\n",
+    "特に文字列の一致判定に関しては、ローリングハッシュと探索アルゴリズムを併用することで、少ない計算量で処理することができる。  \n",
+    "例えば`lcp`の実装では二分探索を利用しており、次の図のような流れでLCPの長さが求まる。\n",
+    "\n",
+    "![rolling_hash_lcp](images/rolling_hash_lcp.svg)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class RollingHash():\n",
+    "\n",
+    "    def __init__(self, S, b=3491, m=999999937):\n",
+    "        \"\"\"任意の基数と法でハッシュを生成する\"\"\"\n",
+    "        n = len(S)\n",
+    "        self.prefix = prefix = [0] * (n+1)\n",
+    "        self.power = power = [1] * (n+1)\n",
+    "        self.b = b\n",
+    "        self.m = m\n",
+    "        for i in range(n):\n",
+    "            c = ord(S[i])\n",
+    "            prefix[i+1] = (prefix[i] * b + c) % m\n",
+    "            power[i+1] = (power[i] * b) % m\n",
+    "    \n",
+    "    def get(self, l, r):\n",
+    "        \"\"\"S[l, r) のハッシュを求める\"\"\"\n",
+    "        return (self.prefix[r] - self.power[r-l] * self.prefix[l]) % self.m\n",
+    "    \n",
+    "    def concat(self, h1, h2, l2):\n",
+    "        \"\"\"S1+S2 のハッシュを、それぞれのハッシュから求める\"\"\"\n",
+    "        return (self.power[l2] * h1 + h2) % self.m\n",
+    "    \n",
+    "    def lcp(self, l1, r1, l2, r2):\n",
+    "        \"\"\"S[l1, r1) とS[l2, r2) の最大共通接頭辞を求める\"\"\"\n",
+    "        # LCPの最小値 (範囲内)\n",
+    "        low = 0\n",
+    "        # LCPの最大値 + 1 (範囲外)\n",
+    "        high = min(r1-l1, r2-l2) + 1\n",
+    "        while high - low > 1:\n",
+    "            mid = (high + low) // 2\n",
+    "            if self.get(l1, l1 + mid) == self.get(l2, l2 + mid):\n",
+    "                low = mid\n",
+    "            else:\n",
+    "                high = mid\n",
+    "        return low"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "ローリングハッシュを利用する際は、 $m, b$ を複数、またはランダムに選ぶと良い。  \n",
+    "$m$ は大きな素数、$b$ は $2 \\leq b < m$ の範囲で選ぶと衝突しにくい。\n",
     "\n",
     "https://www.slideshare.net/nagisaeto/rolling-hash-149990902"
    ]
@@ -84,44 +144,21 @@
    "source": [
     "import random\n",
     "\n",
-    "\n",
-    "class RollingHash():\n",
-    "\n",
-    "    def __init__(self, S, b=-1, m=10**9+7):\n",
-    "        if b < 0:\n",
-    "            b = random.randint(2, m-1)\n",
-    "        self.rh = self.make_hash(S, m, b)\n",
-    "        self.S = S\n",
-    "        self.m = m\n",
-    "        self.b = b\n",
-    "    \n",
-    "    def encode(self, c):\n",
-    "        return ord(c) - ord(\"a\") + 1\n",
-    "    \n",
-    "    def make_hash(self, S, m, b):\n",
-    "        h = 0\n",
-    "        for s in S:\n",
-    "            h *= b\n",
-    "            h %= m\n",
-    "            c = self.encode(s)\n",
-    "            h += c\n",
-    "            h %= m\n",
-    "        return h\n",
-    "\n",
-    "    def match(self, T):\n",
-    "        ns = len(self.S)\n",
-    "        nt = len(T)\n",
-    "        rh = self.make_hash(T[:ns], self.m, self.b)\n",
-    "        b_ns = pow(self.b, ns, self.m)\n",
-    "\n",
-    "        i = 0\n",
-    "        while i <= nt - ns:\n",
-    "            if self.rh == rh:\n",
-    "                yield i\n",
-    "            if i < nt - ns:\n",
-    "                rh = rh * self.b + self.encode(T[i+ns]) - self.encode(T[i]) * b_ns\n",
-    "                rh %= self.m\n",
-    "            i += 1"
+    "lcp = 10**9\n",
+    "for m in [999999937, 10**9+7]:\n",
+    "    b = random.randint(2, m-1)\n",
+    "    rh = RollingHash(\"monoraimonoid\", m=m, b=b)\n",
+    "    lcp = min(lcp, rh.lcp(0, 7, 7, 13))\n",
+    "print(lcp)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "同一部分文字列の出現判定には`dict`を利用できる。キーにはハッシュ値を指定する。  \n",
+    "なお、Pythonでは文字列をキーとする`dict`の処理が最適化されており、それを利用した実装も可能。  \n",
+    "[辞書の実装と文字列検索](cpython_string.ipynb#辞書の実装と文字列検索)"
    ]
   },
   {
@@ -130,16 +167,21 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "rh = RollingHash(\"abc\")"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "print(list(rh.match(\"abcaaabcbbbabc\")))"
+    "from pprint import pprint\n",
+    "from collections import defaultdict\n",
+    "\n",
+    "S = \"mississippi\"\n",
+    "N = len(S)\n",
+    "# 長さ3の文字列を検索\n",
+    "size = 3\n",
+    "\n",
+    "rh = RollingHash(S, m=2019, b=10**9+7)\n",
+    "\n",
+    "d = defaultdict(list)\n",
+    "for i in range(N-size+1):\n",
+    "    h = rh.get(i, i+size)\n",
+    "    d[h].append(i)\n",
+    "pprint(d)"
    ]
   }
  ],

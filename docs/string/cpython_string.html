@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>累積和 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>Pythonにおける文字列検索の実装 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -42,8 +42,8 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="ヒープ" href="heap.html" />
-    <link rel="prev" title="データ構造" href="index.html" /> 
+    <link rel="next" title="データ構造" href="../data_structure/index.html" />
+    <link rel="prev" title="ローリングハッシュ (Rabin-Karp)" href="rolling_hash.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,17 +90,17 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">データ構造</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">累積和</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#実装">実装</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#部分和">部分和</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">文字列</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="palindrome.html">回文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling_hash.html">ローリングハッシュ (Rabin-Karp)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pythonにおける文字列検索の実装</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#検索用メソッドの実装">検索用メソッドの実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#辞書の実装と文字列検索">辞書の実装と文字列検索</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="heap.html">ヒープ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="segment_tree.html">セグメント木</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
@@ -149,9 +149,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">データ構造</a> &raquo;</li>
+          <li><a href="index.html">文字列</a> &raquo;</li>
         
-      <li>累積和</li>
+      <li>Pythonにおける文字列検索の実装</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -415,32 +415,23 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="累積和">
-<h1>累積和<a class="headerlink" href="#累積和" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="Pythonにおける文字列検索の実装">
+<h1>Pythonにおける文字列検索の実装<a class="headerlink" href="#Pythonにおける文字列検索の実装" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="検索用メソッドの実装">
+<h2>検索用メソッドの実装<a class="headerlink" href="#検索用メソッドの実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><a class="reference external" href="http://effbot.org/zone/stringlib.htm">The stringlib Library</a></p>
 <div class="line-block">
-<div class="line">数列の部分和、およびその和を扱うデータ構造を指す。</div>
-<div class="line">累積和を利用すると、区間に対するクエリを <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で処理できることがある。</div>
+<div class="line">CPythonでは文字列操作のうち<code class="docutils literal notranslate"><span class="pre">__contains__</span></code>や<code class="docutils literal notranslate"><span class="pre">find</span></code>の実装に、Boyer-Moore法をベースとしたアルゴリズム (BMHBNFS) を使用している。</div>
+<div class="line">実装は<a class="reference external" href="https://github.com/python/cpython/blob/v3.8.3/Objects/stringlib/fastsearch.h">fastsearch.h</a>を参照。</div>
+<div class="line">これにより、文字列検索を平均計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(n/m)\)</span>、最悪計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(nm)\)</span> で行うことが可能となっている。</div>
 </div>
-<div class="line-block">
-<div class="line">以下、扱う配列は0-indexedとする。</div>
-<div class="line">配列 <span class="math notranslate nohighlight">\(A = a_0, a_1, \ldots, a_{n-1}\)</span> の累積和は、区間 <span class="math notranslate nohighlight">\([0, n)\)</span> の 部分和</div>
-</div>
-<div class="math notranslate nohighlight">
-\[s_i = \sum_{i=0}^{n-1} a_i\]</div>
-<p>を並べた配列 <span class="math notranslate nohighlight">\(S = s_0, s_1, \ldots, s_{n-1}\)</span> として表現される。</p>
-<div class="section" id="実装">
-<h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Pythonでは、リストやNumpy配列の累積和を求める関数が実装されている。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span></span><span class="n">has_string</span> <span class="o">=</span> <span class="s2">&quot;ssi&quot;</span> <span class="ow">in</span> <span class="s2">&quot;mississippi&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">has_string</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -449,18 +440,38 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[3, 8, 7, 13, 8, 12]
+True
 </pre></div></div>
 </div>
+</div>
+<div class="section" id="辞書の実装と文字列検索">
+<h2>辞書の実装と文字列検索<a class="headerlink" href="#辞書の実装と文字列検索" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="http://dsas.blog.klab.org/archives/python-dict-internal.html">Python の dict の実装詳解</a></div>
+<div class="line"><a class="reference external" href="https://ja.stackoverflow.com/questions/7703/python%E3%81%AE%E8%BE%9E%E6%9B%B8%E5%9E%8B%E3%81%AE%E5%AE%9F%E8%A3%85">pythonの辞書型の実装 - stackoverflow</a></div>
+</div>
+<div class="line-block">
+<div class="line">CPythonにおいては、辞書はハッシュテーブルとして実装されている。</div>
+<div class="line">辞書のキーには文字列を使うことを前提として高速化が図られており、文字列用のハッシュが<a class="reference external" href="https://github.com/python/cpython/blob/v3.8.3/Python/pyhash.c#L145-L191">pyhash.c</a>で実装されている。</div>
+</div>
+<p>例えば同一部分文字列の出現判定を<code class="docutils literal notranslate"><span class="pre">dict</span></code>で実装する際に、ローリングハッシュの代わりに文字列そのものをキーに指定することで、同程度の検索性能を得ることができる場合がある。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="s2">&quot;mississippi&quot;</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="c1"># 長さ3の文字列を検索</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">size</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">size</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -469,98 +480,14 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[ 3  8  7 13  8 12]
-</pre></div></div>
-</div>
-<p>和に限らず、条件</p>
-<ul class="simple">
-<li><p>結合法則が成り立つ <span class="math notranslate nohighlight">\((a \cdot b) \cdot c = a \cdot (b \cdot c)\)</span></p></li>
-<li><p>単位元 <span class="math notranslate nohighlight">\(e\)</span> をもつ <span class="math notranslate nohighlight">\(a \cdot e = e \cdot a = a\)</span></p></li>
-</ul>
-<p>を満たす二項演算であれば累積を定義できる。</p>
-<p>累積ORの実装例を示す。</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-<span class="kn">import</span> <span class="nn">operator</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b011</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">or_</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:03b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[&#39;010&#39;, &#39;011&#39;, &#39;011&#39;, &#39;011&#39;, &#39;111&#39;]
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="部分和">
-<h2>部分和<a class="headerlink" href="#部分和" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<div class="line-block">
-<div class="line">部分列 <span class="math notranslate nohighlight">\([0, k)\)</span> の和は、累積和の <span class="math notranslate nohighlight">\(k\)</span> 番目の要素そのものである。</div>
-<div class="line">部分列 <span class="math notranslate nohighlight">\([k, n)\)</span> の和は、数列の逆順に対して累積和をとることで求められる。</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[12, 9, 4, 5, -1, 4]
-</pre></div></div>
-</div>
-<p>一部の演算については、任意の連続区間に対する累積を扱うことができる。</p>
-<p><span class="math notranslate nohighlight">\([l, r)\)</span> で表される区間 <span class="math notranslate nohighlight">\((l &lt; r)\)</span> の部分和は、累積和 <span class="math notranslate nohighlight">\(S\)</span> を用いて次のように表される。</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\sum_{i=l}^{r-1} a_i =
-\left\{
-    \begin{array}{ll}
-        s_r &amp; (l = 0) \\
-        s_{r-1} - s_{l-1} &amp; (otherwise) \\
-    \end{array}
-\right .\end{split}\]</div>
-<p>部分和以外でも、<span class="math notranslate nohighlight">\(s_r, s_l\)</span> に対する逆演算 <span class="math notranslate nohighlight">\(s_r \circ s_l\)</span> が定義されていれば部分累積を <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で求めることができる。乗算やXORが該当する。</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
-<span class="n">l</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">r</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-5
+defaultdict(&lt;class &#39;list&#39;&gt;,
+            {&#39;ipp&#39;: [7],
+             &#39;iss&#39;: [1, 4],
+             &#39;mis&#39;: [0],
+             &#39;ppi&#39;: [8],
+             &#39;sip&#39;: [6],
+             &#39;sis&#39;: [3],
+             &#39;ssi&#39;: [2, 5]})
 </pre></div></div>
 </div>
 </div>
@@ -574,10 +501,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="heap.html" class="btn btn-neutral float-right" title="ヒープ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../data_structure/index.html" class="btn btn-neutral float-right" title="データ構造" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="データ構造" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rolling_hash.html" class="btn btn-neutral float-left" title="ローリングハッシュ (Rabin-Karp)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
