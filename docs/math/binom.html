@@ -42,8 +42,8 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="文字列" href="../string/index.html" />
-    <link rel="prev" title="合同" href="mod.html" /> 
+    <link rel="next" title="組み合わせの剰余演算" href="mod_binom.html" />
+    <link rel="prev" title="ユークリッドの互除法の証明" href="euclidean_algorithm_proof.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,9 +90,9 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">数学</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prime.html">素数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mod.html">合同</a></li>
+<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">二項係数・組み合わせ</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#二項係数">二項係数</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#性質">性質</a></li>
@@ -102,11 +102,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#重複組み合わせの全探索">重複組み合わせの全探索</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#二項係数の計算">二項係数の計算</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#方法1">方法1</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#方法2">方法2</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="#二項係数の和">二項係数の和</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#n-を固定したときの和"><span class="math notranslate nohighlight">\(n\)</span> を固定したときの和</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#k-を固定した時の和"><span class="math notranslate nohighlight">\(k\)</span> を固定した時の和</a></li>
@@ -114,6 +109,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="mod_binom.html">組み合わせの剰余演算</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
@@ -683,142 +679,6 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 </div>
 </div>
-<div class="section" id="二項係数の計算">
-<h2>二項係数の計算<a class="headerlink" href="#二項係数の計算" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<div class="line-block">
-<div class="line">一般に二項係数は巨大な数となるため、断りがない限り <span class="math notranslate nohighlight">\(\gcd(n, p)=1\)</span> となる素数の法 <span class="math notranslate nohighlight">\(p\)</span> に関する合同を扱う。</div>
-<div class="line">(素数でなくとも、<span class="math notranslate nohighlight">\(\gcd(n, m)=1\)</span> となる整数の法 <span class="math notranslate nohighlight">\(m\)</span> に関して成り立つ)</div>
-</div>
-<div class="section" id="方法1">
-<h3>方法1<a class="headerlink" href="#方法1" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(n \leq 10^6\)</span> 程度まで対応可能。</p>
-<div class="math notranslate nohighlight">
-\[\binom{n}{k} = \frac{n!}{k!(n-k)!} = n!(k!)^{-1}((n-k)!)^{-1}\]</div>
-<div class="line-block">
-<div class="line"><span class="math notranslate nohighlight">\(n\)</span> 以下の全ての <span class="math notranslate nohighlight">\(k\)</span> に対して <span class="math notranslate nohighlight">\(k!, (k!)^{-1}\)</span> の2種類の値を事前計算しておくことで、クエリ毎に <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で計算可能となる。</div>
-<div class="line">階乗 <span class="math notranslate nohighlight">\(k!\)</span> はforループで求めればよい。逆元計算は<a class="reference internal" href="mod.html"><span class="doc">合同</span></a>を参照。</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">binom_preprocess</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">):</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># n!</span>
-    <span class="n">invf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># (n!)^-1</span>
-    <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">invf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">invf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">%</span> <span class="n">MOD</span>
-        <span class="n">invf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">MOD</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span>
-
-<span class="k">def</span> <span class="nf">binom</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span><span class="p">,</span> <span class="n">MOD</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">invf</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">*</span> <span class="n">invf</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">]</span> <span class="o">%</span> <span class="n">MOD</span>
-</pre></div>
-</div>
-</div>
-<div class="line-block">
-<div class="line">前処理の <code class="docutils literal notranslate"><span class="pre">pow(f[i],</span> <span class="pre">p-2,</span> <span class="pre">p)</span></code> を含むループはさらに計算量を落とすことができる。</div>
-<div class="line"><span class="math notranslate nohighlight">\(a_k = (k!)^{-1}\)</span> とおけば、漸化式 <span class="math notranslate nohighlight">\(a_{k-1} = k \cdot a_k\)</span> が成り立つので、 <span class="math notranslate nohighlight">\(a_n = (n!)^{-1}\)</span> だけ計算すれば他は漸化式から求まる。</div>
-</div>
-<p>計算量は事前計算に<span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>、クエリ毎に<span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span>。</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">binom_preprocess</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">MOD</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">):</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># n!</span>
-    <span class="n">invf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># (n!)^-1</span>
-    <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">invf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">invf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">%</span> <span class="n">MOD</span>
-    <span class="n">invf</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">MOD</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">invf</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">invf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">%</span> <span class="n">MOD</span>
-    <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span>
-
-<span class="k">def</span> <span class="nf">binom</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span><span class="p">,</span> <span class="n">MOD</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">invf</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">*</span> <span class="n">invf</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">]</span> <span class="o">%</span> <span class="n">MOD</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">f</span><span class="p">,</span> <span class="n">invf</span> <span class="o">=</span> <span class="n">binom_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">invf</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-85121780
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="方法2">
-<h3>方法2<a class="headerlink" href="#方法2" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p><span class="math notranslate nohighlight">\(\min(k, n-k) \leq 10^6\)</span> 程度まで対応可能。 <span class="math notranslate nohighlight">\(n\)</span> が大きくても対応できることが特徴。</p>
-<div class="math notranslate nohighlight">
-\[\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1) \ldots (n-k+1)}{k(k-1) \ldots 1}\]</div>
-<div class="line-block">
-<div class="line">分母と分子を別々に計算し、それらの商をとる。</div>
-<div class="line">分母、分子はいずれも <span class="math notranslate nohighlight">\(k\)</span> 回のループで求まるので、全体の計算量はクエリ毎に <span class="math notranslate nohighlight">\(\mathcal{O}(k)\)</span>。</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">binom</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">MOD</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">):</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">i</span> <span class="o">%</span> <span class="n">MOD</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">i</span> <span class="o">%</span> <span class="n">MOD</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">MOD</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">MOD</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">binom</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-344082972
-</pre></div></div>
-</div>
-</div>
-</div>
 <div class="section" id="二項係数の和">
 <h2>二項係数の和<a class="headerlink" href="#二項係数の和" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="section" id="n-を固定したときの和">
@@ -857,10 +717,10 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../string/index.html" class="btn btn-neutral float-right" title="文字列" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mod_binom.html" class="btn btn-neutral float-right" title="組み合わせの剰余演算" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="mod.html" class="btn btn-neutral float-left" title="合同" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="euclidean_algorithm_proof.html" class="btn btn-neutral float-left" title="ユークリッドの互除法の証明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

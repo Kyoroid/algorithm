@@ -1,0 +1,222 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 組み合わせの剰余演算\n",
+    "\n",
+    "## 概要\n",
+    "\n",
+    "組み合わせ $_n\\mathrm{C}_k$ の計算では、$n$ の増加に伴い組み合わせの総数が非常に大きくなる。  \n",
+    "そのため、競技プログラミングでは組み合わせの剰余をとることがよくある。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 組み合わせの計算"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 方法1\n",
+    "\n",
+    "$n \\leq 10^6$ 程度まで対応可能。\n",
+    "\n",
+    "$$\n",
+    "\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = n!(k!)^{-1}((n-k)!)^{-1}\n",
+    "$$\n",
+    "\n",
+    "$n$ 以下の全ての $k$ に対して $k!, (k!)^{-1}$ の2種類の値を事前計算しておくことで、クエリ毎に $\\mathcal{O}(1)$ で計算可能となる。  \n",
+    "階乗 $k!$ はforループで求めればよい。逆元計算は[合同](mod.ipynb)を参照。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def binom_preprocess(n, MOD=10**9+7):\n",
+    "    f = [0 for i in range(n+1)]  # n!\n",
+    "    invf = [0 for i in range(n+1)]  # (n!)^-1\n",
+    "    f[0] = 1\n",
+    "    f[1] = 1\n",
+    "    invf[0] = 1\n",
+    "    invf[1] = 1\n",
+    "    for i in range(2, n+1):\n",
+    "        f[i] = f[i-1] * i % MOD\n",
+    "        invf[i] = pow(f[i], MOD-2, MOD)\n",
+    "    return f, invf\n",
+    "\n",
+    "def binom(n, k, f, invf, MOD=10**9+7):\n",
+    "    if n < k or n < 0 or k < 0:\n",
+    "        return 0\n",
+    "    else:\n",
+    "        return (f[n] * invf[k] % MOD) * invf[n-k] % MOD"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "前処理の `pow(f[i], p-2, p)` を含むループはさらに計算量を落とすことができる。  \n",
+    "$a_k = (k!)^{-1}$ とおけば、漸化式 $a_{k-1} = k \\cdot a_k$ が成り立つので、 $a_n = (n!)^{-1}$ だけ計算すれば他は漸化式から求まる。\n",
+    "\n",
+    "計算量は事前計算に$\\mathcal{O}(n)$、クエリ毎に$\\mathcal{O}(1)$。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def binom_preprocess(n, MOD=10**9+7):\n",
+    "    f = [0 for i in range(n+1)]  # n!\n",
+    "    invf = [0 for i in range(n+1)]  # (n!)^-1\n",
+    "    f[0] = 1\n",
+    "    f[1] = 1\n",
+    "    invf[0] = 1\n",
+    "    invf[1] = 1\n",
+    "    for i in range(2, n+1):\n",
+    "        f[i] = f[i-1] * i % MOD\n",
+    "    invf[n] = pow(f[n], MOD-2, MOD)\n",
+    "    for i in range(n, 2, -1):\n",
+    "        invf[i-1] = invf[i] * i % MOD\n",
+    "    return f, invf\n",
+    "\n",
+    "def binom(n, k, f, invf, MOD=10**9+7):\n",
+    "    if n < k or n < 0 or k < 0:\n",
+    "        return 0\n",
+    "    else:\n",
+    "        return (f[n] * invf[k] % MOD) * invf[n-k] % MOD"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f, invf = binom_preprocess(10**6)\n",
+    "print(binom(10**6, 4, f, invf))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 方法2\n",
+    "\n",
+    "$\\min(k, n-k) \\leq 10^6$ 程度まで対応可能。 $n$ が大きくても対応できることが特徴。\n",
+    "\n",
+    "$$\n",
+    "\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = \\frac{n(n-1) \\ldots (n-k+1)}{k(k-1) \\ldots 1}\n",
+    "$$\n",
+    "\n",
+    "分母と分子を別々に計算し、それらの商をとる。  \n",
+    "分母、分子はいずれも $k$ 回のループで求まるので、全体の計算量はクエリ毎に $\\mathcal{O}(k)$。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def binom(n, k, MOD=10**9+7):\n",
+    "    k = min(k, n-k)\n",
+    "    a = 1\n",
+    "    for i in range(n-k+1, n+1):\n",
+    "        a = a * i % MOD\n",
+    "    b = 1\n",
+    "    for i in range(1, k+1):\n",
+    "        b = b * i % MOD\n",
+    "    return a * pow(b, MOD-2, MOD) % MOD"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(binom(10**12, 10**6))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 組み合わせの和の計算"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### $n$ を固定したときの和\n",
+    "\n",
+    "$$\n",
+    "\\sum^{n}_{k=0} \\binom{n}{k} x^k = (1+x)^n\n",
+    "$$\n",
+    "\n",
+    "に対して $x=1$ を代入すると\n",
+    "\n",
+    "$$\n",
+    "\\begin{eqnarray}\n",
+    "\\sum^{n}_{k=0} \\binom{n}{k} 1^k &=& (1+1)^n \\\\\n",
+    "\\sum^{n}_{k=0} \\binom{n}{k} &=& 2^n \\\\\n",
+    "\\end{eqnarray}\n",
+    "$$\n",
+    "\n",
+    "となる。つまり、$n$ を固定したときの組み合わせの総数は $2^n$ である。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### $k$ を固定したときの和\n",
+    "\n",
+    "組み合わせに関して $k=1$ または $k=2$ としたときの和は、和の公式や[三角数](https://ja.wikipedia.org/wiki/%E4%B8%89%E8%A7%92%E6%95%B0)と呼ばれる。  \n",
+    "一般に、次の公式が知られている。\n",
+    "\n",
+    "$$\n",
+    "\\begin{eqnarray}\n",
+    "1 + 2 + 3 + 4 + \\ldots + \\binom{n}{1} &=& \\frac{n(n+1)}{2} \\\\\n",
+    "1 + 3 + 6 + 10 + \\ldots + \\binom{n}{2} &=& \\frac{n(n+1)(n+2)}{6} \\\\\n",
+    "\\end{eqnarray}\n",
+    "$$\n",
+    "\n",
+    "任意の $k$ に対して和を求めるときは、個別に組み合わせを計算して足し合わせればよい。"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python38164bitpy38envvenvdb5a67ba2d164185bbc60d730ae2e1eb",
+   "display_name": "Python 3.8.1 64-bit ('py38env': venv)"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

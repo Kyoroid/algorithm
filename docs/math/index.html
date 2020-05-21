@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="最大公約数" href="euclidean_algorithm.html" />
+    <link rel="next" title="素数" href="prime.html" />
     <link rel="prev" title="競技プログラミングノート" href="../index.html" /> 
 </head>
 
@@ -90,10 +90,11 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">数学</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prime.html">素数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mod.html">合同</a></li>
+<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="binom.html">二項係数・組み合わせ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mod_binom.html">組み合わせの剰余演算</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
@@ -197,13 +198,9 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html#ユークリッドの互除法">ユークリッドの互除法</a></li>
-<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="prime.html">素数</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="prime.html#素数の列挙">素数の列挙</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prime.html#素数列挙">素数列挙</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prime.html#素数判定">素数判定</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prime.html#素因数分解">素因数分解</a></li>
 </ul>
 </li>
@@ -213,13 +210,23 @@
 <li class="toctree-l2"><a class="reference internal" href="mod.html#ModInt">ModInt</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="euclidean_algorithm.html">最大公約数</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html#ユークリッドの互除法">ユークリッドの互除法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="euclidean_algorithm.html#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="binom.html">二項係数・組み合わせ</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="binom.html#二項係数">二項係数</a></li>
 <li class="toctree-l2"><a class="reference internal" href="binom.html#性質">性質</a></li>
 <li class="toctree-l2"><a class="reference internal" href="binom.html#重複組み合わせ">重複組み合わせ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="binom.html#全探索">全探索</a></li>
-<li class="toctree-l2"><a class="reference internal" href="binom.html#二項係数の計算">二項係数の計算</a></li>
 <li class="toctree-l2"><a class="reference internal" href="binom.html#二項係数の和">二項係数の和</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_binom.html">組み合わせの剰余演算</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_binom.html#概要">概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mod_binom.html#組み合わせの計算">組み合わせの計算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mod_binom.html#組み合わせの和の計算">組み合わせの和の計算</a></li>
 </ul>
 </li>
 </ul>
@@ -234,7 +241,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="euclidean_algorithm.html" class="btn btn-neutral float-right" title="最大公約数" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="prime.html" class="btn btn-neutral float-right" title="素数" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-neutral float-left" title="競技プログラミングノート" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
