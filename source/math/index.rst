@@ -5,7 +5,8 @@
    :maxdepth: 2
    :caption: Contents:
 
-   euclidean_algorithm
    prime
    mod
+   euclidean_algorithm
    binom
+   mod_binom
