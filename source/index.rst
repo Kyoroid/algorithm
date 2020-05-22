@@ -6,6 +6,7 @@
    :caption: Contents:
 
    math/index
+   search/index
    string/index
    data_structure/index
    visualization/index
