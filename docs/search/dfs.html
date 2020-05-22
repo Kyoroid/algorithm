@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>累積和 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>深さ優先探索 (DFS) &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -42,8 +42,8 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="ヒープ" href="heap.html" />
-    <link rel="prev" title="データ構造" href="index.html" /> 
+    <link rel="next" title="文字列" href="../string/index.html" />
+    <link rel="prev" title="幅優先探索 (BFS)" href="bfs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,18 +90,16 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../search/index.html">探索</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">探索</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bfs.html">幅優先探索 (BFS)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">深さ優先探索 (DFS)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#探索経路">探索経路</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">データ構造</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">累積和</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#実装">実装</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#部分和">部分和</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="heap.html">ヒープ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="segment_tree.html">セグメント木</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
@@ -150,9 +148,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">データ構造</a> &raquo;</li>
+          <li><a href="index.html">探索</a> &raquo;</li>
         
-      <li>累積和</li>
+      <li>深さ優先探索 (DFS)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -416,32 +414,30 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="累積和">
-<h1>累積和<a class="headerlink" href="#累積和" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="深さ優先探索-(DFS)">
+<h1>深さ優先探索 (DFS)<a class="headerlink" href="#深さ優先探索-(DFS)" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="line-block">
-<div class="line">数列の部分和、およびその和を扱うデータ構造を指す。</div>
-<div class="line">累積和を利用すると、区間に対するクエリを <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で処理できることがある。</div>
+<div class="line">グラフの探索手法の1つ。グラフのあるノードから開始し、まだ訪れたことのない隣接ノードを1つ選んで移動し続ける。隣接ノードを選べなくなったら、選べるノードまで戻って探索を続ける。</div>
+<div class="line">状態遷移図の探索 (状態の全列挙など) や入れ子構造の探索に向いている。</div>
 </div>
-<div class="line-block">
-<div class="line">以下、扱う配列は0-indexedとする。</div>
-<div class="line">配列 <span class="math notranslate nohighlight">\(A = a_0, a_1, \ldots, a_{n-1}\)</span> の累積和は、区間 <span class="math notranslate nohighlight">\([0, n)\)</span> の 部分和</div>
-</div>
-<div class="math notranslate nohighlight">
-\[s_i = \sum_{i=0}^{n-1} a_i\]</div>
-<p>を並べた配列 <span class="math notranslate nohighlight">\(S = s_0, s_1, \ldots, s_{n-1}\)</span> として表現される。</p>
-<div class="section" id="実装">
-<h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Pythonでは、リストやNumpy配列の累積和を求める関数が実装されている。</p>
+<p>説明のため、次のグラフを用いる。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">networkx.generators.small</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">bull_graph</span><span class="p">()</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Node ID&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -449,76 +445,57 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-[3, 8, 7, 13, 8, 12]
-</pre></div></div>
+<img alt="../_images/search_dfs_2_0.png" src="../_images/search_dfs_2_0.png" />
 </div>
-<div class="nbinput docutils container">
+</div>
+<div class="section" id="探索経路">
+<h2>探索経路<a class="headerlink" href="#探索経路" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">DFSでは経路上の行き止まりまで到達すると、元来た道を戻る移動 (バックトラック) が発生する。</div>
+<div class="line">隣接ノード間の移動時間を1として、ノードごとに入時刻と出時刻を記録しておくことで、探索経路を再現することができる。</div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span></span><span class="k">def</span> <span class="nf">bfs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">t_in</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">t_out</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 
-<span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_bfs</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">t_in</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">t_in</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">_bfs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">t_out</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">return</span> <span class="n">t</span>
+
+    <span class="n">_bfs</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t_in</span><span class="p">,</span> <span class="n">t_out</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[ 3  8  7 13  8 12]
-</pre></div></div>
-</div>
-<p>和に限らず、条件</p>
-<ul class="simple">
-<li><p>結合法則が成り立つ <span class="math notranslate nohighlight">\((a \cdot b) \cdot c = a \cdot (b \cdot c)\)</span></p></li>
-<li><p>単位元 <span class="math notranslate nohighlight">\(e\)</span> をもつ <span class="math notranslate nohighlight">\(a \cdot e = e \cdot a = a\)</span></p></li>
-</ul>
-<p>を満たす二項演算であれば累積を定義できる。</p>
-<p>累積ORの実装例を示す。</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-<span class="kn">import</span> <span class="nn">operator</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b011</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b010</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">or_</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:03b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">])</span>
+<span></span><span class="n">t_in</span><span class="p">,</span> <span class="n">t_out</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[&#39;010&#39;, &#39;011&#39;, &#39;011&#39;, &#39;011&#39;, &#39;111&#39;]
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="部分和">
-<h2>部分和<a class="headerlink" href="#部分和" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<div class="line-block">
-<div class="line">部分列 <span class="math notranslate nohighlight">\([0, k)\)</span> の和は、累積和の <span class="math notranslate nohighlight">\(k\)</span> 番目の要素そのものである。</div>
-<div class="line">部分列 <span class="math notranslate nohighlight">\([k, n)\)</span> の和は、数列の逆順に対して累積和をとることで求められる。</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+<span></span><span class="n">labels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">t_in</span><span class="p">,</span> <span class="n">t_out</span><span class="p">)):</span>
+    <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%d</span><span class="s2">, </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Route of the DFS&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -526,33 +503,20 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-[12, 9, 4, 5, -1, 4]
-</pre></div></div>
+<img alt="../_images/search_dfs_6_0.png" src="../_images/search_dfs_6_0.png" />
 </div>
-<p>一部の演算については、任意の連続区間に対する累積を扱うことができる。</p>
-<p><span class="math notranslate nohighlight">\([l, r)\)</span> で表される区間 <span class="math notranslate nohighlight">\((l &lt; r)\)</span> の部分和は、累積和 <span class="math notranslate nohighlight">\(S\)</span> を用いて次のように表される。</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\sum_{i=l}^{r-1} a_i =
-\left\{
-    \begin{array}{ll}
-        s_r &amp; (l = 0) \\
-        s_{r-1} - s_{l-1} &amp; (otherwise) \\
-    \end{array}
-\right .\end{split}\]</div>
-<p>部分和以外でも、<span class="math notranslate nohighlight">\(s_r, s_l\)</span> に対する逆演算 <span class="math notranslate nohighlight">\(s_r \circ s_l\)</span> が定義されていれば部分累積を <span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span> で求めることができる。乗算やXORが該当する。</p>
+</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">t_in</span></code> を小さい順に辿ると、ノードの行きがけ順を得ることができる。</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">t_out</span></code>を小さい順に辿ると帰りがけ順になる。</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
-<span class="n">l</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">r</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">t_in</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">t_out</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -561,7 +525,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-5
+[0, 1, 2, 4, 3]
+[4, 2, 3, 1, 0]
 </pre></div></div>
 </div>
 </div>
@@ -575,10 +540,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="heap.html" class="btn btn-neutral float-right" title="ヒープ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../string/index.html" class="btn btn-neutral float-right" title="文字列" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="データ構造" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="bfs.html" class="btn btn-neutral float-left" title="幅優先探索 (BFS)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
