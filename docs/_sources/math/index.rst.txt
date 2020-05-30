@@ -8,5 +8,6 @@
    prime
    mod
    euclidean_algorithm
+   permutation
    binom
    mod_binom
