@@ -6,5 +6,6 @@
    :caption: Contents:
 
    cumulative_sum
+   union_find
    heap
    segment_tree
