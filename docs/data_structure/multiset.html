@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Union-Find &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>多重集合 (Multiset) &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -42,8 +42,8 @@
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="ヒープ" href="heap.html" />
-    <link rel="prev" title="累積和" href="cumulative_sum.html" /> 
+    <link rel="next" title="可視化" href="../visualization/index.html" />
+    <link rel="prev" title="セグメント木" href="segment_tree.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,13 +94,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">データ構造</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cumulative_sum.html">累積和</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Union-Find</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#実装">実装</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="union_find.html">Union-Find</a></li>
 <li class="toctree-l2"><a class="reference internal" href="heap.html">ヒープ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="segment_tree.html">セグメント木</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multiset.html">多重集合 (Multiset)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">多重集合 (Multiset)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#順序付き多重集合">順序付き多重集合</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
@@ -153,7 +153,7 @@
         
           <li><a href="index.html">データ構造</a> &raquo;</li>
         
-      <li>Union-Find</li>
+      <li>多重集合 (Multiset)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -417,54 +417,46 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Union-Find">
-<h1>Union-Find<a class="headerlink" href="#Union-Find" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>蟻本p.81</p>
-<p>グループを表すデータ構造の1つ。以下の操作を高速に実現する。</p>
+<div class="section" id="多重集合-(Multiset)">
+<h1>多重集合 (Multiset)<a class="headerlink" href="#多重集合-(Multiset)" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="順序付き多重集合">
+<h2>順序付き多重集合<a class="headerlink" href="#順序付き多重集合" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><a class="reference external" href="https://qiita.com/Salmonize/items/638da118cd621d2628d1">【Python】平衡二分木が必要な時に代わりに何とかするテク【競プロ】</a></p>
+<p>重複あり集合で、順序関係もあわせて保持するもの。C++の<code class="docutils literal notranslate"><span class="pre">std::multiset</span></code>にあたる。</p>
 <ul class="simple">
-<li><p>ある要素がどのグループに属しているかを調べる (find)</p></li>
-<li><p>2つのグループを併合する (union)</p></li>
+<li><p>挿入(add): <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>削除(discard): <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>最小値の取得(smallest): <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
 </ul>
-<div class="section" id="実装">
-<h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>それぞれのグループは木構造で管理する。</p>
-<div class="line-block">
-<div class="line">findはある要素が所属するグループを返す関数だが、同時にUnion-Find木の高さを小さくする操作を行っている。</div>
-<div class="line">再帰的に親を繋ぎ変えることで、グループを表す木の高さを高々1に抑える。</div>
-</div>
+<p>Pythonではヒープを用いて簡易的に実装できる。この実装では削除時にキーの存在チェックを行わないことに注意。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">UnionFind</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Union-Find木の実装</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span></span><span class="kn">import</span> <span class="nn">heapq</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;要素xが所属するグループを返す</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="k">class</span> <span class="nc">Multiset</span><span class="p">():</span>
 
-    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;要素x, yがそれぞれ所属するグループを併合する</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">:</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addset</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delset</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addset</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">discard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delset</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">smallest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">delset</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">addset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">delset</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addset</span><span class="p">)</span>
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addset</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delset</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </div>
@@ -473,12 +465,17 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">uf</span> <span class="o">=</span> <span class="n">UnionFind</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-<span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">([</span><span class="n">uf</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+<span></span><span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">mset</span> <span class="o">=</span> <span class="n">Multiset</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">S</span><span class="p">:</span>
+    <span class="n">mset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mset</span><span class="o">.</span><span class="n">smallest</span><span class="p">())</span>
+<span class="n">mset</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mset</span><span class="o">.</span><span class="n">smallest</span><span class="p">())</span>
+<span class="n">mset</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mset</span><span class="o">.</span><span class="n">smallest</span><span class="p">())</span>
+<span class="n">mset</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mset</span><span class="o">.</span><span class="n">smallest</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -487,7 +484,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[0, 0, 2, 3, 2, 2]
+-2
+-2
+3
+4
 </pre></div></div>
 </div>
 </div>
@@ -501,10 +501,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="heap.html" class="btn btn-neutral float-right" title="ヒープ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../visualization/index.html" class="btn btn-neutral float-right" title="可視化" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cumulative_sum.html" class="btn btn-neutral float-left" title="累積和" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="segment_tree.html" class="btn btn-neutral float-left" title="セグメント木" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
