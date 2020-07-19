@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<html class="writer-html5" lang="ja" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,19 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,17 +35,12 @@
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="組み合わせの剰余演算" href="mod_binom.html" />
@@ -57,7 +58,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Competitive programming notebook
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
           
 
           
@@ -80,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -117,12 +119,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../search/index.html">探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -163,7 +167,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.html">数学</a> &raquo;</li>
         
@@ -255,20 +259,33 @@ div.nboutput.container div.prompt pre {
 /* all prompts */
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
-    min-width: 5ex;
-    padding-top: 0.3rem;
-    padding-right: 0.3rem;
-    text-align: right;
-    flex: 0;
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
 }
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
 @media (max-width: 540px) {
     div.nbinput.container div.prompt,
     div.nboutput.container div.prompt {
+        width: unset;
         text-align: left;
         padding: 0.4em;
     }
     div.nboutput.container div.prompt.empty {
         padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
     }
 }
 
@@ -361,7 +378,7 @@ div.nboutput.container div.output_area div[class*=highlight].math,
 div.nboutput.container div.output_area.rendered_html,
 div.nboutput.container div.output_area > div.output_javascript,
 div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 0.3rem;
+    padding: 5px;
 }
 
 /* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
@@ -475,51 +492,11 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
     \binom{n-1}{k-1} + \binom{n-1}{k} &amp; (k &lt;= n) \\
 \end{cases}
 \end{eqnarray}\end{split}\]</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
+<div class="line-block">
+<div class="line">二項係数を三角形状に並べたものを <a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%91%E3%82%B9%E3%82%AB%E3%83%AB%E3%81%AE%E4%B8%89%E8%A7%92%E5%BD%A2">パスカルの三角形</a>という。</div>
+<div class="line"><span class="math notranslate nohighlight">\(n\)</span> 段目の左から <span class="math notranslate nohighlight">\(k\)</span> 番目には <span class="math notranslate nohighlight">\(_{n-1}\mathrm{C}_{k-1}\)</span> の値が並ぶ。</div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">dp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-<span class="n">dp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">cellColours</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;w&#39;</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-<span class="n">cellColours</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lightblue&#39;</span>
-<span class="n">cellColours</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lightblue&#39;</span>
-<span class="n">cellColours</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;steelblue&#39;</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span>
-    <span class="n">rowLabels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;n=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span>
-    <span class="n">colLabels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;k=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-    <span class="n">bbox</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">cellColours</span><span class="o">=</span><span class="n">cellColours</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/math_binom_4_0.png" src="../_images/math_binom_4_0.png" />
-</div>
-</div>
-<p>上の数表には、階段状に数字が並ぶ。この並び方は<a class="reference external" href="https://ja.wikipedia.org/wiki/%E3%83%91%E3%82%B9%E3%82%AB%E3%83%AB%E3%81%AE%E4%B8%89%E8%A7%92%E5%BD%A2">パスカルの三角形</a>と呼ばれる。</p>
+<p><img alt="pascal.svg" src="../_images/pascal.svg" /></p>
 </div>
 <div class="section" id="重複組み合わせ">
 <h2>重複組み合わせ<a class="headerlink" href="#重複組み合わせ" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -554,7 +531,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 <p>言い換えると、ある操作で取り出した要素が <span class="math notranslate nohighlight">\(a_i\)</span> であるとき、次の操作では <span class="math notranslate nohighlight">\((i+1)\)</span> 番目以降の要素 <span class="math notranslate nohighlight">\(a_{i+1}, \ldots, a_n\)</span> のいずれかから選ぶことになる。</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -579,7 +556,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -597,7 +574,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 <p>列挙だけであれば <a class="reference external" href="https://docs.python.org/ja/3/library/itertools.html#itertools.combinations">itertools.combinations</a> のほうが高速。</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -620,7 +597,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 <p>重複組み合わせ <span class="math notranslate nohighlight">\(_{n+r-1}\mathrm{C}_r\)</span> の全状態を列挙する方法を示す。</p>
 <p>組み合わせをベースに、順序関係が <span class="math notranslate nohighlight">\(a_i \preceq a_{i+1}\)</span> となるように並べればよい。</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -645,7 +622,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -663,7 +640,7 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 </div>
 <p>こちらも列挙だけであれば <a class="reference external" href="https://docs.python.org/ja/3/library/itertools.html#itertools.combinations_with_replacement">itertools.combinations_with_replacement</a> のほうが高速。</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -732,11 +709,19 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Kyoroid
+        
+        &copy; 著作権 2020, Kyoroid
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -747,7 +732,6 @@ _n\mathrm{C}_k = \frac{_n\mathrm{P}_k}{k!} = \frac{n!}{k!(n-k)!}
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

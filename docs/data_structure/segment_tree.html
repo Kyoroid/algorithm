@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<html class="writer-html5" lang="ja" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,19 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,17 +35,12 @@
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="多重集合 (Multiset)" href="multiset.html" />
@@ -57,7 +58,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Competitive programming notebook
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
           
 
           
@@ -80,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -97,7 +99,8 @@
 <li class="toctree-l2"><a class="reference internal" href="union_find.html">Union-Find</a></li>
 <li class="toctree-l2"><a class="reference internal" href="heap.html">ヒープ</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">セグメント木</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#構造">構造</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">セグメント木</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#原理">原理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Range-Minimum-Query-(RMQ)">Range Minimum Query (RMQ)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#1点更新">1点更新</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#問い合わせ-(トップダウン)">問い合わせ (トップダウン)</a></li>
@@ -108,7 +111,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Range-Add-Query-(RAQ)">Range Add Query (RAQ)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#1点問い合わせ">1点問い合わせ</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#区間更新">区間更新</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">実装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">実装</a></li>
 </ul>
 </li>
 </ul>
@@ -116,12 +119,14 @@
 <li class="toctree-l2"><a class="reference internal" href="multiset.html">多重集合 (Multiset)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -162,7 +167,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.html">データ構造</a> &raquo;</li>
         
@@ -254,20 +259,33 @@ div.nboutput.container div.prompt pre {
 /* all prompts */
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
-    min-width: 5ex;
-    padding-top: 0.3rem;
-    padding-right: 0.3rem;
-    text-align: right;
-    flex: 0;
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
 }
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
 @media (max-width: 540px) {
     div.nbinput.container div.prompt,
     div.nboutput.container div.prompt {
+        width: unset;
         text-align: left;
         padding: 0.4em;
     }
     div.nboutput.container div.prompt.empty {
         padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
     }
 }
 
@@ -360,7 +378,7 @@ div.nboutput.container div.output_area div[class*=highlight].math,
 div.nboutput.container div.output_area.rendered_html,
 div.nboutput.container div.output_area > div.output_javascript,
 div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 0.3rem;
+    padding: 5px;
 }
 
 /* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
@@ -436,6 +454,8 @@ div.rendered_html tbody tr:hover {
 <p><a class="reference external" href="https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree">https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree</a></p>
 <p><a class="reference external" href="https://algo-logic.info/segment-tree/">https://algo-logic.info/segment-tree/</a></p>
 <p><a class="reference external" href="https://kujira16.hateblo.jp/entry/2016/12/15/000000">https://kujira16.hateblo.jp/entry/2016/12/15/000000</a></p>
+<div class="section" id="id2">
+<h2>セグメント木<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="line-block">
 <div class="line">セグメント木 (Segment Tree) は要素列を表現するデータ構造の1つ。</div>
 <div class="line">要素列 <span class="math notranslate nohighlight">\(A = a_1 a_2 a_3 \ldots a_n\)</span> に対して、区間 <span class="math notranslate nohighlight">\(A_{[l, r)}\)</span> に対する操作を高速に行うことができる。</div>
@@ -444,8 +464,9 @@ div.rendered_html tbody tr:hover {
 <div class="line">オンラインクエリに対応できることが特徴。</div>
 <div class="line">逆にオフラインの場合はクエリをソートすることで、別のデータ構造を用いたさらなる高速化ができる場合がある。</div>
 </div>
-<div class="section" id="構造">
-<h2>構造<a class="headerlink" href="#構造" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="原理">
+<h2>原理<a class="headerlink" href="#原理" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>以下、簡単のため要素数 <span class="math notranslate nohighlight">\(n\)</span> を2のべき乗とする。</p>
 <div class="line-block">
 <div class="line">セグメント木では <span class="math notranslate nohighlight">\(n\)</span> 個の要素を次のように、長さ <span class="math notranslate nohighlight">\(2n-1\)</span> の配列で表現する。</div>
@@ -730,8 +751,8 @@ div.rendered_html tbody tr:hover {
 <p>実際、RAQの区間更新の実装は、RMQの区間問い合わせの「ノードの値の取得」を「ノードの更新」に置き換えただけである。</p>
 <p><img alt="raq_update_lr" src="../_images/raq_update_lr.svg" /></p>
 </div>
-<div class="section" id="id9">
-<h3>実装<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id10">
+<h3>実装<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>区間更新の実装については、トップダウン型とボトムアップ型の両方を示す。</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -861,11 +882,19 @@ div.rendered_html tbody tr:hover {
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Kyoroid
+        
+        &copy; 著作権 2020, Kyoroid
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -876,7 +905,6 @@ div.rendered_html tbody tr:hover {
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

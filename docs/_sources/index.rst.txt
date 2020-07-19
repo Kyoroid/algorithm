@@ -9,6 +9,7 @@
    search/index
    string/index
    data_structure/index
+   dynamic_programming/index
    visualization/index
 
 

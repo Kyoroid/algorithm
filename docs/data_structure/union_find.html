@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<html class="writer-html5" lang="ja" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,19 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,17 +35,12 @@
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="ヒープ" href="heap.html" />
@@ -57,7 +58,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Competitive programming notebook
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
           
 
           
@@ -80,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +97,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">データ構造</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cumulative_sum.html">累積和</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Union-Find</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Union-Find</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#原理">原理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#実装">実装</a></li>
 </ul>
 </li>
@@ -103,12 +107,14 @@
 <li class="toctree-l2"><a class="reference internal" href="multiset.html">多重集合 (Multiset)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -149,7 +155,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.html">データ構造</a> &raquo;</li>
         
@@ -241,20 +247,33 @@ div.nboutput.container div.prompt pre {
 /* all prompts */
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
-    min-width: 5ex;
-    padding-top: 0.3rem;
-    padding-right: 0.3rem;
-    text-align: right;
-    flex: 0;
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
 }
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
 @media (max-width: 540px) {
     div.nbinput.container div.prompt,
     div.nboutput.container div.prompt {
+        width: unset;
         text-align: left;
         padding: 0.4em;
     }
     div.nboutput.container div.prompt.empty {
         padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
     }
 }
 
@@ -347,7 +366,7 @@ div.nboutput.container div.output_area div[class*=highlight].math,
 div.nboutput.container div.output_area.rendered_html,
 div.nboutput.container div.output_area > div.output_javascript,
 div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 0.3rem;
+    padding: 5px;
 }
 
 /* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
@@ -420,18 +439,35 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Union-Find">
 <h1>Union-Find<a class="headerlink" href="#Union-Find" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>蟻本p.81</p>
+<div class="section" id="id1">
+<h2>Union-Find<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>グループを表すデータ構造の1つ。以下の操作を高速に実現する。</p>
 <ul class="simple">
 <li><p>ある要素がどのグループに属しているかを調べる (find)</p></li>
 <li><p>2つのグループを併合する (union)</p></li>
 </ul>
+</div>
+<div class="section" id="原理">
+<h2>原理<a class="headerlink" href="#原理" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">Union-Find木では、できるだけ木の高さが小さくなるようにノードの繋ぎ変えを行うことで、検索の高速化を実現している。</div>
+<div class="line">例えば、次のような <span class="math notranslate nohighlight">\(6\)</span> つの要素に対してunion, findそれぞれの操作を考えてみる。</div>
+</div>
+<p><img alt="union_find_init" src="../_images/union_find_init.svg" /></p>
+<div class="line-block">
+<div class="line">unionでは、後述するfind操作によりそれぞれの親を調べた後、一方の親にまとめる。</div>
+<div class="line">この状態ではまだ、木の高さは最適化されていないことに注意。</div>
+</div>
+<p><img alt="union_find_union" src="../_images/union_find_union.svg" /></p>
+<div class="line-block">
+<div class="line">findでは、ノードの親を調べる。</div>
+<div class="line">このとき、findを再帰的に呼び出す過程で、通過したノードの親を繋ぎ変えるようにする。</div>
+<div class="line">この繋ぎ変えにより、findの呼び出しで通過した部分木の高さは高々1になり、次回以降のfindが高速化される。</div>
+</div>
+<p><img alt="union_find_find" src="../_images/union_find_find.svg" /></p>
+</div>
 <div class="section" id="実装">
 <h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>それぞれのグループは木構造で管理する。</p>
-<div class="line-block">
-<div class="line">findはある要素が所属するグループを返す関数だが、同時にUnion-Find木の高さを小さくする操作を行っている。</div>
-<div class="line">再帰的に親を繋ぎ変えることで、グループを表す木の高さを高々1に抑える。</div>
-</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -443,12 +479,12 @@ div.rendered_html tbody tr:hover {
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;要素xが所属するグループを返す</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
@@ -464,7 +500,8 @@ div.rendered_html tbody tr:hover {
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="nf">parents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+        <span class="sd">&quot;&quot;&quot;全てのノードについて、対応する親ノードを返す&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -478,7 +515,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">uf</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">([</span><span class="n">uf</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">uf</span><span class="o">.</span><span class="n">parents</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -513,11 +550,19 @@ div.rendered_html tbody tr:hover {
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Kyoroid
+        
+        &copy; 著作権 2020, Kyoroid
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -528,7 +573,6 @@ div.rendered_html tbody tr:hover {
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

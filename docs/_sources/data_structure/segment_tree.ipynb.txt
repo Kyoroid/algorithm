@@ -12,7 +12,14 @@
     "\n",
     "https://algo-logic.info/segment-tree/\n",
     "\n",
-    "https://kujira16.hateblo.jp/entry/2016/12/15/000000\n",
+    "https://kujira16.hateblo.jp/entry/2016/12/15/000000"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## セグメント木\n",
     "\n",
     "セグメント木 (Segment Tree) は要素列を表現するデータ構造の1つ。  \n",
     "要素列 $A = a_1 a_2 a_3 \\ldots a_n$ に対して、区間 $A_{[l, r)}$ に対する操作を高速に行うことができる。\n",
@@ -25,7 +32,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## 構造\n",
+    "## 原理\n",
     "\n",
     "以下、簡単のため要素数 $n$ を2のべき乗とする。\n",
     "\n",
