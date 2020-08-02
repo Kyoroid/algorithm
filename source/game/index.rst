@@ -1,9 +1,9 @@
-動的計画法
+ゲーム
 =====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   lis
+   nim
    
