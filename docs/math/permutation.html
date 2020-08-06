@@ -113,7 +113,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../search/index.html">探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">データ構造</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph/index.html">グラフ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
@@ -459,8 +461,8 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="順列の列挙">
 <h2>順列の列挙<a class="headerlink" href="#順列の列挙" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>順列を列挙する場合は、<a class="reference external" href="https://docs.python.org/ja/3/library/itertools.html#itertools.permutations">itertools.permutations</a>が使える。</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -471,6 +473,19 @@ div.rendered_html tbody tr:hover {
     <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1, 2, 3)
+(1, 3, 2)
+(2, 1, 3)
+(2, 3, 1)
+(3, 1, 2)
+(3, 2, 1)
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="次の順列の生成">
