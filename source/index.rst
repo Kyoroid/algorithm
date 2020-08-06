@@ -10,6 +10,7 @@
    string/index
    data_structure/index
    dynamic_programming/index
+   graph/index
    game/index
    visualization/index
 
