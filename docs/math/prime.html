@@ -107,6 +107,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#素因数分解">素因数分解</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id9">計算量</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id10">実装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#素因数分解の高速化">素因数分解の高速化</a></li>
 </ul>
 </li>
 </ul>
@@ -118,7 +119,6 @@
 <li class="toctree-l2"><a class="reference internal" href="mod_binom.html">組み合わせの剰余演算</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../search/index.html">探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
@@ -649,8 +649,10 @@ False
 <span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">mul</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
-<span class="n">primes</span> <span class="o">=</span> <span class="n">sieve</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">factors</span> <span class="o">=</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">factors</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
+<span class="n">factors</span> <span class="o">=</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">factors</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 </pre></div>
@@ -663,14 +665,75 @@ False
 <div class="highlight"><pre>
 Counter({5: 3, 2: 2})
 500
+Counter({1000000007: 1})
+1000000007
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
+</div>
+<div class="section" id="素因数分解の高速化">
+<h3>素因数分解の高速化<a class="headerlink" href="#素因数分解の高速化" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><a class="reference external" href="https://qiita.com/rsk0315_h4x/items/ff3b542a4468679fb409">https://qiita.com/rsk0315_h4x/items/ff3b542a4468679fb409</a></p>
+<p>素因数分解したい数の上限が <span class="math notranslate nohighlight">\(n \leq 10^6\)</span> 程度に収まるならば、エラトステネスの篩を使って素因数分解の計算量を落とすことができる。</p>
+<p>エラトステネスの篩において、「ある数が割り切れたかどうか (bool値)」 を記録する代わりに「ある数を割りきる素数のうち最小の数」を記録する。</p>
+<p><img alt="sieve_int" src="../_images/sieve_int.svg" /></p>
+<div class="line-block">
+<div class="line">この篩を用いて素因数分解を行う。</div>
+<div class="line">数 <span class="math notranslate nohighlight">\(n\)</span> の素因数分解は、篩の <span class="math notranslate nohighlight">\(n\)</span> 番目に書かれた数で順次割ることにより求められる。</div>
+<div class="line">例えば <span class="math notranslate nohighlight">\(12\)</span> の素因数分解は、次の図のように <span class="math notranslate nohighlight">\(12 \rightarrow 6 \rightarrow 3 \rightarrow 1\)</span> と割っていく。</div>
+<div class="line">割る数として使用した数が素因数であり、この場合は <span class="math notranslate nohighlight">\(\{2, 2, 3\}\)</span> である。</div>
+</div>
+<p><img alt="sieve_int_trace" src="../_images/sieve_int_trace.svg" /></p>
+<div class="line-block">
+<div class="line">試し割法による素因数分解では 試し割りに <span class="math notranslate nohighlight">\(\mathcal{O}(\sqrt{n})\)</span> 、素因数の数え上げに <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> かかるので、全体として <span class="math notranslate nohighlight">\(\mathcal{O}(\sqrt{n}\log{n})\)</span> の計算量となっていた。</div>
+<div class="line">エラトステネスの篩を使うと試し割りをせずに済むので、素因数分解のクエリは <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> で処理できるようになる。</div>
+</div>
+<p>事前に篩の作成が必要なので、計算量は前処理 <span class="math notranslate nohighlight">\(\mathcal{O}(n\log{\log{n}})\)</span> 、クエリ <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> となる。</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">prime_factorization</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+
+<span class="k">def</span> <span class="nf">fast_prime_factorization_preprocess</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    素因数テーブルを作成する</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">min_prime_factor</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">min_prime_factor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">min_prime_factor</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">min_prime_factor</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">min_prime_factor</span>
+
+<span class="k">def</span> <span class="nf">fast_prime_factorization</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">min_prime_factor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    nの素因数分解を求める</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">min_prime_factor</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">//=</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">mul</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+
+<span class="n">pf</span> <span class="o">=</span> <span class="n">fast_prime_factorization_preprocess</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">factors</span> <span class="o">=</span> <span class="n">fast_prime_factorization</span><span class="p">(</span><span class="mi">999982</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">factors</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
+<span class="n">factors</span> <span class="o">=</span> <span class="n">fast_prime_factorization</span><span class="p">(</span><span class="mi">999983</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">factors</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 </pre></div>
@@ -681,8 +744,10 @@ Counter({5: 3, 2: 2})
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Counter({1000000007: 1})
-1000000007
+Counter({2: 1, 79: 1, 6329: 1})
+999982
+Counter({999983: 1})
+999983
 </pre></div></div>
 </div>
 </div>

@@ -1,0 +1,350 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python_defaultSpec_1598773750353",
+   "display_name": "Python 3.8.1 64-bit ('py38env': venv)"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 単一始点最短経路\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 幅優先探索(BFS)\n",
+    "\n",
+    "次の条件を満たす有向・無向グラフについて、ある1つのノード (始点) から他のすべてのノードまでの最短経路を求めるアルゴリズム。\n",
+    "\n",
+    "- 辺の重みがない、もしくはすべて等しい\n",
+    "\n",
+    "計算量は頂点数 $V$ と辺の数 $E$ を用いて $O(V+E)$ と表される。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### アルゴリズム\n",
+    "\n",
+    "辺の重みがない場合は次の通り。\n",
+    "\n",
+    "1. 始点 $s$ を訪問済みにする。$visited(s) \\leftarrow true$ 。\n",
+    "2. 始点をキュー $Q$ に加える。\n",
+    "3. $Q$ が空になるまで繰り返す:\n",
+    "    1. $Q$ からノードを1つ取り出し、これを $u$ とする。\n",
+    "    2. $u$ の隣接ノードを順に走査する:\n",
+    "        1. 隣接ノードのうちまだ訪れていないノード $v$ を選ぶ。\n",
+    "        2. $v$ を訪問済みにする。$visited(v) \\leftarrow true$ 。\n",
+    "        3. $v$ を $Q$ に加える。\n",
+    "\n",
+    "辺の重み $w$ があるときは、$visited(v) \\leftarrow true$ のかわりに $cost(v) \\leftarrow cost(u) + w$ とすればよい。\n",
+    "\n",
+    "### アルゴリズムの解説\n",
+    "\n",
+    "$w=1$ のときの動作を、次のようなグラフを使って説明する。  \n",
+    "始点をノード1とする。\n",
+    "\n",
+    "(手順2.) 始点をキュー $Q$ に加える。  \n",
+    "![bfs_graph](images/bfs_graph.svg)\n",
+    "\n",
+    "以下、ノード $u$ 内の数字は $cost(u)$ を表すものとする。\n",
+    "\n",
+    "(手順3.1.) $Q$ からノードを取り出す。 $u=1$ 。  \n",
+    "![bfs_init](images/bfs_init.svg)\n",
+    "\n",
+    "(手順3.2. ~ 3.4) ノード $u=1$ を取り出す。隣接ノードのうち未訪問のノード $v=\\{2,5,6\\}$ を選ぶ。これらの距離を更新し、$v$ をキューに加える。  \n",
+    "![bfs_select_1](images/bfs_select_1.svg)\n",
+    "\n",
+    "(手順3.2. ~ 3.4) ノード $u=2$ を取り出す。隣接ノードがないので取り出しのみ。  \n",
+    "![bfs_select_2](images/bfs_select_2.svg)\n",
+    "\n",
+    "(手順3.2. ~ 3.4) ノード $u=5$ を取り出す。隣接ノードがないので取り出しのみ。  \n",
+    "![bfs_select_5](images/bfs_select_5.svg)\n",
+    "\n",
+    "(手順3.2. ~ 3.4) ノード $u=6$ を取り出す。隣接ノードのうち未訪問のノード $v=\\{3, 4\\}$ を選ぶ。これらの距離を更新し、$v$ をキューに加える。  \n",
+    "![bfs_select_6](images/bfs_select_6.svg)\n",
+    "\n",
+    "(手順3.2. ~ 3.4) 何度か同様の操作を繰り返し、最終的にノード $u=7$ を取り出して終了する。  \n",
+    "![bfs_select_7](images/bfs_select_7.svg)\n",
+    "\n",
+    "コスト $w=1$ とした場合、$cost(u)$ は上図のように始点からの距離と一致する。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 実装\n",
+    "\n",
+    "キューの実装には`deque`を利用する。要素の出し入れの方向に注意。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from collections import deque\n",
+    "\n",
+    "def bfs(N, G, start = 1, INF = 10**7):\n",
+    "    cost = [INF] * (N+1)\n",
+    "    \n",
+    "    q = deque()\n",
+    "    cost[start] = 0\n",
+    "    q.append(start)\n",
+    "    while q:\n",
+    "        u = q.popleft()\n",
+    "        for v in G[u]:\n",
+    "            if cost[v] > cost[u] + 1:\n",
+    "                cost[v] = cost[u] + 1\n",
+    "                q.append(v)\n",
+    "    return cost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "N = 8\n",
+    "G = [[], [2,5,6], [1], [6,4], [3,8], [1], [1,3,4], [8], [4,7]]\n",
+    "\n",
+    "bfs(N, G, start=1)[1:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 0-1-BFS\n",
+    "\n",
+    "辺の重みがある場合、通常はDijkstraなどの手法を使用するが、辺の重みが $\\{0, 1\\}$ のみの場合は0-1-BFSが適用できる。  \n",
+    "BFSにおいて重み $0$ の辺を使う経路を優先的に使うことで、求めたい最短経路を構成できる。  \n",
+    "「優先的に選択させる」には、BFSで隣接ノードを次のようにキューに追加すればよい。\n",
+    "\n",
+    "1. 重み $0$ の辺で行ける隣接ノードはキューの先頭に加える\n",
+    "1. 重み $1$ の辺で行ける隣接ノードノードは(通常のBFSと同様に)キューの末尾に加える\n",
+    "\n",
+    "キューにDequeを使用すれば、BFSと同じ計算量 $O(V+E)$ で最短経路を求めることができる。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "例えば、次のグラフ\n",
+    "\n",
+    "![01bfs_init](images/01bfs_init.svg)\n",
+    "\n",
+    "に対して0-1-bfsを適用すると、0の辺を使う経路が優先的に選ばれることにより、次のように最短経路が求まる。\n",
+    "\n",
+    "![01bfs_cost](images/01bfs_cost.svg)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 実装\n",
+    "\n",
+    "キューの実装には、通常のBFSと同じく`deque`を利用する。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from collections import deque\n",
+    "\n",
+    "def zero_one_bfs(N, G, start = 1, INF = 10**7):\n",
+    "    cost = [INF] * (N+1)\n",
+    "    \n",
+    "    q = deque()\n",
+    "    cost[start] = 0\n",
+    "    q.append(start)\n",
+    "    while q:\n",
+    "        u = q.popleft()\n",
+    "        for v in G[u].keys():\n",
+    "            if G[u][v] == 0 and cost[v] > cost[u]:\n",
+    "                cost[v] = cost[u]\n",
+    "                q.appendleft(v)\n",
+    "            elif G[u][v] == 1 and cost[v] > cost[u] + 1:\n",
+    "                cost[v] = cost[u] + 1\n",
+    "                q.append(v)\n",
+    "    return cost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "N = 10\n",
+    "G = [\n",
+    "    {},\n",
+    "    {2: 0, 3: 0}, {1: 0, 4: 1}, {1: 0, 6: 1},\n",
+    "    {2: 1, 5: 0}, {4: 0, 8: 1, 9: 1},\n",
+    "    {3: 1, 7: 0, 8: 0}, {6: 0, 8: 0}, {5: 1, 6: 0, 7: 0},\n",
+    "    {5: 1, 10: 0}, {9: 0}\n",
+    "]\n",
+    "\n",
+    "zero_one_bfs(N, G, start=1)[1:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Dijkstra法\n",
+    "\n",
+    "0-1-BFSでは隣接ノードをキューに追加する際、$0$ の辺を経由して到達できるノードを優先的にキューの先頭に配置した。  \n",
+    "実は重み $\\{0, 1\\}$ でなくとも、負の重みがないグラフであれば同様の考えが適用できる。「取り出すノードが最小のコストとなるようなキュー」を使ってBFSを適用すると、最短経路が求まる。  \n",
+    "キューの実装としては「優先度付きキュー」を使えばよく、BFSの計算量に優先度付きキューの計算量を掛けた計算量 $O((V+E)\\log{V})$ で最短経路を求めることができる。\n",
+    "\n",
+    "この手法は一般に、Dijkstra法と呼ばれる。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "例えば、次のグラフ\n",
+    "\n",
+    "![dijkstra_init](images/dijkstra_init.svg)\n",
+    "\n",
+    "に対してDijkstraを適用すると、次のように最短経路が求まる。\n",
+    "\n",
+    "![dijkstra_cost](images/dijkstra_cost.svg)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 実装\n",
+    "\n",
+    "キューの実装には`heapq`を利用する。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from heapq import heappush, heappop\n",
+    "\n",
+    "def dijkstra(N, G, start = 1, INF = 10**7):\n",
+    "    cost = [INF] * (N+1)\n",
+    "    \n",
+    "    q = []\n",
+    "    cost[start] = 0\n",
+    "    heappush(q, (cost[start], start))\n",
+    "    while q:\n",
+    "        _, u = heappop(q)\n",
+    "        for v in G[u].keys():\n",
+    "            if cost[v] > cost[u] + G[u][v]:\n",
+    "                cost[v] = cost[u] + G[u][v]\n",
+    "                heappush(q, (cost[v], v))\n",
+    "    return cost"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "N = 6\n",
+    "G = [\n",
+    "    {},\n",
+    "    {2: 7, 3: 9, 6: 14}, {1: 7, 3: 10, 4: 15},\n",
+    "    {1: 9, 2: 10, 4: 11, 6: 2}, {2: 15, 3: 11, 5: 6},\n",
+    "    {4: 6, 6: 9}, {1: 14, 3: 2, 5: 9}\n",
+    "]\n",
+    "\n",
+    "dijkstra(N, G, start=1)[1:]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 経路出力\n",
+    "\n",
+    "BFSやDijkstraで算出した移動コストを元に最短経路を出力するには、次の規則に従って終点から始点に向かって移動すればよい。\n",
+    "\n",
+    "1. ノード $u$ を終点とする。\n",
+    "1. $u$ が始点になるまで以下を繰り返す:\n",
+    "    1. ノード $u$ の隣接ノード $v$ について、 $cost[u] = cost[v] + G[u][v]$ が成り立つ隣接ノードに移動する。\n",
+    "    1. $u \\leftarrow v$ とする。\n",
+    "\n",
+    "重みのないグラフに対して経路出力するには、辺の重みを1と仮定すればよい。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def trace_route(N, G, cost, start, end):\n",
+    "    u = end\n",
+    "    route = [u]\n",
+    "    while u != start:\n",
+    "        for v in G[u].keys():\n",
+    "            if cost[u] == cost[v] + G[u][v]:\n",
+    "                u = v\n",
+    "                break\n",
+    "        route.append(u)\n",
+    "    return route[::-1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "N = 6\n",
+    "G = [\n",
+    "    {},\n",
+    "    {2: 7, 3: 9, 6: 14}, {1: 7, 3: 10, 4: 15},\n",
+    "    {1: 9, 2: 10, 4: 11, 6: 2}, {2: 15, 3: 11, 5: 6},\n",
+    "    {4: 6, 6: 9}, {1: 14, 3: 2, 5: 9}\n",
+    "]\n",
+    "\n",
+    "cost = dijkstra(N, G, start=1)\n",
+    "print(trace_route(N, G, cost, start=1, end=5))"
+   ]
+  }
+ ]
+}

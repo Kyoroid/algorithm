@@ -43,7 +43,7 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="全点対間最短経路" href="warshall_floyd.html" />
+    <link rel="next" title="単一始点最短経路" href="shortest_path.html" />
     <link rel="prev" title="最長増加部分列(LIS)" href="../dynamic_programming/lis.html" /> 
 </head>
 
@@ -92,11 +92,11 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../search/index.html">探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">グラフ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shortest_path.html">単一始点最短経路</a></li>
 <li class="toctree-l2"><a class="reference internal" href="warshall_floyd.html">全点対間最短経路</a></li>
 </ul>
 </li>
@@ -201,6 +201,13 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="shortest_path.html">単一始点最短経路</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shortest_path.html#幅優先探索(BFS)">幅優先探索(BFS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_path.html#0-1-BFS">0-1-BFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_path.html#Dijkstra法">Dijkstra法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shortest_path.html#経路出力">経路出力</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="warshall_floyd.html">全点対間最短経路</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="warshall_floyd.html#Warshall-Floyd法">Warshall-Floyd法</a></li>
 </ul>
@@ -217,7 +224,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="warshall_floyd.html" class="btn btn-neutral float-right" title="全点対間最短経路" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="shortest_path.html" class="btn btn-neutral float-right" title="単一始点最短経路" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../dynamic_programming/lis.html" class="btn btn-neutral float-left" title="最長増加部分列(LIS)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

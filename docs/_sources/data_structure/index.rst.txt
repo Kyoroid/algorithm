@@ -9,5 +9,6 @@
    union_find
    heap
    segment_tree
+   binary_indexed_tree
    multiset
    

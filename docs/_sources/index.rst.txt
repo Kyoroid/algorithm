@@ -6,7 +6,6 @@
    :caption: Contents:
 
    math/index
-   search/index
    string/index
    data_structure/index
    dynamic_programming/index
