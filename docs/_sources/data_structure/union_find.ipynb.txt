@@ -15,7 +15,8 @@
    "source": [
     "## Union-Find\n",
     "\n",
-    "グループを表すデータ構造の1つ。以下の操作を高速に実現する。\n",
+    "グループを表すデータ構造の1つ。Disjoint Set Union (DSU) とも呼ばれる。  \n",
+    "以下の操作を高速に実現する。\n",
     "\n",
     "- ある要素がどのグループに属しているかを調べる (find)\n",
     "- 2つのグループを併合する (union)"
@@ -53,7 +54,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -90,11 +91,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "[0, 0, 2, 3, 2, 2]\n"
+    }
+   ],
    "source": [
     "N = 6\n",
     "uf = UnionFind(N)\n",

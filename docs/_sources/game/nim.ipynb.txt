@@ -10,7 +10,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": 3
+   "version": "3.8.1-final"
   },
   "orig_nbformat": 2,
   "kernelspec": {
@@ -51,7 +51,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -72,11 +72,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "Win\n"
+    }
+   ],
    "source": [
     "X = [2, 3, 5, 7]\n",
     "print(\"Win\" if solve_nim(X) else \"Lose\")"
@@ -84,11 +90,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 3,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "Lose\n"
+    }
+   ],
    "source": [
     "X = [3, 6, 12, 9]\n",
     "print(\"Win\" if solve_nim(X) else \"Lose\")"

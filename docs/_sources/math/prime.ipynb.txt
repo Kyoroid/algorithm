@@ -26,7 +26,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -44,22 +44,34 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "True\n"
+    }
+   ],
    "source": [
     "print(is_prime(2017))"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 3,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "False\n"
+    }
+   ],
    "source": [
     "print(is_prime(2019))"
    ]
@@ -114,7 +126,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -134,11 +146,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 5,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]\n"
+    }
+   ],
    "source": [
     "print(sieve(37))"
    ]
@@ -187,7 +205,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -212,11 +230,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 7,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "Counter({5: 3, 2: 2})\n500\nCounter({1000000007: 1})\n1000000007\n"
+    }
+   ],
    "source": [
     "from operator import mul\n",
     "from functools import reduce\n",
@@ -258,7 +282,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -291,11 +315,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 9,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "Counter({2: 1, 79: 1, 6329: 1})\n999982\nCounter({999983: 1})\n999983\n"
+    }
+   ],
    "source": [
     "from operator import mul\n",
     "from functools import reduce\n",

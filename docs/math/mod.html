@@ -124,7 +124,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../graph/index.html">グラフ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
             
@@ -529,7 +528,7 @@ a a^{-1} - 1 = mk &amp; (k \in \mathbb{N})
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span>
 
@@ -560,7 +559,7 @@ a a^{-1} - 1 = mk &amp; (k \in \mathbb{N})
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
@@ -588,7 +587,7 @@ gcd(10, 2019) = 1
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
@@ -644,7 +643,7 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 </pre></div>
@@ -654,7 +653,7 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">131</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span>
 <span class="n">a_pinv</span> <span class="o">=</span> <span class="n">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
@@ -674,7 +673,7 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a_inv</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{a}</span><span class="s2">^-1 </span><span class="se">\u2261</span><span class="s2"> </span><span class="si">{d}</span><span class="s2"> (mod </span><span class="si">{m}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">a_inv</span><span class="p">))</span>
 </pre></div>
@@ -701,7 +700,7 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="k">class</span> <span class="nc">ModInt</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
 
     <span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span>
@@ -767,7 +766,7 @@ a^{-1} &amp;\equiv&amp; a^{p-2} \pmod{p} \\
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
 <span></span><span class="n">ModInt</span><span class="o">.</span><span class="n">MOD</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mi">7</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">inva</span> <span class="o">=</span> <span class="n">ModInt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>

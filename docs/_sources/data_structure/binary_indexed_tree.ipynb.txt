@@ -84,7 +84,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -113,11 +113,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "11\n16\n"
+    }
+   ],
    "source": [
     "A = [3, 5, 7, -4, 2, -3, 4]\n",
     "B = bit_init(A)\n",

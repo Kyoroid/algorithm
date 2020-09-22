@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pythonにおける文字列検索の実装 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>繰り返し二乗法・ダブリング &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="データ構造" href="../data_structure/index.html" />
-    <link rel="prev" title="ローリングハッシュ (Rabin-Karp)" href="rolling_hash.html" /> 
+    <link rel="next" title="最長増加部分列(LIS)" href="lis.html" />
+    <link rel="prev" title="動的計画法" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -92,18 +92,24 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">文字列</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="palindrome.html">回文</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rolling_hash.html">ローリングハッシュ (Rabin-Karp)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Pythonにおける文字列検索の実装</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#検索用メソッドの実装">検索用メソッドの実装</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#辞書の実装と文字列検索">辞書の実装と文字列検索</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">動的計画法</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">繰り返し二乗法・ダブリング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#繰り返し二乗法">繰り返し二乗法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#アルゴリズム">アルゴリズム</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#実装">実装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ダブリング">ダブリング</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">実装</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lis.html">最長増加部分列(LIS)</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../graph/index.html">グラフ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
 </ul>
@@ -154,9 +160,9 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="index.html">文字列</a> &raquo;</li>
+          <li><a href="index.html">動的計画法</a> &raquo;</li>
         
-      <li>Pythonにおける文字列検索の実装</li>
+      <li>繰り返し二乗法・ダブリング</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -433,63 +439,54 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Pythonにおける文字列検索の実装">
-<h1>Pythonにおける文字列検索の実装<a class="headerlink" href="#Pythonにおける文字列検索の実装" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="section" id="検索用メソッドの実装">
-<h2>検索用メソッドの実装<a class="headerlink" href="#検索用メソッドの実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><a class="reference external" href="http://effbot.org/zone/stringlib.htm">The stringlib Library</a></p>
+<div class="section" id="繰り返し二乗法・ダブリング">
+<h1>繰り返し二乗法・ダブリング<a class="headerlink" href="#繰り返し二乗法・ダブリング" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="繰り返し二乗法">
+<h2>繰り返し二乗法<a class="headerlink" href="#繰り返し二乗法" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="line-block">
-<div class="line">CPythonでは文字列操作のうち<code class="docutils literal notranslate"><span class="pre">__contains__</span></code>や<code class="docutils literal notranslate"><span class="pre">find</span></code>の実装に、Boyer-Moore法をベースとしたアルゴリズム (BMHBNFS) を使用している。</div>
-<div class="line">実装は<a class="reference external" href="https://github.com/python/cpython/blob/v3.8.3/Objects/stringlib/fastsearch.h">fastsearch.h</a>を参照。</div>
-<div class="line">これにより、文字列検索を平均計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(n/m)\)</span>、最悪計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(nm)\)</span> で行うことが可能となっている。</div>
+<div class="line">べき乗を高速に求めることができるアルゴリズム。</div>
+<div class="line">ある数を <span class="math notranslate nohighlight">\(N\)</span> 乗するとき、計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{N})\)</span> でべき乗が求まる。</div>
 </div>
-<div class="nbinput docutils container">
+<div class="section" id="アルゴリズム">
+<h3>アルゴリズム<a class="headerlink" href="#アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>例として、 <span class="math notranslate nohighlight">\(3^{45} \pmod{17}\)</span> を求めることを考える。</p>
+<p>指数を2のべき乗の和で表すと</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{eqnarray}
+3^{53} &amp;=&amp; 3^{(1 + 4 + 16 + 32)} \\
+&amp;=&amp; 3^1 \cdot 3^4 \cdot 3^{16} \cdot 3^{32}
+\end{eqnarray}\end{split}\]</div>
+<p>のように変形できる。 <span class="math notranslate nohighlight">\(3^k\)</span> は <span class="math notranslate nohighlight">\(3^{k-1}\)</span> を2乗すれば求められるから、<span class="math notranslate nohighlight">\(3^1, 3^2, 3^4, 3^8, \ldots\)</span> をこの順に求め、上式に含まれる値のみ掛け算した値を解とすればよい。</p>
+</div>
+<div class="section" id="実装">
+<h3>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">繰り返し二乗法の利用例として、 <span class="math notranslate nohighlight">\(x^y \pmod z\)</span> を求める関数の実装を示す。</div>
+<div class="line">なお、Pythonの組み込み関数 <code class="docutils literal notranslate"><span class="pre">pow</span></code> も同様に振舞う。</div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">has_string</span> <span class="o">=</span> <span class="s2">&quot;ssi&quot;</span> <span class="ow">in</span> <span class="s2">&quot;mississippi&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">has_string</span><span class="p">)</span>
+<span></span><span class="k">def</span> <span class="nf">modpow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">%</span> <span class="n">z</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">%</span> <span class="n">z</span>
+        <span class="n">y</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-True
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="辞書の実装と文字列検索">
-<h2>辞書の実装と文字列検索<a class="headerlink" href="#辞書の実装と文字列検索" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<div class="line-block">
-<div class="line"><a class="reference external" href="http://dsas.blog.klab.org/archives/python-dict-internal.html">Python の dict の実装詳解</a></div>
-<div class="line"><a class="reference external" href="https://ja.stackoverflow.com/questions/7703/python%E3%81%AE%E8%BE%9E%E6%9B%B8%E5%9E%8B%E3%81%AE%E5%AE%9F%E8%A3%85">pythonの辞書型の実装 - stackoverflow</a></div>
-</div>
-<div class="line-block">
-<div class="line">CPythonにおいては、辞書はハッシュテーブルとして実装されている。</div>
-<div class="line">辞書のキーには文字列を使うことを前提として高速化が図られており、文字列用のハッシュが<a class="reference external" href="https://github.com/python/cpython/blob/v3.8.3/Python/pyhash.c#L145-L191">pyhash.c</a>で実装されている。</div>
-</div>
-<p>例えば同一部分文字列の出現判定を<code class="docutils literal notranslate"><span class="pre">dict</span></code>で実装する際に、ローリングハッシュの代わりに文字列そのものをキーに指定することで、同程度の検索性能を得ることができる場合がある。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-
-<span class="n">S</span> <span class="o">=</span> <span class="s2">&quot;mississippi&quot;</span>
-<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-<span class="c1"># 長さ3の文字列を検索</span>
-<span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
-
-<span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">size</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">d</span><span class="p">[</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">size</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">modpow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -498,15 +495,77 @@ True
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-defaultdict(&lt;class &#39;list&#39;&gt;,
-            {&#39;ipp&#39;: [7],
-             &#39;iss&#39;: [1, 4],
-             &#39;mis&#39;: [0],
-             &#39;ppi&#39;: [8],
-             &#39;sip&#39;: [6],
-             &#39;sis&#39;: [3],
-             &#39;ssi&#39;: [2, 5]})
+5 5
 </pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="ダブリング">
+<h2>ダブリング<a class="headerlink" href="#ダブリング" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ある状態に対して同じ操作を <span class="math notranslate nohighlight">\(N\)</span> 回適用した後の状態について、操作を2のべき乗の和に分解することで高速に求めることができるアルゴリズム。</p>
+<p>とりうる状態の数を <span class="math notranslate nohighlight">\(M\)</span> とすると、計算量は次の通り。</p>
+<ul class="simple">
+<li><p>前処理: <span class="math notranslate nohighlight">\(\mathcal{O}(M\log{N})\)</span></p></li>
+<li><p>クエリ; <span class="math notranslate nohighlight">\(\mathcal{O}(\log{N})\)</span></p></li>
+</ul>
+<div class="line-block">
+<div class="line">また、先の <span class="math notranslate nohighlight">\(x^y \pmod z\)</span> はダブリングで求められる。</div>
+<div class="line">前処理では、法 <span class="math notranslate nohighlight">\(z\)</span> のもとでとりうるすべての値 <span class="math notranslate nohighlight">\(0\leq j &lt; z\)</span> について繰り返し二乗法を行う。</div>
+<div class="line">配列 <span class="math notranslate nohighlight">\(Z[i][j] := j \cdot 3^{2^i}\)</span> を定義し、この配列に繰り返し二乗法の結果を格納する。</div>
+</div>
+<p>実際に <span class="math notranslate nohighlight">\(x^y \pmod z\)</span> を求めるときは、剰余 <span class="math notranslate nohighlight">\(j\)</span> とべき乗の指数 <span class="math notranslate nohighlight">\(i\)</span> をキーとして、配列から順に取り出せばよい。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{eqnarray}
+1 \cdot 3^{1} = Z[0][1] &amp;\equiv&amp; 3 \pmod{17} \\
+3 \cdot 3^{4} = Z[2][3] &amp;\equiv&amp; 5 \\
+5 \cdot 3^{16} = Z[4][5] &amp;\equiv&amp; 5 \\
+5 \cdot 3^{32} = Z[5][5] &amp;\equiv&amp; 5 \\
+\therefore 3^{53} &amp;\equiv&amp; 5\\
+\end{eqnarray}\end{split}\]</div>
+<div class="section" id="id6">
+<h3>実装<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(x^y \pmod z\)</span> のダブリングでの実装例を示す。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">modpow_doubling</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span> <span class="o">*</span> <span class="n">x</span> <span class="o">%</span> <span class="n">z</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">a</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">modpow_doubling</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5 5
+</pre></div></div>
+</div>
 </div>
 </div>
 </div>
@@ -519,10 +578,10 @@ defaultdict(&lt;class &#39;list&#39;&gt;,
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data_structure/index.html" class="btn btn-neutral float-right" title="データ構造" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lis.html" class="btn btn-neutral float-right" title="最長増加部分列(LIS)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rolling_hash.html" class="btn btn-neutral float-left" title="ローリングハッシュ (Rabin-Karp)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="動的計画法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

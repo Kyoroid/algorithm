@@ -85,7 +85,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -138,9 +138,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
+   "execution_count": 2,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "4\n"
+    }
+   ],
    "source": [
     "import random\n",
     "\n",
@@ -163,9 +171,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
+   "execution_count": 3,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "defaultdict(<class 'list'>,\n            {501: [8],\n             840: [7],\n             1068: [1, 4],\n             1379: [6],\n             1382: [3],\n             1449: [2, 5],\n             1955: [0]})\n"
+    }
+   ],
    "source": [
     "from pprint import pprint\n",
     "from collections import defaultdict\n",

@@ -11,7 +11,6 @@
    dynamic_programming/index
    graph/index
    game/index
-   visualization/index
 
 
 Indices and tables

@@ -118,7 +118,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../visualization/index.html">可視化</a></li>
 </ul>
 
             
@@ -454,7 +453,7 @@ div.rendered_html tbody tr:hover {
 <ul class="simple">
 <li><p>辺の重みがない、もしくはすべて等しい</p></li>
 </ul>
-<p>計算量は頂点数 <span class="math notranslate nohighlight">\(V\)</span> と辺の数 <span class="math notranslate nohighlight">\(E\)</span> を用いて <span class="math notranslate nohighlight">\(O(V+E)\)</span> と表される。</p>
+<p>計算量は頂点数 <span class="math notranslate nohighlight">\(V\)</span> と辺の数 <span class="math notranslate nohighlight">\(E\)</span> を用いて <span class="math notranslate nohighlight">\(\mathcal{O}(V+E)\)</span> と表される。</p>
 <div class="section" id="アルゴリズム">
 <h3>アルゴリズム<a class="headerlink" href="#アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>辺の重みがない場合は次の通り。</p>
@@ -573,7 +572,7 @@ div.rendered_html tbody tr:hover {
 <li><p>重み <span class="math notranslate nohighlight">\(0\)</span> の辺で行ける隣接ノードはキューの先頭に加える</p></li>
 <li><p>重み <span class="math notranslate nohighlight">\(1\)</span> の辺で行ける隣接ノードノードは(通常のBFSと同様に)キューの末尾に加える</p></li>
 </ol>
-<p>キューにDequeを使用すれば、BFSと同じ計算量 <span class="math notranslate nohighlight">\(O(V+E)\)</span> で最短経路を求めることができる。</p>
+<p>キューにDequeを使用すれば、BFSと同じ計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(V+E)\)</span> で最短経路を求めることができる。</p>
 <p>例えば、次のグラフ</p>
 <p><img alt="01bfs_init" src="../_images/01bfs_init.svg" /></p>
 <p>に対して0-1-bfsを適用すると、0の辺を使う経路が優先的に選ばれることにより、次のように最短経路が求まる。</p>
@@ -641,7 +640,7 @@ div.rendered_html tbody tr:hover {
 <div class="line-block">
 <div class="line">0-1-BFSでは隣接ノードをキューに追加する際、<span class="math notranslate nohighlight">\(0\)</span> の辺を経由して到達できるノードを優先的にキューの先頭に配置した。</div>
 <div class="line">実は重み <span class="math notranslate nohighlight">\(\{0, 1\}\)</span> でなくとも、負の重みがないグラフであれば同様の考えが適用できる。「取り出すノードが最小のコストとなるようなキュー」を使ってBFSを適用すると、最短経路が求まる。</div>
-<div class="line">キューの実装としては「優先度付きキュー」を使えばよく、BFSの計算量に優先度付きキューの計算量を掛けた計算量 <span class="math notranslate nohighlight">\(O((V+E)\log{V})\)</span> で最短経路を求めることができる。</div>
+<div class="line">キューの実装としては「優先度付きキュー」を使えばよく、BFSの計算量に優先度付きキューの計算量を掛けた計算量 <span class="math notranslate nohighlight">\(\mathcal{O}((V+E)\log{V})\)</span> で最短経路を求めることができる。</div>
 </div>
 <p>この手法は一般に、Dijkstra法と呼ばれる。</p>
 <p>例えば、次のグラフ</p>

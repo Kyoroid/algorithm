@@ -10,7 +10,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": 3
+   "version": "3.8.1-final"
   },
   "orig_nbformat": 2,
   "kernelspec": {
@@ -63,7 +63,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -83,11 +83,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {
     "tags": []
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "output_type": "stream",
+     "name": "stdout",
+     "text": "12\n"
+    }
+   ],
    "source": [
     "INF=10**7\n",
     "N = 5\n",
