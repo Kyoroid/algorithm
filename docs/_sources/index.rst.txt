@@ -1,6 +1,8 @@
 競技プログラミングノート
 =====================================
 
+最終更新: |today|
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
