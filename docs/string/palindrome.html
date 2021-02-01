@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>回文 &mdash; Competitive programming notebook  ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="ローリングハッシュ (Rabin-Karp)" href="rolling_hash.html" />
+    <link rel="prev" title="文字列" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">文字列</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">回文</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#回文半径">回文半径</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Manacher">Manacher</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#アルゴリズム">アルゴリズム</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#実装">実装</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rolling_hash.html">ローリングハッシュ (Rabin-Karp)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cpython_string.html">Pythonにおける文字列検索の実装</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph/index.html">グラフ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Competitive programming notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">文字列</a> &raquo;</li>
+        
+      <li>回文</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Kyoroid/algorithm" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="回文">
+<h1>回文<a class="headerlink" href="#回文" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="回文半径">
+<h2>回文半径<a class="headerlink" href="#回文半径" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">文字列 <span class="math notranslate nohighlight">\(S\)</span> が文字 <span class="math notranslate nohighlight">\(s_i\)</span> の前後で回文であるとき、<strong>奇数長</strong>の回文であれば前後<span class="math notranslate nohighlight">\(r\)</span> 個の文字で <span class="math notranslate nohighlight">\(s_{i+r} = s_{i-r}\)</span> が成り立つ。</div>
+<div class="line"><span class="math notranslate nohighlight">\(r\)</span> の最大値を回文半径という。最小半径は1。</div>
+<div class="line">言い換えると、回文半径は位置 <span class="math notranslate nohighlight">\(i\)</span> の前後で作れる最長回文の長さを表す。</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">palindrome_radius</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">S</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span><span class="o">-</span><span class="n">r</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span><span class="o">+</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">r</span><span class="p">]</span> <span class="o">==</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">r</span><span class="p">]:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+    <span class="k">return</span> <span class="n">rad</span>
+</pre></div>
+</div>
+</div>
+<p>例えば、文字列 “abbaaa” に含まれる奇数長回文の回文半径は次の通り。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">palindrome_radius</span><span class="p">(</span><span class="s2">&quot;abbaaa&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[1, 1, 1, 1, 2, 1]
+</pre></div></div>
+</div>
+<div class="line-block">
+<div class="line">このままでは、“abba” のような偶数回文が検出されない。</div>
+<div class="line">これを検出する方法として、もとの文字列の各文字間にダミー文字を挟む方法がある。</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">S</span> <span class="o">=</span> <span class="s2">&quot;abbaaa&quot;</span>
+<span class="n">T</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">rad</span> <span class="o">=</span> <span class="n">palindrome_radius</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+$a$b$b$a$a$a$
+[1, 2, 1, 2, 5, 2, 1, 2, 3, 4, 3, 2, 1]
+</pre></div></div>
+</div>
+<div class="line-block">
+<div class="line">上記コードの <span class="math notranslate nohighlight">\(rad_{2i+1}\)</span> は奇数長回文、<span class="math notranslate nohighlight">\(rad_{2i}\)</span> (両端を除く) は偶数長回文に対応する。つまり、偶奇両方の最長回文を検出可能。</div>
+<div class="line">求めた回文半径 <span class="math notranslate nohighlight">\(rad_i\)</span> は、次のようにダミー文字を含む回文半径となる。</div>
+</div>
+<div class="line-block">
+<div class="line">奇数長回文 “$a$a$a$”, 回文半径4</div>
+<div class="line">偶数長回文 “$a$b$b$a$”, 回文半径5</div>
+</div>
+<p>ダミー文字のない回文を得るには、2文字目から1飛ばしで文字列を取り出せばよい。</p>
+<div class="line-block">
+<div class="line">回文半径を利用して、文字列の連続部分列で構成される最長の回文を <span class="math notranslate nohighlight">\(\mathcal{O}(|S|^2)\)</span> で求めることができる。</div>
+<div class="line">なお、このような最長回文はManacherのアルゴリズムでより高速に求められる。</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">longest_palindrome</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">T</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">i</span><span class="o">-</span><span class="n">r</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span><span class="o">+</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">r</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">r</span><span class="p">]:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+
+    <span class="n">mi</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rad</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mr</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">mi</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">mr</span> <span class="o">=</span> <span class="n">r</span>
+    <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">mi</span><span class="o">-</span><span class="n">mr</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">mi</span><span class="o">+</span><span class="n">mr</span><span class="p">][</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">longest_palindrome</span><span class="p">(</span><span class="s2">&quot;mississippi&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">longest_palindrome</span><span class="p">(</span><span class="s2">&quot;1337&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ississi
+33
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Manacher">
+<h2>Manacher<a class="headerlink" href="#Manacher" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><a class="reference external" href="https://snuke.hatenablog.com/entry/2014/12/02/235837">https://snuke.hatenablog.com/entry/2014/12/02/235837</a></p>
+<p>文字列 <span class="math notranslate nohighlight">\(S\)</span> の <span class="math notranslate nohighlight">\(i\)</span> 番目の文字 <span class="math notranslate nohighlight">\(s_i\)</span> に対する回文半径の配列 <span class="math notranslate nohighlight">\(r_1, r_2, \ldots, r_n\)</span> を、計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(|S|)\)</span> で求めるアルゴリズム。</p>
+<div class="section" id="アルゴリズム">
+<h3>アルゴリズム<a class="headerlink" href="#アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">奇数長回文を含む文字列 “babacabac” の連続部分列を考える。</div>
+<div class="line">左から3文字目で回文 “aba” (半径2)、5文字目で回文 “abacaba” (半径4) が検出される。</div>
+<div class="line">このとき回文の対称性より、5文字目の回文判定を終えた直後に以下のことがわかる。</div>
+</div>
+<ul class="simple">
+<li><p>6文字目は 4文字目の結果(回文半径1)が3未満なので、回文半径 1</p></li>
+<li><p>7文字目は 3文字目の結果(回文半径2)が2以上なので、回文半径 2 以上</p></li>
+<li><p>8文字目は 2文字目の結果(回文半径2)が1以上なので、回文半径 1 以上</p></li>
+</ul>
+<div class="line-block">
+<div class="line">この場合、回文半径が定まる文字をスキップすることができる。</div>
+<div class="line">一般化すると次の通り。</div>
+</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i\)</span> 文字目の回文半径が <span class="math notranslate nohighlight">\(r_i\)</span> に定まったとき、<span class="math notranslate nohighlight">\(k \in [1, r_i]\)</span> について次のことがわかる。</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(k+r_{i-k} &lt; r_i\)</span> ならば、<span class="math notranslate nohighlight">\(i+k\)</span> 文字目の回文半径は <span class="math notranslate nohighlight">\(r_{i+k} = r_{i-k}\)</span> で確定する。<span class="math notranslate nohighlight">\((k+r_{i+k} &lt; r_i)\)</span></p></li>
+<li><p>そうでない場合は <span class="math notranslate nohighlight">\(i+k\)</span> 文字目の回文半径を <span class="math notranslate nohighlight">\(r_{i+k} \geq r_i - k\)</span> とする。</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="実装">
+<h3>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>偶数長の回文を考慮して実装する。</p>
+<p><span class="math notranslate nohighlight">\(k+r_{i-k} &lt; r_i\)</span> が偽となった時点で次のステップに進んでいるが、それでも十分回文判定を減らすことができ、計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(|S|)\)</span> で求めることができる。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">longest_palindrome</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;$&quot;</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">T</span><span class="p">]</span>
+    <span class="n">longest</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">i</span><span class="o">-</span><span class="n">r</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span><span class="o">+</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">r</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">r</span><span class="p">]:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+
+        <span class="c1"># Manacher</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">i</span><span class="o">-</span><span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">+</span> <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">k</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="n">k</span>
+
+    <span class="n">mi</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rad</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mr</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">mi</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">mr</span> <span class="o">=</span> <span class="n">r</span>
+    <span class="k">return</span> <span class="n">T</span><span class="p">[</span><span class="n">mi</span><span class="o">-</span><span class="n">mr</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="n">mi</span><span class="o">+</span><span class="n">mr</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">longest_palindrome</span><span class="p">(</span><span class="s2">&quot;mississippi&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">longest_palindrome</span><span class="p">(</span><span class="s2">&quot;1337&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ississi
+33
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rolling_hash.html" class="btn btn-neutral float-right" title="ローリングハッシュ (Rabin-Karp)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="文字列" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020, Kyoroid
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

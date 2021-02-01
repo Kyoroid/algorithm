@@ -1,0 +1,937 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>セグメント木 &mdash; Competitive programming notebook  ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="Binary Indexed Tree (BIT)" href="binary_indexed_tree.html" />
+    <link rel="prev" title="ヒープ" href="heap.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../math/index.html">数学</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">データ構造</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cumulative_sum.html">累積和</a></li>
+<li class="toctree-l2"><a class="reference internal" href="union_find.html">Union-Find</a></li>
+<li class="toctree-l2"><a class="reference internal" href="heap.html">ヒープ</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">セグメント木</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">セグメント木</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#原理">原理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Range-Minimum-Query-(RMQ)">Range Minimum Query (RMQ)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#1点更新">1点更新</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#問い合わせ-(トップダウン)">問い合わせ (トップダウン)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#問い合わせ-(ボトムアップ)">問い合わせ (ボトムアップ)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#実装">実装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Range-Add-Query-(RAQ)">Range Add Query (RAQ)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#1点問い合わせ">1点問い合わせ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#区間更新">区間更新</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">実装</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="binary_indexed_tree.html">Binary Indexed Tree (BIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html">多重集合 (Multiset)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph/index.html">グラフ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game/index.html">ゲーム</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Competitive programming notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">データ構造</a> &raquo;</li>
+        
+      <li>セグメント木</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Kyoroid/algorithm" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="セグメント木">
+<h1>セグメント木<a class="headerlink" href="#セグメント木" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>蟻本p.153</p>
+<p><a class="reference external" href="https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree">https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree</a></p>
+<p><a class="reference external" href="https://algo-logic.info/segment-tree/">https://algo-logic.info/segment-tree/</a></p>
+<p><a class="reference external" href="https://kujira16.hateblo.jp/entry/2016/12/15/000000">https://kujira16.hateblo.jp/entry/2016/12/15/000000</a></p>
+<div class="section" id="id2">
+<h2>セグメント木<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">セグメント木 (Segment Tree) は要素列を表現するデータ構造の1つ。</div>
+<div class="line">要素列 <span class="math notranslate nohighlight">\(A = a_1 a_2 a_3 \ldots a_n\)</span> に対して、区間 <span class="math notranslate nohighlight">\(A_{[l, r)}\)</span> に対する操作を高速に行うことができる。</div>
+</div>
+<div class="line-block">
+<div class="line">オンラインクエリに対応できることが特徴。</div>
+<div class="line">逆にオフラインの場合はクエリをソートすることで、別のデータ構造を用いたさらなる高速化ができる場合がある。</div>
+</div>
+</div>
+<div class="section" id="原理">
+<h2>原理<a class="headerlink" href="#原理" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>以下、簡単のため要素数 <span class="math notranslate nohighlight">\(n\)</span> を2のべき乗とする。</p>
+<div class="line-block">
+<div class="line">セグメント木では <span class="math notranslate nohighlight">\(n\)</span> 個の要素を次のように、長さ <span class="math notranslate nohighlight">\(2n-1\)</span> の配列で表現する。</div>
+<div class="line">最下層は要素列のインデックスを割り当て、上層には要素列の「区間」を割り当てる。</div>
+</div>
+<p><img alt="segment_tree_slice" src="../_images/segment_tree_slice.svg" /></p>
+<div class="line-block">
+<div class="line">セグメント木では、任意の区間に対する問い合わせを「連続する小区間に対する問い合わせ」として表現する。</div>
+<div class="line">例えば区間 <span class="math notranslate nohighlight">\([1, 7]\)</span> に対する問い合わせは、小区間 <span class="math notranslate nohighlight">\([1], [2,3], [4,7]\)</span> への問い合わせ結果を用いて作成する。</div>
+</div>
+<p><img alt="segment_tree_from1to7" src="../_images/segment_tree_from1to7.svg" /></p>
+<div class="line-block">
+<div class="line">また、実装においては1-indexedを採用し、長さ <span class="math notranslate nohighlight">\(2n\)</span> の配列をセグメント木とみなす。</div>
+<div class="line">これにより、インデックスに関して次の性質が成り立つ。</div>
+</div>
+<ul class="simple">
+<li><p>ビット長が木の深さを表す。</p></li>
+<li><p>兄弟ノードは下位1ビットだけが異なる。</p></li>
+</ul>
+<p><img alt="segment_tree_indice" src="../_images/segment_tree_indice.svg" /></p>
+<div class="line-block">
+<div class="line">なお、もとの配列の長さ <span class="math notranslate nohighlight">\(n\)</span> が2のべき乗でないときは、<span class="math notranslate nohighlight">\(n\)</span> より大きい2のべき乗の長さの配列とみなしてセグメント木を作る。</div>
+<div class="line">使用しないノードには初期値を代入する。</div>
+</div>
+</div>
+<div class="section" id="Range-Minimum-Query-(RMQ)">
+<h2>Range Minimum Query (RMQ)<a class="headerlink" href="#Range-Minimum-Query-(RMQ)" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>要素列をセグメント木に格納すると、区間に対する問い合わせを高速化できる。</p>
+<ul class="simple">
+<li><p>初期化: <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span></p></li>
+<li><p>要素1つの更新: <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>区間 <span class="math notranslate nohighlight">\([l, r)\)</span> の最小値を求める問い合わせ: <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+</ul>
+<div class="line-block">
+<div class="line">RMQでは節点に「区間の最小値」を持たせる。</div>
+<div class="line">例えば数列 <span class="math notranslate nohighlight">\([3, 7, 5, 5, 4, -3, 11, 2]\)</span> は、RMQで次のように表現される。</div>
+</div>
+<p><img alt="rmq_init" src="../_images/rmq_init.svg" /></p>
+<div class="section" id="1点更新">
+<h3>1点更新<a class="headerlink" href="#1点更新" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>要素を更新するにはセグメント木を下層から上層へと辿りつつ、通過した節点に書かれた区間最小値を更新していく。</p>
+<p>例えば配列の3番目の要素を <span class="math notranslate nohighlight">\(5 \rightarrow 2\)</span> に更新する場合、次のような更新経路を辿る。</p>
+<p><img alt="rmq_update" src="../_images/rmq_update.svg" /></p>
+</div>
+<div class="section" id="問い合わせ-(トップダウン)">
+<h3>問い合わせ (トップダウン)<a class="headerlink" href="#問い合わせ-(トップダウン)" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">問い合わせの実装は2通りある。</div>
+<div class="line">トップダウン型では分割統治法を用いる。問い合わせ区間をセグメント木に合わせて分割し、小区間ごとの問い合わせ結果をマージする。</div>
+<div class="line">範囲外の区間を表すノードも見ることになるため、<span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> は最良計算量となる。次に示すボトムアップ型より遅い。</div>
+</div>
+</div>
+<div class="section" id="問い合わせ-(ボトムアップ)">
+<h3>問い合わせ (ボトムアップ)<a class="headerlink" href="#問い合わせ-(ボトムアップ)" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">ボトムアップ型では更新操作と同様に、問い合わせ区間の走査を下層から上層に向かって行う。</div>
+<div class="line">下層から上層へと辿りながら経路上の区間最小値を取得していき、今までに取得した値より小さい値であれば保持している値を更新する。</div>
+</div>
+<div class="line-block">
+<div class="line">区間の左端 <span class="math notranslate nohighlight">\(l\)</span> は次のように更新する。</div>
+<div class="line">辿るノードはすべて「問い合わせ区間に含まれるノード」または「問い合わせ区間に含まれるかもしれないノード」のいずれかである。</div>
+</div>
+<ul class="simple">
+<li><p>ノードの添字が <strong>奇数</strong> (図中の緑ノード) ならば、ノードに書かれた数値は区間最小値である。値を取得して <strong>右上</strong> のノードへ移動する。</p></li>
+<li><p>ノードの添字が偶数ならば、ノードに書かれた数値は区間最小値でない可能性がある。値を取得せずに直上のノードへ移動する。</p></li>
+</ul>
+<p><img alt="rmq_query_bottomup_l" src="../_images/rmq_query_bottomup_l.svg" /></p>
+<p>同様に、区間の右端 <span class="math notranslate nohighlight">\(r\)</span> も更新する。</p>
+<ul class="simple">
+<li><p>ノードの添字が <strong>偶数</strong> (図中の青ノード) ならば、ノードに書かれた数値は区間最小値である。値を取得して <strong>左上</strong> のノードへ移動する。</p></li>
+<li><p>ノードの添字が奇数ならば、ノードに書かれた数値は区間最小値でない可能性がある。値を取得せずに直上のノードへ移動する。</p></li>
+</ul>
+<p><img alt="rmq_query_bottomup_r" src="../_images/rmq_query_bottomup_r.svg" /></p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(l, r\)</span> の経路が交差するまで区間最小値の取得・更新を続ける。</div>
+<div class="line">最終的に下図の赤色ノードの区間最小値 <span class="math notranslate nohighlight">\(\{2, -3, 11\}\)</span> が取り込まれ、問い合わせ区間の最小値が <span class="math notranslate nohighlight">\(\min(2, -3, 11) = -3\)</span> と求まる。</div>
+</div>
+<p><img alt="rmq_query_bottomup_cross" src="../_images/rmq_query_bottomup_cross.svg" /></p>
+<p>ボトムアップ型では問い合わせ区間外のノードを見ることがないため、平均計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> が実現できる。</p>
+</div>
+<div class="section" id="実装">
+<h3>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ボトムアップ型、トップダウン型それぞれの実装を示す。実際の問い合わせはボトムアップ型で処理する。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">RMQ</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初期化&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_value</span> <span class="o">=</span> <span class="n">init_value</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">((</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>
+        <span class="n">treesize</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_value</span><span class="p">]</span> <span class="o">*</span> <span class="n">treesize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="n">init_value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;値の更新&quot;&quot;&quot;</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_query_bottomup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する累積操作</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="n">b</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_value</span>
+        <span class="k">while</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">a</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
+                <span class="n">b</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">_query_topdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する累積操作</span>
+<span class="sd">        k: 着目しているノード (1-indexed)</span>
+<span class="sd">        l: 探索区間 st[l, r) の左端 (0-indexed)</span>
+<span class="sd">        r: 探索区間 st[l, r) の右端 (0-indexed)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">l</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_value</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">lv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_topdown</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_topdown</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">lv</span><span class="p">,</span> <span class="n">rv</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する累積操作&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be less than equal b.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_bottomup</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">rmq</span> <span class="o">=</span> <span class="n">RMQ</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">rmq</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rmq</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-3
+</pre></div></div>
+</div>
+<div class="line-block">
+<div class="line">セグメント木による区間に対する操作は、最小値以外の操作でも利用できる。</div>
+<div class="line">具体的には、次の条件を満たせばよい。</div>
+</div>
+<ul class="simple">
+<li><p>結合法則が成り立つ <span class="math notranslate nohighlight">\((a \cdot b) \cdot c = a \cdot (b \cdot c)\)</span></p></li>
+<li><p>単位元 <span class="math notranslate nohighlight">\(e\)</span> をもつ <span class="math notranslate nohighlight">\(a \cdot e = e \cdot a = a\)</span></p></li>
+</ul>
+<p>操作 <code class="docutils literal notranslate"><span class="pre">op</span></code> には二項演算子を、初期値 <code class="docutils literal notranslate"><span class="pre">init_value</span></code> には単位元を指定する。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 59%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>クエリ</p></th>
+<th class="head"><p>操作</p></th>
+<th class="head"><p>初期値</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>和</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">operator.add</span></code></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>積</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">operator.mul</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>最小値</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></td>
+<td><p>+INF</p></td>
+</tr>
+<tr class="row-odd"><td><p>最大値</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></td>
+<td><p>-INF</p></td>
+</tr>
+<tr class="row-even"><td><p>AND</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">operator.and_</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>OR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">operator.or_</span></code></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>XOR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">operator.xor</span></code></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>GCD</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">math.gcd</span></code></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>LCM</p></td>
+<td><p>―</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="Range-Add-Query-(RAQ)">
+<h2>Range Add Query (RAQ)<a class="headerlink" href="#Range-Add-Query-(RAQ)" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>区間に対する高速な更新操作を実現する。</p>
+<ul class="simple">
+<li><p>初期化: <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span></p></li>
+<li><p>区間更新、区間に対する加算: <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+<li><p>1点問い合わせ、値の取得: <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span></p></li>
+</ul>
+<div class="line-block">
+<div class="line">RAQでは葉や節点に「区間に加算する値」を持たせる。</div>
+<div class="line">例えば数列 <span class="math notranslate nohighlight">\([3, 7, 5, 5, 4, -3, 11, 2]\)</span> と「区間 <span class="math notranslate nohighlight">\([2, 8]\)</span> に対する値 <span class="math notranslate nohighlight">\(4\)</span> の加算」は、RAQで次のように表現される。</div>
+</div>
+<p><img alt="raq_init" src="../_images/raq_init.svg" /></p>
+<div class="section" id="1点問い合わせ">
+<h3>1点問い合わせ<a class="headerlink" href="#1点問い合わせ" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">問い合わせでは、セグメント木を下層から上層へと辿る。</div>
+<div class="line">通過したすべての葉と節点の値の和が問い合わせ結果となる。</div>
+</div>
+<p>例えば配列の3番目の要素を取得する場合、次のような経路を辿る。取得される値は <span class="math notranslate nohighlight">\(+5+4+0+0=9\)</span> となる。</p>
+<p><img alt="raq_query" src="../_images/raq_query.svg" /></p>
+</div>
+<div class="section" id="区間更新">
+<h3>区間更新<a class="headerlink" href="#区間更新" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">区間更新では区間を小区間に分割し、それぞれの区間に対して加算を行う。</div>
+<div class="line">例えば区間 <span class="math notranslate nohighlight">\([2, 6]\)</span> の全要素に値 <span class="math notranslate nohighlight">\(2\)</span> を加算するとき、更新対象は次の赤ノードとなる。</div>
+</div>
+<p><img alt="raq_update_target" src="../_images/raq_update_target.svg" /></p>
+<div class="line-block">
+<div class="line">区間更新はRMQの区間問い合わせと同様に、分割統治法によるトップダウン型、またはビット演算を利用したボトムアップ型のいずれかの方法で処理することができる。</div>
+<div class="line">ここでは計算量が小さいボトムアップ型のみ説明する。</div>
+</div>
+<div class="line-block">
+<div class="line">上の図について、ノードの添字の偶奇に着目すると、ノードの更新経路はRMQの区間問い合わせと同じ経路を辿ることがわかる。</div>
+<div class="line">よって、左端 <span class="math notranslate nohighlight">\(l\)</span> と右端 <span class="math notranslate nohighlight">\(r\)</span> を起点とする更新経路が交差するまでセグメント木の下層から上層へ辿り、通過したノードの値を更新すればよい。</div>
+</div>
+<p>実際、RAQの区間更新の実装は、RMQの区間問い合わせの「ノードの値の取得」を「ノードの更新」に置き換えただけである。</p>
+<p><img alt="raq_update_lr" src="../_images/raq_update_lr.svg" /></p>
+</div>
+<div class="section" id="id10">
+<h3>実装<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>区間更新の実装については、トップダウン型とボトムアップ型の両方を示す。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">RAQ</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初期化&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">((</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>
+        <span class="n">treesize</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">treesize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">st</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="k">def</span> <span class="nf">_add_topdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する加算</span>
+<span class="sd">        k: 着目しているノード (1-indexed)</span>
+<span class="sd">        l: 探索区間 st[l, r) の左端 (0-indexed)</span>
+<span class="sd">        r: 探索区間 st[l, r) の右端 (0-indexed)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">l</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_bottomup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する加算</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="n">b</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">a</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+                <span class="n">b</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;区間[a, b) に対する加算&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be less than equal b.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_bottomup</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;値の取得&quot;&quot;&quot;</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">key</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="n">raq</span> <span class="o">=</span> <span class="n">RAQ</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">raq</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">raq</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">raq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">raq</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">raq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+9
+11
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="binary_indexed_tree.html" class="btn btn-neutral float-right" title="Binary Indexed Tree (BIT)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="heap.html" class="btn btn-neutral float-left" title="ヒープ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020, Kyoroid
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
