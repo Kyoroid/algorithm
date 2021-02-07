@@ -48,3 +48,26 @@ def list_multiples(a: int, n: int) -> list[int]:
     for a in range(a, n+1, a):
         multiples.append(a)
     return multiples
+
+
+def count_divisors(n: int) -> list[int]:
+    """約数の個数をもつテーブルを作成する。
+
+    Parameters
+    ----------
+    n : int
+        約数を求めたい整数の上限 (自身を含む)
+
+    Returns
+    -------
+    list[int]
+        約数の個数をもつテーブル
+    """
+    counts = [0] * (n+1)
+    a = 1
+    while a * a <= n:
+        counts[a*a] += 1
+        for i in range(a*(a+1), n+1, a):
+            counts[i] += 2
+        a += 1
+    return counts

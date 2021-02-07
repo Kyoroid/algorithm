@@ -5,6 +5,7 @@
    :maxdepth: 2
    :caption: Contents:
 
-   divisor
-   multiple
+   list_divisors
+   list_multiples
+   count_divisors
    

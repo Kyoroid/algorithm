@@ -1,9 +1,8 @@
-整数
+合成数と素数
 =====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   multiple_and_divisor/index
-   composite_and_prime/index
+   list_primes
