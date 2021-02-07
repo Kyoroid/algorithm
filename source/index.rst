@@ -7,6 +7,7 @@
    :maxdepth: 2
    :caption: Contents:
 
+   integer/index
    math/index
    string/index
    data_structure/index
