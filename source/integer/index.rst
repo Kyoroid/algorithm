@@ -7,3 +7,4 @@
 
    multiple_and_divisor/index
    composite_and_prime/index
+   prime_factorization/index
