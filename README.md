@@ -6,6 +6,6 @@
 
 ## テスト
 
-```console
-python -m unittest
+```Shell
+(py38env) $ python -m unittest
 ```
