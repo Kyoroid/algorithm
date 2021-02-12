@@ -6,3 +6,4 @@
    :caption: Contents:
 
    prime_factorization
+   prime_factorization_spf
