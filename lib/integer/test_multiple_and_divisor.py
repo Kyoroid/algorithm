@@ -9,6 +9,10 @@ class TestListDivisors(unittest.TestCase):
         self.assertListEqual([1, 12, 2, 6, 3, 4], actual)
         actual = list_divisors(12, sorted=True)
         self.assertListEqual([1, 2, 3, 4, 6, 12], actual)
+    
+    def test_list_divisors_type_check(self):
+        actual = list_divisors(12, sorted=True)
+        self.assertListEqual([int, int, int, int, int, int], [type(e) for e in actual])
 
 
 class TestListMultiples(unittest.TestCase):
@@ -34,7 +38,3 @@ class TestCountDivisors(unittest.TestCase):
         self.assertEqual(6, actual)
         actual = counts[16]
         self.assertEqual(5, actual)
-
-
-if __name__ == "__main__":
-    unittest.main()
