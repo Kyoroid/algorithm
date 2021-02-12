@@ -15,8 +15,6 @@ def gcd(a: int, *args: int) -> int:
         最大公約数
     """
     for b in args:
-        if a < b:
-            a, b = b, a
         while b > 0:
             a, b = b, a % b
     return a
