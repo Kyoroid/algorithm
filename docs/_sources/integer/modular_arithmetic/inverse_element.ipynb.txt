@@ -1,0 +1,147 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "py38env",
+   "display_name": "py38env",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# 逆元\n",
+    "\n",
+    "Code: [modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/modular_arithmetic.py)  \n",
+    "Test: [test_modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_modular_arithmetic.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 逆元とは\n",
+    "\n",
+    "[Inverse element](https://en.wikipedia.org/wiki/Inverse_element) (Wikipedia)\n",
+    "\n",
+    "乗法における逆数のことである。\n",
+    "\n",
+    "$$ax \\equiv 1 \\pmod n$$\n",
+    "\n",
+    "であるとき $x$ を逆元といい、$a^{-1}$ と表記する。\n",
+    "\n",
+    "## 逆元の求め方\n",
+    "\n",
+    "拡張ユークリッドの互除法を用いて求められる。まず、逆元の定義から式変形して\n",
+    "\n",
+    "$$\n",
+    "ax - 1 \\equiv 0 \\pmod n\n",
+    "$$\n",
+    "\n",
+    "とする。合同の定義より\n",
+    "\n",
+    "$$\n",
+    "ax - 1 = kn\n",
+    "$$\n",
+    "\n",
+    "と表せる整数 $k$ が存在する。これを式変形して\n",
+    "\n",
+    "$$\n",
+    "ax - nk = 1\n",
+    "$$\n",
+    "\n",
+    "とすれば、上式は $x, k$ に関する一次不定方程式とみなせ、$\\gcd(a, n) = 1$ であれば整数解を持つことがわかる。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "法 $n$ における $a$ の逆元 $a^{-1}$ を求める。\n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "逆元の候補は無数に存在するため、剰余をとって $0 \\leq a^{-1} < n$ を満たすものを返すようにした。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- `modinv(a, n)` $\\mathcal{O}(\\log{\\min(a, n)})$"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "\n",
+    "\n",
+    "class InversionError(Exception):\n",
+    "\n",
+    "    def __init__(self):\n",
+    "        self.message = \"Inverse element is not defined.\"\n",
+    "\n",
+    "\n",
+    "def extgcd(a: int, b: int) -> tuple[int, int, int]:\n",
+    "    if b == 0:\n",
+    "        return (a, 1, 0) if a > 0 else (0, 0, 0)\n",
+    "    p, q = divmod(a, b)\n",
+    "    d, x, y = extgcd(b, q)\n",
+    "    return (d, y, x - p * y)\n",
+    "\n",
+    "\n",
+    "def modinv(a: int, n: int) -> int:\n",
+    "    d, x, y = extgcd(a, n)\n",
+    "    if d != 1:\n",
+    "        raise InversionError()\n",
+    "    return x % n"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "inv = modinv(7, 10000)\n",
+    "print(inv)\n",
+    "print(7 * inv % 10000 == 1)"
+   ]
+  }
+ ]
+}

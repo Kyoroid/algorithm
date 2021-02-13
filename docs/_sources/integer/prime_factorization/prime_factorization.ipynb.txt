@@ -1,0 +1,129 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python3",
+   "display_name": "Python 3",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# 素因数分解 (試し割り法)\n",
+    "\n",
+    "Code: [prime_factorization.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/prime_factorization.py)  \n",
+    "Test: [test_prime_factorization.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_prime_factorization.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 素因数分解とは\n",
+    "\n",
+    "素因数分解は、整数 $n$ を素数の積で表したもの。\n",
+    "例えば $500$ の素因数分解は\n",
+    "\n",
+    "$$\n",
+    "500 = 2^2 \\times 5^3\n",
+    "$$\n",
+    "\n",
+    "と表される。右辺に現れる指数の底 $2,5$ を $500$ の素因数という。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "区間 $[2, \\sqrt{n}]$ に含まれる素数を用いて、実際に数を割って素因数とその個数を求める。  \n",
+    "$\\sqrt{n}$ 以下の数だけを用いて試し割りすることにより、 $10^{12}$ 程度の $n$ に対する素因数分解が可能となる。  \n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "素数リストを使わない方法で実装する。  \n",
+    "小さい順に試し割りを行い、素因数を検出する度に、割り切れなくなるまでその素因数で割り続ける。これにより合成数で割られることがなくなる。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- `prime_factorization(n)` $\\mathcal{O}(\\sqrt{n})$"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "import math\n",
+    "\n",
+    "\n",
+    "def prime_factorization(n: int) -> tuple[list[int], list[int]]:\n",
+    "    if n == 1:\n",
+    "        return ([1], [1])\n",
+    "    factors = []\n",
+    "    counts = []\n",
+    "    for i in range(2, math.isqrt(n)+1):\n",
+    "        if i * i > n:\n",
+    "            break\n",
+    "        if n % i == 0:\n",
+    "            factors.append(i)\n",
+    "            n //= i\n",
+    "            count = 1\n",
+    "            while n % i == 0:\n",
+    "                n //= i\n",
+    "                count += 1\n",
+    "            counts.append(count)\n",
+    "    if n > 1:\n",
+    "        factors.append(n)\n",
+    "        counts.append(1)\n",
+    "    return factors, counts"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "factors, counts = prime_factorization(500)\n",
+    "print(\" + \".join([\"{}^{}\".format(f, c) for f, c in zip(factors, counts)]))"
+   ]
+  }
+ ]
+}
