@@ -10,3 +10,4 @@
    prime_factorization/index
    gcd_and_lcm/index
    extgcd/index
+   modular_arithmetic/index

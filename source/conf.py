@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Competitive programming notebook'
-copyright = '2020, Kyoroid'
+copyright = '2020-2021, Kyoroid'
 author = 'Kyoroid'
 
 
