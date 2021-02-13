@@ -1,0 +1,138 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "py38env",
+   "display_name": "py38env",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# 素数を法とする逆元\n",
+    "\n",
+    "Code: [modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/modular_arithmetic.py)  \n",
+    "Test: [test_modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_modular_arithmetic.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## フェルマーの小定理\n",
+    "\n",
+    "[Fermat's little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem) (Wikipedia)\n",
+    "\n",
+    "\n",
+    "法 $p$ が素数ならば、拡張ユークリッドの互除法の代わりに、累乗 (繰り返し二乗法) により逆元を求めることができる。\n",
+    "\n",
+    "累乗で逆元を求めるには、フェルマーの小定理\n",
+    "\n",
+    "$$\n",
+    "a^p \\equiv a \\mod p\n",
+    "$$\n",
+    "\n",
+    "を用いる。\n",
+    "\n",
+    "逆元 $a^{-1}$ が存在する ($\\gcd(p, n) = 1$ を満たす) とき、上式の両辺に $ a^{-1}$ を2回掛けると\n",
+    "\n",
+    "$$\n",
+    "a^{p-2} \\equiv a^{-1}\n",
+    "$$\n",
+    "\n",
+    "となり、逆元は $a^{p-2}$ で求まることがわかる。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "繰り返し二乗法で冪乗 $a^x \\pmod p$ を計算する。 指数 $x$ は負数でも良く、 $a^{-1}$ で逆元を求める。  \n",
+    "Pythonの組み込み関数 `pow` で既に実装されているが、ここでは素数の法 $p$ かつ $\\gcd(a, p) = 1$ の制約下で再実装した。\n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "逆元の存在判定は行わない実装とした。  \n",
+    "逆元の存在判定が必要であれば、拡張ユークリッドの互除法を使うほうが良い。\n",
+    "\n",
+    "また、指数部の処理にはフェルマーの小定理から得られる関係式\n",
+    "\n",
+    "$$\n",
+    "a^{x + (p-1)} \\equiv a^x \\pmod p\n",
+    "$$\n",
+    "\n",
+    "を用いた。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- `pmodpow(a, p)` $\\mathcal{O}(\\log{p})$"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード\n",
+    "\n"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def pmodpow(a: int, x: int, p: int) -> int:\n",
+    "    x %= (p-1)\n",
+    "    y = 1\n",
+    "    while x > 0:\n",
+    "        if x & 1 == 1:\n",
+    "            y *= a\n",
+    "            y %= p\n",
+    "        x >>= 1\n",
+    "        a *= a\n",
+    "        a %= p\n",
+    "    return y"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "inv = pmodpow(7, -1, 1000000007)\n",
+    "print(inv)\n",
+    "print(7 * inv % 1000000007 == 1)"
+   ]
+  }
+ ]
+}

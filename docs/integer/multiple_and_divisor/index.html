@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>約数と倍数 &mdash; Competitive programming notebook  ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="約数列挙" href="list_divisors.html" />
+    <link rel="prev" title="整数" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">整数</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">約数と倍数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="list_divisors.html">約数列挙</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list_multiples.html">倍数列挙</a></li>
+<li class="toctree-l3"><a class="reference internal" href="count_divisors.html">約数の個数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../composite_and_prime/index.html">合成数と素数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prime_factorization/index.html">素因数分解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gcd_and_lcm/index.html">最大公約数と最小公倍数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extgcd/index.html">一次不定方程式の整数解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modular_arithmetic/index.html">整数の合同</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../counting/index.html">数え上げ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string/index.html">文字列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_structure/index.html">データ構造</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph/index.html">グラフ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../game/index.html">ゲーム</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Competitive programming notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">整数</a> &raquo;</li>
+        
+      <li>約数と倍数</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Kyoroid/algorithm" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="id1">
+<h1>約数と倍数<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="list_divisors.html">約数列挙</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="list_divisors.html#約数とは">約数とは</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_divisors.html#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_divisors.html#コード">コード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_divisors.html#使用例">使用例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="list_multiples.html">倍数列挙</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="list_multiples.html#倍数とは">倍数とは</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_multiples.html#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_multiples.html#コード">コード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list_multiples.html#使用例">使用例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="count_divisors.html">約数の個数</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="count_divisors.html#数表を用いた高速化">数表を用いた高速化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="count_divisors.html#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="count_divisors.html#コード">コード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="count_divisors.html#使用例">使用例</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="list_divisors.html" class="btn btn-neutral float-right" title="約数列挙" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="整数" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020-2021, Kyoroid
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

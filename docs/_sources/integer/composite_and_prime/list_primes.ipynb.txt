@@ -1,0 +1,120 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python3",
+   "display_name": "Python 3",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# 素数列挙\n",
+    "\n",
+    "Code: [composite_and_prime.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/composite_and_prime.py)  \n",
+    "Test: [test_composite_and_prime.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_composite_and_prime.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 素数とは\n",
+    "\n",
+    "自分自身と1以外の約数を持たない自然数を素数という。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "[エラトステネスの篩](https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%A9%E3%83%88%E3%82%B9%E3%83%86%E3%83%8D%E3%82%B9%E3%81%AE%E7%AF%A9) (Wikipedia)\n",
+    "\n",
+    "エラトステネスの篩を用いて $n$ 以下の素数を列挙する。  \n",
+    "小さい数から順に数表を調べ、自身とその倍数に訪問済みの印をつけていく。  \n",
+    "$a$ が合成数ならば、$a$ の倍数を走査しようとするとき既に訪問済みとなっている。\n",
+    "\n",
+    "![primes_table](images/primes_table.svg)\n",
+    "\n",
+    "全ての倍数を走査し終えると、素数判定に使える数表が得られる。\n",
+    "\n",
+    "![is_prime_table](images/is_prime_table.svg)\n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "合成数の倍数はそれより小さな素数の倍数で既に走査しているため、素数だけ走査すればよい。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- `sieve(n)` $\\mathcal{O}(n \\log{\\log{n}})$"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "\n",
+    "\n",
+    "def sieve(n: int) -> list[int]:\n",
+    "    is_prime = [True] * (n+1)\n",
+    "    is_prime[0] = False\n",
+    "    is_prime[1] = False\n",
+    "    primes = []\n",
+    "    for a in range(2, n+1):\n",
+    "        if is_prime[a]:\n",
+    "            primes.append(a)\n",
+    "            for i in range(a*a, n+1, a):\n",
+    "                is_prime[i] = False\n",
+    "    return primes"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "primes = sieve(100)\n",
+    "print(*primes[:10])"
+   ]
+  }
+ ]
+}
