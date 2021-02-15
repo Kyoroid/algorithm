@@ -1,0 +1,153 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": 3
+  },
+  "orig_nbformat": 2
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# 組み合わせ\n",
+    "\n",
+    "Code: [combination.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/combination.py)  \n",
+    "Test: [test_combination.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/test_combination.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 組み合わせとは\n",
+    "\n",
+    "[Combination](https://en.wikipedia.org/wiki/Combination) (Wikipedia)\n",
+    "\n",
+    "ものを取り出すときの、取り出し方のことをいう。  \n",
+    "順列において並び方を無視したものともいえる。\n",
+    "\n",
+    "![perm_vs_comb](images/perm_vs_comb.svg)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 組み合わせの場合の数\n",
+    "\n",
+    "$n$ 個から $k$ 個を取り出すとき、組み合わせの場合の数は記号 $_nC_k$ や $C(n,k)$ もしくは $\\binom{n}{k}$ で表される。  \n",
+    "右辺は分子・分母ともに $k$ 個の数の積となっている。\n",
+    "\n",
+    "$$\n",
+    "C(n,k) = \\frac{P(n, k)}{k!} = \\frac{n \\times (n-1) \\times \\ldots \\times (n-k+1)}{k \\times (k-1) \\times \\ldots \\times 1}\n",
+    "$$\n",
+    "\n",
+    "階乗だけを用いて、次のように表すこともできる。\n",
+    "\n",
+    "$$\n",
+    "C(n,k) = \\frac{n!}{k!(n-k)!}\n",
+    "$$\n",
+    "\n",
+    "1つ目の式は次のように解釈できる。\n",
+    "\n",
+    "- $n$ 個から $k$ 個を取り出し、順番に並べる ($P(n, k)$ 通り)\n",
+    "- 同じ要素が含まれている $k!$ 通りの並べ方を、まとめて1通りとみなす ($k!$ で割る)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "素数の法 $p$ のもとで、組み合わせの場合の数 $C(n, k)$ を求める。\n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "階乗を予め計算しておくことで、クエリ計算量 $\\mathcal{O}(1)$ で計算できる。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- 前処理\n",
+    "    - `list_mod_facts(n, p)` $\\mathcal{O}(n)$\n",
+    "    - `list_mod_inv_facts(n, p)` $\\mathcal{O}(n + \\log{n})$\n",
+    "- クエリ\n",
+    "    - `mod_comb(n, k, p)` $\\mathcal{O}(1)$"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "\n",
+    "\n",
+    "def list_mod_facts(n: int, p: int) -> list[int]:\n",
+    "    f = [1 for i in range(n+1)]\n",
+    "    for i in range(2, n+1):\n",
+    "        f[i] = f[i-1] * i % p\n",
+    "    return f\n",
+    "\n",
+    "\n",
+    "def list_mod_inv_facts(n: int, p: int) -> list[int]:\n",
+    "    invf = [1 for i in range(n+1)]\n",
+    "    fn = 1\n",
+    "    for i in range(2, n+1):\n",
+    "        fn = fn * i % p\n",
+    "    invf[n] = pow(fn, p-2, p)\n",
+    "    for i in range(n, 2, -1):\n",
+    "        invf[i-1] = invf[i] * i % p\n",
+    "    return invf\n",
+    "\n",
+    "\n",
+    "def mod_comb(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:\n",
+    "    c = f[n]\n",
+    "    c = c * invf[n-k] % p\n",
+    "    c = c * invf[k] % p\n",
+    "    return c"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f = list_mod_facts(100000, 1000000007)\n",
+    "invf = list_mod_inv_facts(100000, 1000000007)\n",
+    "c = mod_comb(10, 3, 1000000007, f, invf)\n",
+    "print(c)"
+   ]
+  }
+ ]
+}
