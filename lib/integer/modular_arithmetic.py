@@ -7,7 +7,7 @@ class InversionError(Exception):
         self.message = "Inverse element is not defined."
 
 
-def modinv(a: int, n: int) -> int:
+def mod_inv(a: int, n: int) -> int:
     """逆元を求める。
 
     Parameters
@@ -33,7 +33,7 @@ def modinv(a: int, n: int) -> int:
     return x % n
 
 
-def pmodpow(a: int, x: int, p: int) -> int:
+def mod_pow(a: int, x: int, p: int) -> int:
     """素数の法 p のもとで、繰り返し二乗法により冪乗を求める。負の指数にも対応する。
 
     Parameters

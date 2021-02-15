@@ -8,7 +8,7 @@
    :caption: Contents:
 
    integer/index
-   counting/index
+   combinatorics/index
    string/index
    data_structure/index
    dynamic_programming/index

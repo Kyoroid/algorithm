@@ -1,10 +1,8 @@
-数え上げ
+階乗
 =====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   permutation
-   binom
-   mod_binom
+   factorial
