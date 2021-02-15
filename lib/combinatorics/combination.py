@@ -26,30 +26,3 @@ def mod_comb(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:
     c = c * invf[n-k] % p
     c = c * invf[k] % p
     return c
-
-
-def mod_comb_with_repl(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:
-    """法 p のもとで、重複組み合わせの場合の数を求める。
-
-    Parameters
-    ----------
-    n : int
-        要素数
-    k : int
-        選ぶ個数
-    p : int
-        法
-    f : list[int]
-        法 p のもとでの階乗リスト
-    invf : list[int]
-        法 p のもとでの階乗の逆数リスト
-
-    Returns
-    -------
-    int
-        重複組み合わせの場合の数
-    """
-    c = f[n+k-1]
-    c = c * invf[k] % p
-    c = c * invf[n-1] % p
-    return c
