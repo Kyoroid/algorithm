@@ -67,7 +67,7 @@
     "### 概要\n",
     "\n",
     "繰り返し二乗法で冪乗 $a^x \\pmod p$ を計算する。 指数 $x$ は負数でも良く、 $a^{-1}$ で逆元を求める。  \n",
-    "Pythonの組み込み関数 `pow` で既に実装されているが、ここでは素数の法 $p$ かつ $\\gcd(a, p) = 1$ の制約下で再実装した。\n",
+    "Pythonの組み込み関数 `pow` で上位機能が既に実装されているが、ここでは素数の法 $p$ かつ $\\gcd(a, p) = 1$ の制約下で再実装した。\n",
     "\n",
     "### 実装のポイント\n",
     "\n",
@@ -84,7 +84,7 @@
     "\n",
     "### 計算量\n",
     "\n",
-    "- `pmodpow(a, p)` $\\mathcal{O}(\\log{p})$"
+    "- `mod_pow(a, p)` $\\mathcal{O}(\\log{p})$"
    ],
    "cell_type": "markdown",
    "metadata": {}
@@ -103,7 +103,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def pmodpow(a: int, x: int, p: int) -> int:\n",
+    "def mod_pow(a: int, x: int, p: int) -> int:\n",
     "    x %= (p-1)\n",
     "    y = 1\n",
     "    while x > 0:\n",
@@ -129,7 +129,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "inv = pmodpow(7, -1, 1000000007)\n",
+    "inv = mod_pow(7, -1, 1000000007)\n",
     "print(inv)\n",
     "print(7 * inv % 1000000007 == 1)"
    ]

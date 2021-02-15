@@ -43,7 +43,7 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="数え上げ" href="../../counting/index.html" />
+    <link rel="next" title="組み合わせ" href="../../combinatorics/index.html" />
     <link rel="prev" title="逆元" href="inverse_element.html" /> 
 </head>
 
@@ -111,7 +111,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../counting/index.html">数え上げ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../combinatorics/index.html">組み合わせ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dynamic_programming/index.html">動的計画法</a></li>
@@ -486,7 +486,7 @@ div.rendered_html tbody tr:hover {
 <h3>概要<a class="headerlink" href="#概要" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="line-block">
 <div class="line">繰り返し二乗法で冪乗 <span class="math notranslate nohighlight">\(a^x \pmod p\)</span> を計算する。 指数 <span class="math notranslate nohighlight">\(x\)</span> は負数でも良く、 <span class="math notranslate nohighlight">\(a^{-1}\)</span> で逆元を求める。</div>
-<div class="line">Pythonの組み込み関数 <code class="docutils literal notranslate"><span class="pre">pow</span></code> で既に実装されているが、ここでは素数の法 <span class="math notranslate nohighlight">\(p\)</span> かつ <span class="math notranslate nohighlight">\(\gcd(a, p) = 1\)</span> の制約下で再実装した。</div>
+<div class="line">Pythonの組み込み関数 <code class="docutils literal notranslate"><span class="pre">pow</span></code> で上位機能が既に実装されているが、ここでは素数の法 <span class="math notranslate nohighlight">\(p\)</span> かつ <span class="math notranslate nohighlight">\(\gcd(a, p) = 1\)</span> の制約下で再実装した。</div>
 </div>
 </div>
 <div class="section" id="実装のポイント">
@@ -503,7 +503,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="計算量">
 <h3>計算量<a class="headerlink" href="#計算量" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pmodpow(a,</span> <span class="pre">p)</span></code> <span class="math notranslate nohighlight">\(\mathcal{O}(\log{p})\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod_pow(a,</span> <span class="pre">p)</span></code> <span class="math notranslate nohighlight">\(\mathcal{O}(\log{p})\)</span></p></li>
 </ul>
 </div>
 </div>
@@ -514,7 +514,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">pmodpow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span></span><span class="k">def</span> <span class="nf">mod_pow</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="n">x</span> <span class="o">%=</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">while</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -536,7 +536,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">inv</span> <span class="o">=</span> <span class="n">pmodpow</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000000007</span><span class="p">)</span>
+<span></span><span class="n">inv</span> <span class="o">=</span> <span class="n">mod_pow</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000000007</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="n">inv</span> <span class="o">%</span> <span class="mi">1000000007</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -562,7 +562,7 @@ True
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../counting/index.html" class="btn btn-neutral float-right" title="数え上げ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../combinatorics/index.html" class="btn btn-neutral float-right" title="組み合わせ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="inverse_element.html" class="btn btn-neutral float-left" title="逆元" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
