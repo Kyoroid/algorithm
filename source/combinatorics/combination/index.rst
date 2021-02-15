@@ -6,3 +6,4 @@
    :caption: Contents:
 
    combination
+   combination_with_replacement

@@ -3,7 +3,7 @@ from lib.combinatorics.factorial import list_mod_facts, list_mod_inv_facts
 from lib.combinatorics.permutation import *
 
 
-class TestPermutation(unittest.TestCase):
+class TestModPerm(unittest.TestCase):
     
     def test_mod_perm(self):
         f = list_mod_facts(100000, 1000000007)

@@ -7,7 +7,7 @@ def mod_perm(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:
     Parameters
     ----------
     n : int
-        整数の上限 (自身を含む)
+        要素数
     k : int
         選ぶ個数
     p : int
