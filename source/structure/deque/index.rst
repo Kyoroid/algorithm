@@ -1,6 +1,7 @@
-順列
+両端キュー
 =====================================
 
 .. toctree::
 
-   permutation
+   deque
+   ringbuffer
