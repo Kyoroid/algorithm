@@ -2,6 +2,7 @@
 =====================================
 
 .. toctree::
+   :maxdepth: 3
 
    multiple_and_divisor/index
    composite_and_prime/index

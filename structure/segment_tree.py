@@ -1,15 +1,20 @@
-class SegmentTree():
+class IntervalError(Exception):
+    def __init__(self):
+        self.message = "Interval [a, b) must be a < b."
+
+
+class SegmentTree:
     """セグメント木の実装"""
 
-    def __init__(self, size, INF=-100000000):
+    def __init__(self, size: int, INF: int = -100000000) -> None:
         """セグメント木の初期化"""
         self.size = size
-        self.n = 2 ** ((size-1).bit_length())
+        self.n = 2 ** ((size - 1).bit_length())
         self.treesize = 2 * self.n
         self.inf = INF
         self.tree = [self.inf for i in range(self.treesize)]
 
-    def update(self, key, value):
+    def update(self, key: int, value: int) -> None:
         """key番目の値をvalueに更新する"""
         k = key + self.n
         self.tree[k] = value
@@ -18,10 +23,10 @@ class SegmentTree():
             self.tree[k] = max(self.tree[k * 2], self.tree[k * 2 + 1])
             k >>= 1
 
-    def query(self, a, b):
+    def query(self, a: int, b: int):
         """区間[a, b)の最大値を求める"""
         if a > b:
-            raise ValueError("a must be less than equal b.")
+            raise IntervalError()
         l = self.inf
         r = self.inf
         a += self.n
@@ -57,7 +62,7 @@ class SegmentTree():
 
 
 def seginit(size, init_value=-100000000):
-    n = 2 ** ((size-1).bit_length())
+    n = 2 ** ((size - 1).bit_length())
     treesize = n * 2
     st = [init_value for i in range(treesize)]
     return st
@@ -75,7 +80,7 @@ def segupdate(st, key, value):
 
 def segquery(st, a, b, init_value=-100000000):
     if a > b:
-        raise ValueError("a must be less than equal b.")
+        raise IntervalError()
     l = init_value
     r = init_value
     n = len(st) // 2
@@ -95,4 +100,4 @@ def segquery(st, a, b, init_value=-100000000):
 
 def segview(st, size):
     n = len(st) >> 1
-    return st[n:n+size]
+    return st[n : n + size]

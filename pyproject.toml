@@ -1,0 +1,22 @@
+[tool.black]
+line-length = 88
+target-version = ['py38']
+exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+^/(
+  (
+      \.vscode         # exclude a few common directories in the
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | build
+    | combination
+    | external
+    | game
+    | graph
+    | py38env
+    | source
+  )
+)
+'''

@@ -15,7 +15,7 @@ def ringbuffer(size: int) -> i8[:]:
     i8[:]
         空のリングバッファ
     """
-    q = np.zeros((size+2, ), dtype=np.int64)
+    q = np.zeros((size + 2,), dtype=np.int64)
     q[-2] = 0
     q[-1] = 0
     return q

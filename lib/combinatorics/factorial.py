@@ -16,9 +16,9 @@ def list_mod_facts(n: int, p: int) -> list[int]:
     list[int]
         階乗リスト
     """
-    f = [1 for i in range(n+1)]
-    for i in range(2, n+1):
-        f[i] = f[i-1] * i % p
+    f = [1 for i in range(n + 1)]
+    for i in range(2, n + 1):
+        f[i] = f[i - 1] * i % p
     return f
 
 
@@ -39,11 +39,11 @@ def list_mod_inv_facts(n: int, p: int) -> list[int]:
     list[int]
         階乗リスト
     """
-    invf = [1 for i in range(n+1)]
+    invf = [1 for i in range(n + 1)]
     fn = 1
-    for i in range(2, n+1):
+    for i in range(2, n + 1):
         fn = fn * i % p
-    invf[n] = pow(fn, p-2, p)
+    invf[n] = pow(fn, p - 2, p)
     for i in range(n, 2, -1):
-        invf[i-1] = invf[i] * i % p
+        invf[i - 1] = invf[i] * i % p
     return invf

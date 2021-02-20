@@ -19,7 +19,7 @@ def prime_factorization(n: int) -> tuple[list[int], list[int]]:
         return ([1], [1])
     factors = []
     counts = []
-    for i in range(2, math.isqrt(n)+1):
+    for i in range(2, math.isqrt(n) + 1):
         if i * i > n:
             break
         if n % i == 0:
@@ -49,13 +49,13 @@ def list_spf(n: int) -> list[int]:
     list[int]
         最小の素因数のリスト
     """
-    spf = [1] * (n+1)
+    spf = [1] * (n + 1)
     spf[0] = 0
     spf[1] = 1
-    for a in range(2, n+1):
+    for a in range(2, n + 1):
         if spf[a] == 1:
             spf[a] = a
-            for i in range(a*a, n+1, a):
+            for i in range(a * a, n + 1, a):
                 if spf[i] == 1:
                     spf[i] = a
     return spf

@@ -23,6 +23,6 @@ def mod_comb(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:
         組み合わせの場合の数
     """
     c = f[n]
-    c = c * invf[n-k] % p
+    c = c * invf[n - k] % p
     c = c * invf[k] % p
     return c

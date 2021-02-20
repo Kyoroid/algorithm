@@ -3,7 +3,6 @@ from lib.integer.gcd_and_lcm import *
 
 
 class TestGCD(unittest.TestCase):
-    
     def test_gcd(self):
         actual = gcd(17)
         self.assertEqual(17, actual)
@@ -24,7 +23,6 @@ class TestGCD(unittest.TestCase):
 
 
 class TestLCM(unittest.TestCase):
-    
     def test_lcm(self):
         actual = lcm(17)
         self.assertEqual(17, actual)

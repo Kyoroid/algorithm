@@ -3,7 +3,6 @@ from lib.integer.extgcd import *
 
 
 class TestExtGCD(unittest.TestCase):
-    
     def test_extgcd(self):
         actual = extgcd(8, 6)
         self.assertTupleEqual((2, 1, -1), actual)
@@ -24,7 +23,6 @@ class TestExtGCD(unittest.TestCase):
 
 
 class TestSolveLinearEquation(unittest.TestCase):
-    
     def test_solve_linear_equation(self):
         actual = solve_linear_equation(8, 6, 10)
         self.assertTupleEqual((True, 5, -5), actual)

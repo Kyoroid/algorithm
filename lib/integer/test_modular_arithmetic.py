@@ -3,7 +3,6 @@ from lib.integer.modular_arithmetic import *
 
 
 class TestModInv(unittest.TestCase):
-    
     def test_mod_inv(self):
         actual = mod_inv(7, 10000)
         self.assertEqual(7143, actual)
@@ -12,7 +11,6 @@ class TestModInv(unittest.TestCase):
 
 
 class TestPModPow(unittest.TestCase):
-    
     def test_mod_pow(self):
         actual = mod_pow(7, 1000, 101)
         self.assertEqual(1, actual)

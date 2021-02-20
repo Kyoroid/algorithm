@@ -22,4 +22,4 @@ def mod_perm(n: int, k: int, p: int, f: list[int], invf: list[int]) -> int:
     int
         順列の場合の数
     """
-    return f[n] * invf[n-k] % p
+    return f[n] * invf[n - k] % p

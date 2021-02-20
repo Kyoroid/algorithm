@@ -2,6 +2,7 @@
 =====================================
 
 .. toctree::
+   :maxdepth: 3
 
    factorial/index
    permutation/index

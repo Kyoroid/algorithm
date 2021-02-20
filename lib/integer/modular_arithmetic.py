@@ -2,7 +2,6 @@ from lib.integer.extgcd import extgcd
 
 
 class InversionError(Exception):
-
     def __init__(self):
         self.message = "Inverse element is not defined."
 
@@ -50,7 +49,7 @@ def mod_pow(a: int, x: int, p: int) -> int:
     int
         冪乗
     """
-    x %= (p-1)
+    x %= p - 1
     y = 1
     while x > 0:
         if x & 1 == 1:

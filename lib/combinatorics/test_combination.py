@@ -4,7 +4,6 @@ from lib.combinatorics.combination import *
 
 
 class TestModComb(unittest.TestCase):
-    
     def test_mod_comb(self):
         f = list_mod_facts(100000, 1000000007)
         invf = list_mod_inv_facts(100000, 1000000007)

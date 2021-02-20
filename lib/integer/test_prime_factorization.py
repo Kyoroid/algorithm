@@ -5,7 +5,6 @@ from lib.integer.prime_factorization import *
 
 
 class TestPrimeFactorization(unittest.TestCase):
-    
     def test_prime_factorization(self):
         actual_base, actual_count = prime_factorization(1)
         self.assertListEqual([1], actual_base)
@@ -30,11 +29,10 @@ class TestPrimeFactorization(unittest.TestCase):
 
 
 class TestPrimeFactorizationSPF(unittest.TestCase):
-
     def test_list_spf(self):
         spf = list_spf(12)
         self.assertListEqual([0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2, 11, 2], spf)
-    
+
     def test_prime_factorization_spf(self):
         spf = list_spf(1000003)
         actual_base, actual_count = prime_factorization_spf(1, spf)

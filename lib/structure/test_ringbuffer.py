@@ -1,13 +1,12 @@
 import unittest
-from lib.structure.deque import *
+from lib.structure.ringbuffer import *
 
 
 class TestRingBuffer(unittest.TestCase):
-    
     def test_ringbuffer(self):
         q = ringbuffer(10)
         self.assertGreaterEqual(q.size, 10)
-    
+
     def test_peek(self):
         q = ringbuffer(5)
         for v in range(1, 6):

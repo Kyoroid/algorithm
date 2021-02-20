@@ -5,8 +5,8 @@
 
 .. toctree::
    :caption: 目次:
-   :maxdepth: 3
    :numbered: 3
+   :maxdepth: 3
 
    integer/index
    combinatorics/index

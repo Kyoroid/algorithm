@@ -14,13 +14,13 @@ def sieve(n: int) -> list[int]:
     list[int]
         素数リスト
     """
-    is_prime = [True] * (n+1)
+    is_prime = [True] * (n + 1)
     is_prime[0] = False
     is_prime[1] = False
     primes = []
-    for a in range(2, n+1):
+    for a in range(2, n + 1):
         if is_prime[a]:
             primes.append(a)
-            for i in range(a*a, n+1, a):
+            for i in range(a * a, n + 1, a):
                 is_prime[i] = False
     return primes
