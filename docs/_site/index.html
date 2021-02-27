@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>競技プログラミングノート &mdash; Competitive programming notebook  ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="1. 整数" href="integer/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> Competitive programming notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目次:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="integer/index.html">1. 整数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combinatorics/index.html">2. 組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure/index.html">3. データ構造とアルゴリズム</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="string/index.html">文字列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_structure/index.html">データ構造</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic_programming/index.html">動的計画法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph/index.html">グラフ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game/index.html">ゲーム</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Competitive programming notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>競技プログラミングノート</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Kyoroid/algorithm" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="id1">
+<h1>競技プログラミングノート<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>最終更新: 2021年02月28日</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">目次:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="integer/index.html">1. 整数</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="integer/multiple_and_divisor/index.html">1.1. 約数と倍数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/multiple_and_divisor/list_divisors.html">1.1.1. 約数列挙</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/multiple_and_divisor/list_multiples.html">1.1.2. 倍数列挙</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/multiple_and_divisor/count_divisors.html">1.1.3. 約数の個数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="integer/composite_and_prime/index.html">1.2. 合成数と素数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/composite_and_prime/list_primes.html">1.2.1. 素数列挙</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="integer/prime_factorization/index.html">1.3. 素因数分解</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/prime_factorization/prime_factorization.html">1.3.1. 素因数分解 (試し割り法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/prime_factorization/prime_factorization_spf.html">1.3.2. 素因数分解 (SPF)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="integer/gcd_and_lcm/index.html">1.4. 最大公約数と最小公倍数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/gcd_and_lcm/gcd.html">1.4.1. 最大公約数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/gcd_and_lcm/lcm.html">1.4.2. 最小公倍数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="integer/extgcd/index.html">1.5. 一次不定方程式の整数解</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/extgcd/extgcd.html">1.5.1. 一次不定方程式の整数解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="integer/modular_arithmetic/index.html">1.6. 整数の合同</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="integer/modular_arithmetic/congruence.html">1.6.1. 整数の合同</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/modular_arithmetic/inverse_element.html">1.6.2. 逆元</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer/modular_arithmetic/inverse_element_prime.html">1.6.3. 素数を法とする逆元</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combinatorics/index.html">2. 組み合わせ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics/factorial/index.html">2.1. 階乗</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="combinatorics/factorial/factorial.html">2.1.1. 階乗</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics/permutation/index.html">2.2. 順列</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="combinatorics/permutation/permutation.html">2.2.1. 順列</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics/combination/index.html">2.3. 組み合わせ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="combinatorics/combination/combination.html">2.3.1. 組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combinatorics/combination/combination_with_replacement.html">2.3.2. 重複組み合わせ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure/index.html">3. データ構造とアルゴリズム</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structure/deque/index.html">3.1. 両端キュー</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="structure/deque/deque.html">3.1.1. 両端キュー</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure/deque/ringbuffer.html">3.1.2. リングバッファ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="structure/interval/index.html">3.2. 区間</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="structure/interval/cumulative_sum.html">3.2.1. 累積和</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structure/interval/segment_tree.html">3.2.2. セグメント木</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>以下整理中</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="string/index.html">文字列</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="string/palindrome.html">回文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string/rolling_hash.html">ローリングハッシュ (Rabin-Karp)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string/cpython_string.html">Pythonにおける文字列検索の実装</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_structure/index.html">データ構造</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/cumulative_sum.html">累積和</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/union_find.html">Union-Find</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/heap.html">ヒープ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/segment_tree.html">セグメント木</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/binary_indexed_tree.html">Binary Indexed Tree (BIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_structure/multiset.html">多重集合 (Multiset)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic_programming/index.html">動的計画法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dynamic_programming/doubling.html">繰り返し二乗法・ダブリング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamic_programming/lis.html">最長増加部分列(LIS)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graph/index.html">グラフ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graph/shortest_path.html">単一始点最短経路</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph/warshall_floyd.html">全点対間最短経路</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="game/index.html">ゲーム</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="game/nim.html">Nim</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">検索ページ</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="integer/index.html" class="btn btn-neutral float-right" title="1. 整数" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020-2021, Kyoroid
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
