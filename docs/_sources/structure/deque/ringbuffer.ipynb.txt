@@ -1,0 +1,185 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "py38env",
+   "display_name": "py38env",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# リングバッファ\n",
+    "\n",
+    "Code: [ringbuffer.py](https://github.com/Kyoroid/algorithm/blob/master/lib/structure/ringbuffer.py)  \n",
+    "Test: [test_ringbuffer.py](https://github.com/Kyoroid/algorithm/blob/master/test/structure/test_ringbuffer.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## リングバッファとは\n",
+    "\n",
+    "[Circular buffer](https://en.wikipedia.org/wiki/Circular_buffer) (Wikipedia)\n",
+    "\n",
+    "固定長の配列を用いて両端キューの機能を実現するデータ構造のこと。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "両端キューとして使用可能な、長さ $n$ のリングバッファを実装する。\n",
+    "\n",
+    "### 実装のポイント\n",
+    "\n",
+    "リングバッファの末尾に、バッファの先頭を指すindexと要素数を記録するようにした。\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "| 操作 | メソッド | 計算量 |\n",
+    "| --- | --- | --- |\n",
+    "| 初期化 | `ringbuffer` | $\\mathcal{O}(n)$ |\n",
+    "| 末尾に追加 | `rb_append` | $\\mathcal{O}(1)$ |\n",
+    "| 先頭に追加 | `rb_appendleft` | $\\mathcal{O}(1)$ |\n",
+    "| 末尾を削除 | `rb_pop` | $\\mathcal{O}(1)$ |\n",
+    "| 先頭を削除 | `rb_popleft` | $\\mathcal{O}(1)$ |\n",
+    "| 末尾を参照 | `rb_peek` | $\\mathcal{O}(1)$ |\n",
+    "| 先頭を参照 | `rb_peekleft` | $\\mathcal{O}(1)$ |\n",
+    "| 要素数を取得 | `rb_size` | $\\mathcal{O}(1)$ |"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from numba import njit, i8\n",
+    "\n",
+    "\n",
+    "def ringbuffer(size: int) -> i8[:]:\n",
+    "    q = np.zeros((size+2, ), dtype=np.int64)\n",
+    "    q[-2] = 0\n",
+    "    q[-1] = 0\n",
+    "    return q\n",
+    "\n",
+    "\n",
+    "@njit((i8[:], i8), cache=True)\n",
+    "def rb_append(q: i8[:], v: i8) -> None:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    qmax = q.size - 2\n",
+    "    tail = (head + size) % qmax\n",
+    "    q[tail] = v\n",
+    "    q[-1] += 1\n",
+    "\n",
+    "\n",
+    "@njit((i8[:], i8), cache=True)\n",
+    "def rb_appendleft(q: i8[:], v: i8) -> None:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    qmax = q.size - 2\n",
+    "    head = (head - 1) % qmax\n",
+    "    q[head] = v\n",
+    "    q[-2] = head\n",
+    "    q[-1] += 1\n",
+    "\n",
+    "\n",
+    "@njit(i8(i8[:]), cache=True)\n",
+    "def rb_pop(q: i8[:]) -> i8:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    qmax = q.size - 2\n",
+    "    tail = (head + size - 1) % qmax\n",
+    "    v = q[tail]\n",
+    "    q[-1] -= 1\n",
+    "    return v\n",
+    "\n",
+    "\n",
+    "@njit(i8(i8[:]), cache=True)\n",
+    "def rb_popleft(q: i8[:]) -> i8:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    qmax = q.size - 2\n",
+    "    v = q[head]\n",
+    "    head = (head + 1) % qmax\n",
+    "    q[-2] = head\n",
+    "    q[-1] -= 1\n",
+    "    return v\n",
+    "\n",
+    "\n",
+    "@njit(i8(i8[:]), cache=True)\n",
+    "def rb_peek(q: i8[:]) -> i8:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    qmax = q.size - 2\n",
+    "    tail = (head + size - 1) % qmax\n",
+    "    v = q[tail]\n",
+    "    return v\n",
+    "\n",
+    "\n",
+    "@njit(i8(i8[:]), cache=True)\n",
+    "def rb_peekleft(q: i8[:]) -> i8:\n",
+    "    head, size = q[-2], q[-1]\n",
+    "    v = q[head]\n",
+    "    return v\n",
+    "\n",
+    "\n",
+    "@njit(i8(i8[:]), cache=True)\n",
+    "def rb_size(q: i8[:]) -> i8:\n",
+    "    return q[-1]"
+   ]
+  },
+  {
+   "source": [
+    "## 使用例"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "q = ringbuffer(100)\n",
+    "rb_append(q, 1)\n",
+    "rb_append(q, 2)\n",
+    "rb_append(q, 3)\n",
+    "rb_append(q, 4)\n",
+    "print(rb_pop(q))\n",
+    "print(rb_peek(q))\n",
+    "print(rb_popleft(q))\n",
+    "print(rb_peekleft(q))\n",
+    "print(rb_size(q))"
+   ]
+  }
+ ]
+}

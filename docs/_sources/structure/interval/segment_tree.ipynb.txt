@@ -1,0 +1,271 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.1-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python3",
+   "display_name": "Python 3.8.1 64-bit ('py38env')",
+   "metadata": {
+    "interpreter": {
+     "hash": "fa0e30685626637fcda81ebca9982750cef985a3d7ed2872bf400038cee5904e"
+    }
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "source": [
+    "# セグメント木\n",
+    "\n",
+    "Code: [segment_tree.py](https://github.com/Kyoroid/algorithm/blob/master/lib/structure/segment_tree.py)  \n",
+    "Test: [test_segment_tree.py](https://github.com/Kyoroid/algorithm/blob/master/test/structure/test_segment_tree.py)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## セグメント木とは\n",
+    "\n",
+    "https://ikatakos.com/pot/programming_algorithm/data_structure/segment_tree  \n",
+    "https://algo-logic.info/segment-tree/\n",
+    "\n",
+    "区間を扱うデータ構造の1つ。  \n",
+    "区間積の取得 (区間取得) と1点更新を $\\mathcal{O}(\\log{n})$ で行うことができる。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "### 区間の表現\n",
+    "\n",
+    "セグメント木は、完全二分木の節点で区間を表現する。  \n",
+    "任意の区間は、複数の節点を使って表すことができる。例えば区間 $[1, 5)$ は図中の赤節点で表される。\n",
+    "\n",
+    "![segment_tree_1to5](images/segment_tree_1to5.svg)\n",
+    "\n",
+    "それぞれの節点の値には、問題設定に応じて区間に対する問い合わせ結果を持たせる。  \n",
+    "例えば「区間最大値」を求めるセグメント木であれば、次の図のようにそれぞれの節点に対応する区間最大値を持たせる。\n",
+    "\n",
+    "![segment_tree_max](images/segment_tree_max.svg)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "### セグメント木が扱える演算\n",
+    "\n",
+    "[Monoid](https://en.wikipedia.org/wiki/Monoid) (Wikipedia)\n",
+    "\n",
+    "モノイドの性質を満たす演算を扱うことができる。  \n",
+    "具体的には、結合律を満たし、かつ単位元をもつ演算を扱うことができる。\n",
+    "\n",
+    "| 演算 | 対応するPythonの関数 | 単位元 |\n",
+    "|:--|:--|:--:|\n",
+    "| 和 | [operator.add](https://docs.python.org/ja/3.8/library/operator.html#operator.add) | 0 |\n",
+    "| 積 | [operator.mul](https://docs.python.org/ja/3.8/library/operator.html#operator.mul) | 1 |\n",
+    "| 最小値 | [min](https://docs.python.org/ja/3.8/library/functions.html#min) | +INF |\n",
+    "| 最大値 | [max](https://docs.python.org/ja/3.8/library/functions.html#max) | -INF |\n",
+    "| AND | [operator.and_](https://docs.python.org/ja/3.8/library/operator.html#operator.and_) | 1 |\n",
+    "| OR | [operator.or_](https://docs.python.org/ja/3.8/library/operator.html#operator.or_) | 0 |\n",
+    "| XOR | [operator.xor](https://docs.python.org/ja/3.8/library/operator.html#operator.xor) | 0 |\n",
+    "| GCD | [math.gcd](https://docs.python.org/ja/3.8/library/math.html#math.gcd) | 0 |\n",
+    "| LCM | [lcm](../../integer/gcd_and_lcm/lcm.ipynb) | 1 |"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "### 区間取得 (トップダウン)\n",
+    "\n",
+    "区間取得では、セグメント木を根から葉へ再帰的に探索する。  \n",
+    "次の図は、区間最大値を持つセグメント木に対して、区間 $[1, 5)$ の最大値を求めるクエリを処理する流れを示している。\n",
+    "\n",
+    "![segment_tree_query_topdown](images/segment_tree_query_topdown.svg)\n",
+    "\n",
+    "上の図において\n",
+    "\n",
+    "- 黄色のノードは「ノードが表す区間の一部に、取得したい区間が含まれている」\n",
+    "- 緑色のノードは「ノードが表す区間の全部に、取得したい区間が含まれている」\n",
+    "\n",
+    "ことを表す。\n",
+    "\n",
+    "区間 $[1, 5)$ の最大値は、上の図の3つの緑色のノードから求まり、$\\max(-2, 6, 5) = 6$ と計算できる。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "### 1点更新\n",
+    "\n",
+    "1点更新では、セグメント木を葉から根に向かって辿る。  \n",
+    "ノードの値は、2つの子ノードの値から決めればよい。\n",
+    "\n",
+    "![segment_tree_update](images/segment_tree_update.svg)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "### 区間取得 (ボトムアップ)\n",
+    "\n",
+    "区間取得は一点更新と同様に、セグメント木を葉から根に向かって辿ることでも実現できる。  \n",
+    "\n",
+    "区間 $[a, b)$ の区間積を求めるには、まず $[a, \\infty)$ と $[-\\infty, b)$ の区間積を考える。  \n",
+    "これを求めるには自身の親ノード、または親の兄弟ノードを辿ることで実現できる。\n",
+    "\n",
+    "![segment_tree_query_bottomup_1](images/segment_tree_query_bottomup_1.svg)\n",
+    "\n",
+    "区間 $[a, b)$ の区間積は、$[a, \\infty)$ と $[-\\infty, b)$ それぞれの軌跡が交差するところまでの区間積として求まる。\n",
+    "\n",
+    "![segment_tree_query_bottomup_2](images/segment_tree_query_bottomup_2.svg)"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## 実装\n",
+    "\n",
+    "### 概要\n",
+    "\n",
+    "配列 $a_n$ に対する以下の操作を行うことができるセグメント木を実装する。\n",
+    "\n",
+    "- 区間積取得\n",
+    "- 1点更新\n",
+    "\n",
+    "### 計算量\n",
+    "\n",
+    "- 前処理\n",
+    "\n",
+    "    | 操作 | メソッド | 計算量 |\n",
+    "    | --- | --- | --- |\n",
+    "    | 数列 $a$ の初期化 | `from_sequence(a)` | $\\mathcal{O}(n\\log{n})$ |\n",
+    "\n",
+    "- クエリ\n",
+    "\n",
+    "    | 操作 | メソッド | 計算量 |\n",
+    "    | --- | --- | --- |\n",
+    "    | 区間積取得 | `prod(a, b)` | $\\mathcal{O}(\\log{n})$ |\n",
+    "    | 1点更新 | `set(key)` | $\\mathcal{O}(\\log{n})$ |"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "source": [
+    "## コード"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from __future__ import annotations\n",
+    "from collections.abc import Callable, Sequence\n",
+    "\n",
+    "\n",
+    "class IntervalError(Exception):\n",
+    "    def __init__(self):\n",
+    "        self.message = \"Interval [a, b) must be a < b.\"\n",
+    "\n",
+    "\n",
+    "class SegmentTree:\n",
+    "    def __init__(\n",
+    "        self, size: int, op: Callable[[int, int], int] = min, init_value: int = 10 ** 8\n",
+    "    ) -> None:\n",
+    "        self.size = size\n",
+    "        self.op = op\n",
+    "        self.init_value = init_value\n",
+    "        n = 2 ** ((size - 1).bit_length())\n",
+    "        treesize = n * 2\n",
+    "        st = [init_value] * treesize\n",
+    "        self.st = st\n",
+    "        self.offset = len(st) // 2\n",
+    "\n",
+    "    @classmethod\n",
+    "    def from_sequence(\n",
+    "        cls,\n",
+    "        a: Sequence[int],\n",
+    "        op: Callable[[int, int], int] = min,\n",
+    "        init_value: int = 10 ** 8,\n",
+    "    ) -> SegmentTree:\n",
+    "        st = cls(len(a), op=op, init_value=init_value)\n",
+    "        for i, x in enumerate(a):\n",
+    "            st.set(i, x)\n",
+    "        return st\n",
+    "\n",
+    "    def set(self, key: int, value: int) -> None:\n",
+    "        k = self.offset + key\n",
+    "        self.st[k] = value\n",
+    "        k >>= 1\n",
+    "        while k > 0:\n",
+    "            self.st[k] = self.op(self.st[k * 2], self.st[k * 2 + 1])\n",
+    "            k >>= 1\n",
+    "\n",
+    "    def prod(self, a: int, b: int) -> int:\n",
+    "        if a >= b:\n",
+    "            raise IntervalError()\n",
+    "        a += self.offset\n",
+    "        b += self.offset - 1\n",
+    "        s = self.init_value\n",
+    "        while a < b:\n",
+    "            if a & 1:\n",
+    "                s = self.op(s, self.st[a])\n",
+    "                a += 1\n",
+    "            a >>= 1\n",
+    "            if not b & 1:\n",
+    "                s = self.op(s, self.st[b])\n",
+    "                b -= 1\n",
+    "            b >>= 1\n",
+    "        if a == b:\n",
+    "            s = self.op(s, self.st[a])\n",
+    "        return s"
+   ]
+  },
+  {
+   "source": [
+    "## 実行例\n",
+    "\n",
+    "コンストラクタの引数 `op` には演算を、 `init_value` には単位元をそれぞれ指定する。"
+   ],
+   "cell_type": "markdown",
+   "metadata": {}
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "A = [3, -2, 1, 6, 5, 11, -7, -9]\n",
+    "st = SegmentTree.from_sequence(A, op=max, init_value=-10**8)\n",
+    "print(st.prod(1, 5))\n",
+    "st.set(3, 2)\n",
+    "print(st.prod(1, 5))"
+   ]
+  }
+ ]
+}

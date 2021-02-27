@@ -2,8 +2,6 @@
 =====================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
    congruence
    inverse_element

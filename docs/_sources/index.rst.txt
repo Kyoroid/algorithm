@@ -4,11 +4,19 @@
 最終更新: |today|
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :caption: 目次:
+   :numbered: 3
+   :maxdepth: 3
 
    integer/index
    combinatorics/index
+   structure/index
+
+以下整理中
+
+.. toctree::
+   :maxdepth: 2
+
    string/index
    data_structure/index
    dynamic_programming/index

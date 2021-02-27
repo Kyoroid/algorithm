@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>組み合わせ &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>2. 組み合わせ &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="階乗" href="factorial/index.html" />
-    <link rel="prev" title="素数を法とする逆元" href="../integer/modular_arithmetic/inverse_element_prime.html" /> 
+    <link rel="next" title="2.1. 階乗" href="factorial/index.html" />
+    <link rel="prev" title="1.6.3. 素数を法とする逆元" href="../integer/modular_arithmetic/inverse_element_prime.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,15 +89,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">目次:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../integer/index.html">整数</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">組み合わせ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="factorial/index.html">階乗</a></li>
-<li class="toctree-l2"><a class="reference internal" href="permutation/index.html">順列</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combination/index.html">組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integer/index.html">1. 整数</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 組み合わせ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factorial/index.html">2.1. 階乗</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation/index.html">2.2. 順列</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination/index.html">2.3. 組み合わせ</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../structure/index.html">3. データ構造とアルゴリズム</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dynamic_programming/index.html">動的計画法</a></li>
@@ -151,7 +154,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>組み合わせ</li>
+      <li><span class="section-number">2. </span>組み合わせ</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -198,21 +201,46 @@
 }
 </style>
 <div class="section" id="id1">
-<h1>組み合わせ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">2. </span>組み合わせ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="factorial/index.html">階乗</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="factorial/factorial.html">階乗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="factorial/index.html">2.1. 階乗</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factorial/factorial.html">2.1.1. 階乗</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#階乗とは">階乗とは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#階乗の剰余">階乗の剰余</a></li>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#階乗の逆数">階乗の逆数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#実装">実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#コード">コード</a></li>
+<li class="toctree-l3"><a class="reference internal" href="factorial/factorial.html#使用例">使用例</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="permutation/index.html">順列</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="permutation/permutation.html">順列</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="combination/index.html">組み合わせ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="combination/combination.html">組み合わせ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combination/combination_with_replacement.html">重複組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation/index.html">2.2. 順列</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="permutation/permutation.html">2.2.1. 順列</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="permutation/permutation.html#順列とは">順列とは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="permutation/permutation.html#順列の場合の数">順列の場合の数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="permutation/permutation.html#実装">実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="permutation/permutation.html#コード">コード</a></li>
+<li class="toctree-l3"><a class="reference internal" href="permutation/permutation.html#使用例">使用例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combination/index.html">2.3. 組み合わせ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combination/combination.html">2.3.1. 組み合わせ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination.html#組み合わせとは">組み合わせとは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination.html#組み合わせの場合の数">組み合わせの場合の数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination.html#実装">実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination.html#コード">コード</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination.html#使用例">使用例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="combination/combination_with_replacement.html">2.3.2. 重複組み合わせ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination_with_replacement.html#重複組み合わせとは">重複組み合わせとは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combination/combination_with_replacement.html#重複組み合わせの場合の数">重複組み合わせの場合の数</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -227,10 +255,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="factorial/index.html" class="btn btn-neutral float-right" title="階乗" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="factorial/index.html" class="btn btn-neutral float-right" title="2.1. 階乗" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../integer/modular_arithmetic/inverse_element_prime.html" class="btn btn-neutral float-left" title="素数を法とする逆元" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../integer/modular_arithmetic/inverse_element_prime.html" class="btn btn-neutral float-left" title="1.6.3. 素数を法とする逆元" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

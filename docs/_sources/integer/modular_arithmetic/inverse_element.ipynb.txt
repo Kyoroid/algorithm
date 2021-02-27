@@ -27,7 +27,7 @@
     "# 逆元\n",
     "\n",
     "Code: [modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/modular_arithmetic.py)  \n",
-    "Test: [test_modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_modular_arithmetic.py)"
+    "Test: [test_modular_arithmetic.py](https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_modular_arithmetic.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

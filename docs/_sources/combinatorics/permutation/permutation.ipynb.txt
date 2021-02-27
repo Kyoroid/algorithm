@@ -27,7 +27,7 @@
     "# 順列\n",
     "\n",
     "Code: [permutation.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/permutation.py)  \n",
-    "Test: [test_permutation.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/test_permutation.py)"
+    "Test: [test_permutation.py](https://github.com/Kyoroid/algorithm/blob/master/test/combinatorics/test_permutation.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}
