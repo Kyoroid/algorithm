@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>一次不定方程式の整数解 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>1.5.1. 一次不定方程式の整数解 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="整数の合同" href="../modular_arithmetic/index.html" />
-    <link rel="prev" title="一次不定方程式の整数解" href="index.html" /> 
+    <link rel="next" title="1.6. 整数の合同" href="../modular_arithmetic/index.html" />
+    <link rel="prev" title="1.5. 一次不定方程式の整数解" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,15 +89,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">目次:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">整数</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../multiple_and_divisor/index.html">約数と倍数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../composite_and_prime/index.html">合成数と素数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prime_factorization/index.html">素因数分解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gcd_and_lcm/index.html">最大公約数と最小公倍数</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">一次不定方程式の整数解</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">一次不定方程式の整数解</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. 整数</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../multiple_and_divisor/index.html">1.1. 約数と倍数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composite_and_prime/index.html">1.2. 合成数と素数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prime_factorization/index.html">1.3. 素因数分解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gcd_and_lcm/index.html">1.4. 最大公約数と最小公倍数</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.5. 一次不定方程式の整数解</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.5.1. 一次不定方程式の整数解</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#一次不定方程式とは">一次不定方程式とは</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ベズーの等式">ベズーの等式</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#拡張ユークリッドの互除法">拡張ユークリッドの互除法</a></li>
@@ -108,10 +108,13 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../modular_arithmetic/index.html">整数の合同</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modular_arithmetic/index.html">1.6. 整数の合同</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../combinatorics/index.html">組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../combinatorics/index.html">2. 組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../structure/index.html">3. データ構造とアルゴリズム</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dynamic_programming/index.html">動的計画法</a></li>
@@ -165,11 +168,11 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../index.html">整数</a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">1. </span>整数</a> &raquo;</li>
         
-          <li><a href="index.html">一次不定方程式の整数解</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1.5. </span>一次不定方程式の整数解</a> &raquo;</li>
         
-      <li>一次不定方程式の整数解</li>
+      <li><span class="section-number">1.5.1. </span>一次不定方程式の整数解</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -462,10 +465,10 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <div class="section" id="一次不定方程式の整数解">
-<h1>一次不定方程式の整数解<a class="headerlink" href="#一次不定方程式の整数解" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">1.5.1. </span>一次不定方程式の整数解<a class="headerlink" href="#一次不定方程式の整数解" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="line-block">
 <div class="line">Code: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/lib/integer/extgcd.py">extgcd.py</a></div>
-<div class="line">Test: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_extgcd.py">test_extgcd.py</a></div>
+<div class="line">Test: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_extgcd.py">test_extgcd.py</a></div>
 </div>
 <div class="section" id="一次不定方程式とは">
 <h2>一次不定方程式とは<a class="headerlink" href="#一次不定方程式とは" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -557,9 +560,8 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 
-<span class="k">def</span> <span class="nf">extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">extgcd</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">extgcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
@@ -594,7 +596,6 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2 0 2 1 0
 5 -5
 </pre></div></div>
 </div>
@@ -609,10 +610,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../modular_arithmetic/index.html" class="btn btn-neutral float-right" title="整数の合同" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../modular_arithmetic/index.html" class="btn btn-neutral float-right" title="1.6. 整数の合同" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="一次不定方程式の整数解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="1.5. 一次不定方程式の整数解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

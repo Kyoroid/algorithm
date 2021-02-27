@@ -27,7 +27,7 @@
     "# 素数列挙\n",
     "\n",
     "Code: [composite_and_prime.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/composite_and_prime.py)  \n",
-    "Test: [test_composite_and_prime.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_composite_and_prime.py)"
+    "Test: [test_composite_and_prime.py](https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_composite_and_prime.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

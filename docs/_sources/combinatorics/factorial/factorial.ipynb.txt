@@ -27,7 +27,7 @@
     "# 階乗\n",
     "\n",
     "Code: [factorial.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/factorial.py)  \n",
-    "Test: [test_factorial.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/test_factorial.py)"
+    "Test: [test_factorial.py](https://github.com/Kyoroid/algorithm/blob/master/test/combinatorics/test_factorial.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

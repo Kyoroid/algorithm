@@ -2,8 +2,6 @@
 =====================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
    list_divisors
    list_multiples

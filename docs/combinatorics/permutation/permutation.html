@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>順列 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>2.2.1. 順列 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="組み合わせ" href="../combination/index.html" />
-    <link rel="prev" title="順列" href="index.html" /> 
+    <link rel="next" title="2.3. 組み合わせ" href="../combination/index.html" />
+    <link rel="prev" title="2.2. 順列" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,13 +89,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">目次:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../integer/index.html">整数</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">組み合わせ</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../factorial/index.html">階乗</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">順列</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">順列</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../integer/index.html">1. 整数</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 組み合わせ</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../factorial/index.html">2.1. 階乗</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.2. 順列</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.2.1. 順列</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#順列とは">順列とは</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#順列の場合の数">順列の場合の数</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#実装">実装</a></li>
@@ -105,9 +105,12 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../combination/index.html">組み合わせ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../combination/index.html">2.3. 組み合わせ</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../structure/index.html">3. データ構造とアルゴリズム</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dynamic_programming/index.html">動的計画法</a></li>
@@ -161,11 +164,11 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../index.html">組み合わせ</a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">2. </span>組み合わせ</a> &raquo;</li>
         
-          <li><a href="index.html">順列</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2.2. </span>順列</a> &raquo;</li>
         
-      <li>順列</li>
+      <li><span class="section-number">2.2.1. </span>順列</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -458,10 +461,10 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <div class="section" id="順列">
-<h1>順列<a class="headerlink" href="#順列" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">2.2.1. </span>順列<a class="headerlink" href="#順列" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="line-block">
 <div class="line">Code: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/permutation.py">permutation.py</a></div>
-<div class="line">Test: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/test_permutation.py">test_permutation.py</a></div>
+<div class="line">Test: <a class="reference external" href="https://github.com/Kyoroid/algorithm/blob/master/test/combinatorics/test_permutation.py">test_permutation.py</a></div>
 </div>
 <div class="section" id="順列とは">
 <h2>順列とは<a class="headerlink" href="#順列とは" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -581,10 +584,10 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../combination/index.html" class="btn btn-neutral float-right" title="組み合わせ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../combination/index.html" class="btn btn-neutral float-right" title="2.3. 組み合わせ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="順列" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="2.2. 順列" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

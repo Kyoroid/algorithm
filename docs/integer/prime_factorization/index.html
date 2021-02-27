@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>素因数分解 &mdash; Competitive programming notebook  ドキュメント</title>
+  <title>1.3. 素因数分解 &mdash; Competitive programming notebook  ドキュメント</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="素因数分解 (試し割り法)" href="prime_factorization.html" />
-    <link rel="prev" title="素数列挙" href="../composite_and_prime/list_primes.html" /> 
+    <link rel="next" title="1.3.1. 素因数分解 (試し割り法)" href="prime_factorization.html" />
+    <link rel="prev" title="1.2.1. 素数列挙" href="../composite_and_prime/list_primes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,22 +89,25 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">目次:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">整数</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../multiple_and_divisor/index.html">約数と倍数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../composite_and_prime/index.html">合成数と素数</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">素因数分解</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="prime_factorization.html">素因数分解 (試し割り法)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="prime_factorization_spf.html">素因数分解 (SPF)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. 整数</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../multiple_and_divisor/index.html">1.1. 約数と倍数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composite_and_prime/index.html">1.2. 合成数と素数</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.3. 素因数分解</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization.html">1.3.1. 素因数分解 (試し割り法)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization_spf.html">1.3.2. 素因数分解 (SPF)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../gcd_and_lcm/index.html">最大公約数と最小公倍数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extgcd/index.html">一次不定方程式の整数解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../modular_arithmetic/index.html">整数の合同</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gcd_and_lcm/index.html">1.4. 最大公約数と最小公倍数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extgcd/index.html">1.5. 一次不定方程式の整数解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modular_arithmetic/index.html">1.6. 整数の合同</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../combinatorics/index.html">組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../combinatorics/index.html">2. 組み合わせ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../structure/index.html">3. データ構造とアルゴリズム</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../string/index.html">文字列</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_structure/index.html">データ構造</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dynamic_programming/index.html">動的計画法</a></li>
@@ -158,9 +161,9 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../index.html">整数</a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">1. </span>整数</a> &raquo;</li>
         
-      <li>素因数分解</li>
+      <li><span class="section-number">1.3. </span>素因数分解</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -207,20 +210,29 @@
 }
 </style>
 <div class="section" id="id1">
-<h1>素因数分解<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">1.3. </span>素因数分解<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="prime_factorization.html">素因数分解 (試し割り法)</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="prime_factorization.html">1.3.1. 素因数分解 (試し割り法)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization.html#素因数分解とは">素因数分解とは</a></li>
-<li class="toctree-l2"><a class="reference internal" href="prime_factorization.html#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prime_factorization.html#実装">実装</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization.html#概要">概要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization.html#実装のポイント">実装のポイント</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization.html#計算量">計算量</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization.html#コード">コード</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization.html#使用例">使用例</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="prime_factorization_spf.html">素因数分解 (SPF)</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="prime_factorization_spf.html">1.3.2. 素因数分解 (SPF)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization_spf.html#数表を用いた高速化">数表を用いた高速化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="prime_factorization_spf.html#実装">実装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prime_factorization_spf.html#実装">実装</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization_spf.html#概要">概要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization_spf.html#実装のポイント">実装のポイント</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prime_factorization_spf.html#計算量">計算量</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization_spf.html#コード">コード</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prime_factorization_spf.html#使用例">使用例</a></li>
 </ul>
@@ -237,10 +249,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="prime_factorization.html" class="btn btn-neutral float-right" title="素因数分解 (試し割り法)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="prime_factorization.html" class="btn btn-neutral float-right" title="1.3.1. 素因数分解 (試し割り法)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../composite_and_prime/list_primes.html" class="btn btn-neutral float-left" title="素数列挙" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../composite_and_prime/list_primes.html" class="btn btn-neutral float-left" title="1.2.1. 素数列挙" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

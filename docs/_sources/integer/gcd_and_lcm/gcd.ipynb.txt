@@ -27,7 +27,7 @@
     "# 最大公約数\n",
     "\n",
     "Code: [gcd_and_lcm.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/gcd_and_lcm.py)  \n",
-    "Test: [test_gcd_and_lcm.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_gcd_and_lcm.py)"
+    "Test: [test_gcd_and_lcm.py](https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_gcd_and_lcm.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

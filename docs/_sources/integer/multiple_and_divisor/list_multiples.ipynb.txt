@@ -27,7 +27,7 @@
     "# 倍数列挙\n",
     "\n",
     "Code: [multiple_and_divisor.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/multiple_and_divisor.py)  \n",
-    "Test: [test_multiple_and_divisor.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_multiple_and_divisor.py)"
+    "Test: [test_multiple_and_divisor.py](https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_multiple_and_divisor.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

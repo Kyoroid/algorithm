@@ -27,7 +27,7 @@
     "# 素因数分解 (試し割り法)\n",
     "\n",
     "Code: [prime_factorization.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/prime_factorization.py)  \n",
-    "Test: [test_prime_factorization.py](https://github.com/Kyoroid/algorithm/blob/master/lib/integer/test_prime_factorization.py)"
+    "Test: [test_prime_factorization.py](https://github.com/Kyoroid/algorithm/blob/master/test/integer/test_prime_factorization.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}

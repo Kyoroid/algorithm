@@ -22,7 +22,7 @@
     "# 組み合わせ\n",
     "\n",
     "Code: [combination.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/combination.py)  \n",
-    "Test: [test_combination.py](https://github.com/Kyoroid/algorithm/blob/master/lib/combinatorics/test_combination.py)"
+    "Test: [test_combination.py](https://github.com/Kyoroid/algorithm/blob/master/test/combinatorics/test_combination.py)"
    ],
    "cell_type": "markdown",
    "metadata": {}
