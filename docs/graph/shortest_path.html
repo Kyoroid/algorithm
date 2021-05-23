@@ -593,10 +593,8 @@ div.rendered_html tbody tr:hover {
 </ol>
 <p>キューにDequeを使用すれば、BFSと同じ計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(V+E)\)</span> で最短経路を求めることができる。</p>
 <p>例えば、次のグラフ</p>
-<p><img alt="01bfs_init" src="../_images/01bfs_init.svg" /></p>
-<p>に対して0-1-bfsを適用すると、0の辺を使う経路が優先的に選ばれることにより、次のように最短経路が求まる。</p>
-<p><img alt="01bfs_cost" src="../_images/01bfs_cost.svg" /></p>
-<div class="section" id="id6">
+<img alt="01bfs_init" src="../_images/01bfs_init.svg" /><p>に対して0-1-bfsを適用すると、0の辺を使う経路が優先的に選ばれることにより、次のように最短経路が求まる。</p>
+<img alt="01bfs_cost" src="../_images/01bfs_cost.svg" /><div class="section" id="id6">
 <h3>実装<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>キューの実装には、通常のBFSと同じく<code class="docutils literal notranslate"><span class="pre">deque</span></code>を利用する。</p>
 <div class="nbinput nblast docutils container">
@@ -663,10 +661,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>この手法は一般に、Dijkstra法と呼ばれる。</p>
 <p>例えば、次のグラフ</p>
-<p><img alt="dijkstra_init" src="../_images/dijkstra_init.svg" /></p>
-<p>に対してDijkstraを適用すると、次のように最短経路が求まる。</p>
-<p><img alt="dijkstra_cost" src="../_images/dijkstra_cost.svg" /></p>
-<div class="section" id="id7">
+<img alt="dijkstra_init" src="../_images/dijkstra_init.svg" /><p>に対してDijkstraを適用すると、次のように最短経路が求まる。</p>
+<img alt="dijkstra_cost" src="../_images/dijkstra_cost.svg" /><div class="section" id="id7">
 <h3>実装<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>キューの実装には<code class="docutils literal notranslate"><span class="pre">heapq</span></code>を利用する。</p>
 <div class="nbinput nblast docutils container">

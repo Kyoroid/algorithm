@@ -492,13 +492,11 @@ div.rendered_html tbody tr:hover {
 <div class="line">セグメント木では <span class="math notranslate nohighlight">\(n\)</span> 個の要素を次のように、長さ <span class="math notranslate nohighlight">\(2n-1\)</span> の配列で表現する。</div>
 <div class="line">最下層は要素列のインデックスを割り当て、上層には要素列の「区間」を割り当てる。</div>
 </div>
-<p><img alt="segment_tree_slice" src="../_images/segment_tree_slice.svg" /></p>
-<div class="line-block">
+<img alt="segment_tree_slice" src="../_images/segment_tree_slice.svg" /><div class="line-block">
 <div class="line">セグメント木では、任意の区間に対する問い合わせを「連続する小区間に対する問い合わせ」として表現する。</div>
 <div class="line">例えば区間 <span class="math notranslate nohighlight">\([1, 7]\)</span> に対する問い合わせは、小区間 <span class="math notranslate nohighlight">\([1], [2,3], [4,7]\)</span> への問い合わせ結果を用いて作成する。</div>
 </div>
-<p><img alt="segment_tree_from1to7" src="../_images/segment_tree_from1to7.svg" /></p>
-<div class="line-block">
+<img alt="segment_tree_from1to7" src="../_images/segment_tree_from1to7.svg" /><div class="line-block">
 <div class="line">また、実装においては1-indexedを採用し、長さ <span class="math notranslate nohighlight">\(2n\)</span> の配列をセグメント木とみなす。</div>
 <div class="line">これにより、インデックスに関して次の性質が成り立つ。</div>
 </div>
@@ -506,8 +504,7 @@ div.rendered_html tbody tr:hover {
 <li><p>ビット長が木の深さを表す。</p></li>
 <li><p>兄弟ノードは下位1ビットだけが異なる。</p></li>
 </ul>
-<p><img alt="segment_tree_indice" src="../_images/segment_tree_indice.svg" /></p>
-<div class="line-block">
+<img alt="segment_tree_indice" src="../_images/segment_tree_indice.svg" /><div class="line-block">
 <div class="line">なお、もとの配列の長さ <span class="math notranslate nohighlight">\(n\)</span> が2のべき乗でないときは、<span class="math notranslate nohighlight">\(n\)</span> より大きい2のべき乗の長さの配列とみなしてセグメント木を作る。</div>
 <div class="line">使用しないノードには初期値を代入する。</div>
 </div>
@@ -524,13 +521,11 @@ div.rendered_html tbody tr:hover {
 <div class="line">RMQでは節点に「区間の最小値」を持たせる。</div>
 <div class="line">例えば数列 <span class="math notranslate nohighlight">\([3, 7, 5, 5, 4, -3, 11, 2]\)</span> は、RMQで次のように表現される。</div>
 </div>
-<p><img alt="rmq_init" src="../_images/rmq_init.svg" /></p>
-<div class="section" id="1点更新">
+<img alt="rmq_init" src="../_images/rmq_init.svg" /><div class="section" id="1点更新">
 <h3>1点更新<a class="headerlink" href="#1点更新" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>要素を更新するにはセグメント木を下層から上層へと辿りつつ、通過した節点に書かれた区間最小値を更新していく。</p>
 <p>例えば配列の3番目の要素を <span class="math notranslate nohighlight">\(5 \rightarrow 2\)</span> に更新する場合、次のような更新経路を辿る。</p>
-<p><img alt="rmq_update" src="../_images/rmq_update.svg" /></p>
-</div>
+<img alt="rmq_update" src="../_images/rmq_update.svg" /></div>
 <div class="section" id="問い合わせ-(トップダウン)">
 <h3>問い合わせ (トップダウン)<a class="headerlink" href="#問い合わせ-(トップダウン)" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="line-block">
@@ -553,19 +548,16 @@ div.rendered_html tbody tr:hover {
 <li><p>ノードの添字が <strong>奇数</strong> (図中の緑ノード) ならば、ノードに書かれた数値は区間最小値である。値を取得して <strong>右上</strong> のノードへ移動する。</p></li>
 <li><p>ノードの添字が偶数ならば、ノードに書かれた数値は区間最小値でない可能性がある。値を取得せずに直上のノードへ移動する。</p></li>
 </ul>
-<p><img alt="rmq_query_bottomup_l" src="../_images/rmq_query_bottomup_l.svg" /></p>
-<p>同様に、区間の右端 <span class="math notranslate nohighlight">\(r\)</span> も更新する。</p>
+<img alt="rmq_query_bottomup_l" src="../_images/rmq_query_bottomup_l.svg" /><p>同様に、区間の右端 <span class="math notranslate nohighlight">\(r\)</span> も更新する。</p>
 <ul class="simple">
 <li><p>ノードの添字が <strong>偶数</strong> (図中の青ノード) ならば、ノードに書かれた数値は区間最小値である。値を取得して <strong>左上</strong> のノードへ移動する。</p></li>
 <li><p>ノードの添字が奇数ならば、ノードに書かれた数値は区間最小値でない可能性がある。値を取得せずに直上のノードへ移動する。</p></li>
 </ul>
-<p><img alt="rmq_query_bottomup_r" src="../_images/rmq_query_bottomup_r.svg" /></p>
-<div class="line-block">
+<img alt="rmq_query_bottomup_r" src="../_images/rmq_query_bottomup_r.svg" /><div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(l, r\)</span> の経路が交差するまで区間最小値の取得・更新を続ける。</div>
 <div class="line">最終的に下図の赤色ノードの区間最小値 <span class="math notranslate nohighlight">\(\{2, -3, 11\}\)</span> が取り込まれ、問い合わせ区間の最小値が <span class="math notranslate nohighlight">\(\min(2, -3, 11) = -3\)</span> と求まる。</div>
 </div>
-<p><img alt="rmq_query_bottomup_cross" src="../_images/rmq_query_bottomup_cross.svg" /></p>
-<p>ボトムアップ型では問い合わせ区間外のノードを見ることがないため、平均計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> が実現できる。</p>
+<img alt="rmq_query_bottomup_cross" src="../_images/rmq_query_bottomup_cross.svg" /><p>ボトムアップ型では問い合わせ区間外のノードを見ることがないため、平均計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(\log{n})\)</span> が実現できる。</p>
 </div>
 <div class="section" id="実装">
 <h3>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -743,24 +735,21 @@ div.rendered_html tbody tr:hover {
 <div class="line">RAQでは葉や節点に「区間に加算する値」を持たせる。</div>
 <div class="line">例えば数列 <span class="math notranslate nohighlight">\([3, 7, 5, 5, 4, -3, 11, 2]\)</span> と「区間 <span class="math notranslate nohighlight">\([2, 8]\)</span> に対する値 <span class="math notranslate nohighlight">\(4\)</span> の加算」は、RAQで次のように表現される。</div>
 </div>
-<p><img alt="raq_init" src="../_images/raq_init.svg" /></p>
-<div class="section" id="1点問い合わせ">
+<img alt="raq_init" src="../_images/raq_init.svg" /><div class="section" id="1点問い合わせ">
 <h3>1点問い合わせ<a class="headerlink" href="#1点問い合わせ" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="line-block">
 <div class="line">問い合わせでは、セグメント木を下層から上層へと辿る。</div>
 <div class="line">通過したすべての葉と節点の値の和が問い合わせ結果となる。</div>
 </div>
 <p>例えば配列の3番目の要素を取得する場合、次のような経路を辿る。取得される値は <span class="math notranslate nohighlight">\(+5+4+0+0=9\)</span> となる。</p>
-<p><img alt="raq_query" src="../_images/raq_query.svg" /></p>
-</div>
+<img alt="raq_query" src="../_images/raq_query.svg" /></div>
 <div class="section" id="区間更新">
 <h3>区間更新<a class="headerlink" href="#区間更新" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="line-block">
 <div class="line">区間更新では区間を小区間に分割し、それぞれの区間に対して加算を行う。</div>
 <div class="line">例えば区間 <span class="math notranslate nohighlight">\([2, 6]\)</span> の全要素に値 <span class="math notranslate nohighlight">\(2\)</span> を加算するとき、更新対象は次の赤ノードとなる。</div>
 </div>
-<p><img alt="raq_update_target" src="../_images/raq_update_target.svg" /></p>
-<div class="line-block">
+<img alt="raq_update_target" src="../_images/raq_update_target.svg" /><div class="line-block">
 <div class="line">区間更新はRMQの区間問い合わせと同様に、分割統治法によるトップダウン型、またはビット演算を利用したボトムアップ型のいずれかの方法で処理することができる。</div>
 <div class="line">ここでは計算量が小さいボトムアップ型のみ説明する。</div>
 </div>
@@ -769,8 +758,7 @@ div.rendered_html tbody tr:hover {
 <div class="line">よって、左端 <span class="math notranslate nohighlight">\(l\)</span> と右端 <span class="math notranslate nohighlight">\(r\)</span> を起点とする更新経路が交差するまでセグメント木の下層から上層へ辿り、通過したノードの値を更新すればよい。</div>
 </div>
 <p>実際、RAQの区間更新の実装は、RMQの区間問い合わせの「ノードの値の取得」を「ノードの更新」に置き換えただけである。</p>
-<p><img alt="raq_update_lr" src="../_images/raq_update_lr.svg" /></p>
-</div>
+<img alt="raq_update_lr" src="../_images/raq_update_lr.svg" /></div>
 <div class="section" id="id10">
 <h3>実装<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>区間更新の実装については、トップダウン型とボトムアップ型の両方を示す。</p>
