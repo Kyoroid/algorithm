@@ -476,14 +476,12 @@ div.rendered_html tbody tr:hover {
 <div class="line">まず、それぞれの数に対する最小の素因数 (Smallest Prime Factor, SPF) を記録した数表を作成する。</div>
 <div class="line">数表はエラトステネスの篩と同じ計算量 <span class="math notranslate nohighlight">\(\mathcal{O}(n\log{\log{n}})\)</span> で作成できる。</div>
 </div>
-<p><img alt="prime_factorization_spf" src="../../_images/prime_factorization_spf.svg" /></p>
-<div class="line-block">
+<img alt="prime_factorization_spf" src="../../_images/prime_factorization_spf.svg" /><div class="line-block">
 <div class="line">素因数分解を求めるには、数に対応する最小の素因数で割ることを繰り返せばよい。</div>
 <div class="line">割る過程で通過した最小の素因数を列挙したものが、求めるべき素因数である。</div>
 </div>
 <p>例えば次の例では、 <span class="math notranslate nohighlight">\(12\)</span> の素因数 <span class="math notranslate nohighlight">\(2, 2, 3\)</span> がこの順で得られる。</p>
-<p><img alt="prime_factorization_12" src="../../_images/prime_factorization_12.svg" /></p>
-</div>
+<img alt="prime_factorization_12" src="../../_images/prime_factorization_12.svg" /></div>
 <div class="section" id="実装">
 <h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="section" id="概要">

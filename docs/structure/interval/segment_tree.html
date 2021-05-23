@@ -43,7 +43,7 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="文字列" href="../../string/index.html" />
+    <link rel="next" title="3.3. 木構造" href="../tree/index.html" />
     <link rel="prev" title="3.2.1. 累積和" href="cumulative_sum.html" /> 
 </head>
 
@@ -101,11 +101,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#セグメント木とは">セグメント木とは</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#実装">実装</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#コード">コード</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#実行例">実行例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#使用例">使用例</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tree/index.html">3.3. 木構造</a></li>
 </ul>
 </li>
 </ul>
@@ -481,13 +482,11 @@ div.rendered_html tbody tr:hover {
 <div class="line">セグメント木は、完全二分木の節点で区間を表現する。</div>
 <div class="line">任意の区間は、複数の節点を使って表すことができる。例えば区間 <span class="math notranslate nohighlight">\([1, 5)\)</span> は図中の赤節点で表される。</div>
 </div>
-<p><img alt="segment_tree_1to5" src="../../_images/segment_tree_1to5.svg" /></p>
-<div class="line-block">
+<img alt="segment_tree_1to5" src="../../_images/segment_tree_1to5.svg" /><div class="line-block">
 <div class="line">それぞれの節点の値には、問題設定に応じて区間に対する問い合わせ結果を持たせる。</div>
 <div class="line">例えば「区間最大値」を求めるセグメント木であれば、次の図のようにそれぞれの節点に対応する区間最大値を持たせる。</div>
 </div>
-<p><img alt="segment_tree_max" src="../../_images/segment_tree_max.svg" /></p>
-</div>
+<img alt="segment_tree_max" src="../../_images/segment_tree_max.svg" /></div>
 <div class="section" id="セグメント木が扱える演算">
 <h3>セグメント木が扱える演算<a class="headerlink" href="#セグメント木が扱える演算" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Monoid">Monoid</a> (Wikipedia)</p>
@@ -553,8 +552,7 @@ div.rendered_html tbody tr:hover {
 <div class="line">区間取得では、セグメント木を根から葉へ再帰的に探索する。</div>
 <div class="line">次の図は、区間最大値を持つセグメント木に対して、区間 <span class="math notranslate nohighlight">\([1, 5)\)</span> の最大値を求めるクエリを処理する流れを示している。</div>
 </div>
-<p><img alt="segment_tree_query_topdown" src="../../_images/segment_tree_query_topdown.svg" /></p>
-<p>上の図において</p>
+<img alt="segment_tree_query_topdown" src="../../_images/segment_tree_query_topdown.svg" /><p>上の図において</p>
 <ul class="simple">
 <li><p>黄色のノードは「ノードが表す区間の一部に、取得したい区間が含まれている」</p></li>
 <li><p>緑色のノードは「ノードが表す区間の全部に、取得したい区間が含まれている」</p></li>
@@ -568,8 +566,7 @@ div.rendered_html tbody tr:hover {
 <div class="line">1点更新では、セグメント木を葉から根に向かって辿る。</div>
 <div class="line">ノードの値は、2つの子ノードの値から決めればよい。</div>
 </div>
-<p><img alt="segment_tree_update" src="../../_images/segment_tree_update.svg" /></p>
-</div>
+<img alt="segment_tree_update" src="../../_images/segment_tree_update.svg" /></div>
 <div class="section" id="区間取得-(ボトムアップ)">
 <h3>区間取得 (ボトムアップ)<a class="headerlink" href="#区間取得-(ボトムアップ)" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>区間取得は一点更新と同様に、セグメント木を葉から根に向かって辿ることでも実現できる。</p>
@@ -577,10 +574,8 @@ div.rendered_html tbody tr:hover {
 <div class="line">区間 <span class="math notranslate nohighlight">\([a, b)\)</span> の区間積を求めるには、まず <span class="math notranslate nohighlight">\([a, \infty)\)</span> と <span class="math notranslate nohighlight">\([-\infty, b)\)</span> の区間積を考える。</div>
 <div class="line">これを求めるには自身の親ノード、または親の兄弟ノードを辿ることで実現できる。</div>
 </div>
-<p><img alt="segment_tree_query_bottomup_1" src="../../_images/segment_tree_query_bottomup_1.svg" /></p>
-<p>区間 <span class="math notranslate nohighlight">\([a, b)\)</span> の区間積は、<span class="math notranslate nohighlight">\([a, \infty)\)</span> と <span class="math notranslate nohighlight">\([-\infty, b)\)</span> それぞれの軌跡が交差するところまでの区間積として求まる。</p>
-<p><img alt="segment_tree_query_bottomup_2" src="../../_images/segment_tree_query_bottomup_2.svg" /></p>
-</div>
+<img alt="segment_tree_query_bottomup_1" src="../../_images/segment_tree_query_bottomup_1.svg" /><p>区間 <span class="math notranslate nohighlight">\([a, b)\)</span> の区間積は、<span class="math notranslate nohighlight">\([a, \infty)\)</span> と <span class="math notranslate nohighlight">\([-\infty, b)\)</span> それぞれの軌跡が交差するところまでの区間積として求まる。</p>
+<img alt="segment_tree_query_bottomup_2" src="../../_images/segment_tree_query_bottomup_2.svg" /></div>
 </div>
 <div class="section" id="実装">
 <h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -715,8 +710,8 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 </div>
-<div class="section" id="実行例">
-<h2>実行例<a class="headerlink" href="#実行例" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="使用例">
+<h2>使用例<a class="headerlink" href="#使用例" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>コンストラクタの引数 <code class="docutils literal notranslate"><span class="pre">op</span></code> には演算を、 <code class="docutils literal notranslate"><span class="pre">init_value</span></code> には単位元をそれぞれ指定する。</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -751,7 +746,7 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../string/index.html" class="btn btn-neutral float-right" title="文字列" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tree/index.html" class="btn btn-neutral float-right" title="3.3. 木構造" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="cumulative_sum.html" class="btn btn-neutral float-left" title="3.2.1. 累積和" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

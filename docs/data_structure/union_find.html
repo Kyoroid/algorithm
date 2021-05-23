@@ -476,19 +476,16 @@ div.rendered_html tbody tr:hover {
 <div class="line">Union-Find木では、できるだけ木の高さが小さくなるようにノードの繋ぎ変えを行うことで、検索の高速化を実現している。</div>
 <div class="line">例えば、次のような <span class="math notranslate nohighlight">\(6\)</span> つの要素に対してunion, findそれぞれの操作を考えてみる。</div>
 </div>
-<p><img alt="union_find_init" src="../_images/union_find_init.svg" /></p>
-<div class="line-block">
+<img alt="union_find_init" src="../_images/union_find_init.svg" /><div class="line-block">
 <div class="line">unionでは、後述するfind操作によりそれぞれの親を調べた後、一方の親にまとめる。</div>
 <div class="line">この状態ではまだ、木の高さは最適化されていないことに注意。</div>
 </div>
-<p><img alt="union_find_union" src="../_images/union_find_union.svg" /></p>
-<div class="line-block">
+<img alt="union_find_union" src="../_images/union_find_union.svg" /><div class="line-block">
 <div class="line">findでは、ノードの親を調べる。</div>
 <div class="line">このとき、findを再帰的に呼び出す過程で、通過したノードの親を繋ぎ変えるようにする。</div>
 <div class="line">この繋ぎ変えにより、findの呼び出しで通過した部分木の高さは高々1になり、次回以降のfindが高速化される。</div>
 </div>
-<p><img alt="union_find_find" src="../_images/union_find_find.svg" /></p>
-</div>
+<img alt="union_find_find" src="../_images/union_find_find.svg" /></div>
 <div class="section" id="実装">
 <h2>実装<a class="headerlink" href="#実装" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="nbinput nblast docutils container">
