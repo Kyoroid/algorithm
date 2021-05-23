@@ -6,3 +6,4 @@
 
    deque/index
    interval/index
+   tree/index

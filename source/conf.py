@@ -71,4 +71,4 @@ nbsphinx_prolog = """
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-nbsphinx_kernel_name = "py38env"
+nbsphinx_kernel_name = "python3"
