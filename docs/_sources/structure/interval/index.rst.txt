@@ -5,3 +5,4 @@
 
    cumulative_sum
    segment_tree
+   fenwick_tree
